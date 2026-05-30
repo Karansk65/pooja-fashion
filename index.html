@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pooja Fashion | Premium Designer Gowns</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="offer-bar">
+  <marquee>
+    🔥 5% OFF Today • 🚚 Free Delivery Above ₹5000 • 💃 New Designer Gown Collection • 🎉 Wedding Special Offer • 📸 Photoshoot Dresses Available • 💎 Premium Quality Fabric • 🛍️ Shop Now
+  </marquee>
+</div>
+
+<header class="header">
+  <div class="logo">Pooja Fashion</div>
+
+  <nav class="nav">
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="header-icons">
+    <i class="fas fa-search"></i>
+    <i class="fas fa-user"></i>
+    <i class="fas fa-shopping-bag"></i>
+  </div>
+</header>
+
+<section class="hero-banner" id="home">
+  <img src="./images/banner.png" alt="Pooja Fashion Banner">
+</section>
+
+<section class="categories">
+  <h2>Shop By Category</h2>
+
+  <div class="category-box">
+    <div>Wedding Gowns</div>
+    <div>Party Wear</div>
+    <div>Photoshoot Dress</div>
+    <div>Designer Collection</div>
+  </div>
+</section>
+
+<section class="video-section">
+  <h2>Latest Fashion Videos</h2>
+
+  <div class="video-grid">
+    <video controls autoplay muted loop onclick="openVideo(this)">
+      <source src="./video/PixVerse_V6_Image_Text_360P_Use_the_uploaded_g.mp4" type="video/mp4">
+    </video>
+
+    <video controls autoplay muted loop onclick="openVideo(this)">
+      <source src="./video/PixVerse_V6_Image_Text_540P_Use_the_uploaded_y.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<div id="videoPopup" class="video-popup">
+  <span onclick="closeVideo()" class="close-video">×</span>
+  <video id="popupVideo" controls autoplay></video>
+</div>
+
+<section class="shop" id="shop">
+  <h2>New Arrivals</h2>
+  <div class="products" id="productList"></div>
+</section>
+
+<section class="about" id="about">
+  <h2>About Pooja Fashion</h2>
+  <p>
+    This premium designer gown is crafted for a royal and elegant look.
+    It features a beautiful flare, comfortable fitting and luxury finish,
+    making it perfect for weddings, receptions, parties, birthdays,
+    festive events and professional photoshoots.
+  </p>
+</section>
+
+<section class="contact" id="contact">
+  <h2>Contact Us</h2>
+  <p>Email: ks343173@gmail.com</p>
+  <p>WhatsApp: +91 7620986732</p>
+</section>
+
+<footer>
+  <h3>Pooja Fashion</h3>
+  <p>Premium Designer Gown Collection</p>
+  <p>© 2026 Pooja Fashion. All Rights Reserved.</p>
+</footer>
+
+<a class="floating-whatsapp" href="https://wa.me/917620986732" target="_blank">
+  WhatsApp Order
+</a>
+
+<script src="script.js"></script>
+</body>
+</html>

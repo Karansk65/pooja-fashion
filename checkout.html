@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Pooja Fashion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Pooja Fashion</div>
+  <a href="index.html" class="header-btn">Back to Shop</a>
+</header>
+
+<section class="checkout">
+  <h2>Checkout</h2>
+
+  <div class="checkout-box">
+    <h3 id="productName">Product Name</h3>
+    <p>Price: ₹<span id="productPrice">0</span></p>
+
+    <input type="text" id="customerName" placeholder="Your Name">
+    <input type="tel" id="customerPhone" placeholder="Mobile Number">
+    <textarea id="customerAddress" placeholder="Full Address"></textarea>
+
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
+</section>
+
+<script src="checkout.js"></script>
+</body>
+</html>
