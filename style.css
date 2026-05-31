@@ -684,3 +684,25 @@ body{
 .header-icons i:hover{
   color:#d4af37;
 }
+.video-grid{
+    display:flex;
+    gap:10px;
+}
+
+.video-grid video{
+    width:50%;
+    border-radius:10px;
+}
+
+/* Mobile */
+@media (max-width:768px){
+    .video-grid{
+        display:flex;
+        flex-direction:row;
+        gap:8px;
+    }
+
+    .video-grid video{
+        width:50%;
+    }
+}
