@@ -12,3 +12,18 @@
         }
     ]
 }
+.trust-badges{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:22px;
+}
+
+.trust-badges div{
+  background:#fff;
+  border:1px solid #e8d9ce;
+  padding:14px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:600;
+}

@@ -8,25 +8,134 @@
 </head>
 <body>
 
-<header class="header">
+<header class="header checkout-header">
   <div class="logo">Pooja Fashion</div>
   <a href="index.html" class="header-btn">Back to Shop</a>
 </header>
 
-<section class="checkout">
-  <h2>Checkout</h2>
+<main class="checkout-page">
+  <section class="checkout-title">
+    <p>Secure Checkout</p>
+    <h1>Complete Your Order</h1>
+  </section>
 
-  <div class="checkout-box">
-    <h3 id="productName">Product Name</h3>
-    <p>Price: ₹<span id="productPrice">0</span></p>
+  <section class="checkout-layout">
+    <form class="checkout-panel checkout-details" onsubmit="placeOrder(event)">
+      <div class="checkout-section-heading">
+        <span>1</span>
+        <div>
+          <h2>Delivery Details</h2>
+          <p>We will use this information to confirm your order.</p>
+        </div>
+      </div>
 
-    <input type="text" id="customerName" placeholder="Your Name">
-    <input type="tel" id="customerPhone" placeholder="Mobile Number">
-    <textarea id="customerAddress" placeholder="Full Address"></textarea>
+      <label for="customerName">Full Name</label>
+      <input type="text" id="customerName" placeholder="Enter full name" autocomplete="name">
 
-    <button onclick="placeOrder()">Place Order</button>
-  </div>
-</section>
+      <label for="customerPhone">Mobile Number</label>
+      <input type="tel" id="customerPhone" placeholder="Enter 10 digit mobile number" autocomplete="tel">
+
+      <label for="customerAddress">Full Address</label>
+      <textarea id="customerAddress" placeholder="House no, area, city, state, pincode"></textarea>
+
+      <div class="checkout-payment-box">
+        <div class="payment-box-title">
+          <h3>Choose Payment Option</h3>
+          <p>Pay securely using your preferred method.</p>
+        </div>
+
+        <input type="hidden" id="paymentMethod" value="PhonePe">
+
+        <div class="payment-options" id="paymentOptions">
+          <button type="button" class="payment-option active" data-payment="PhonePe">
+            <span class="payment-icon phonepe">Pe</span>
+            <span>
+              <strong>PhonePe</strong>
+              <small>UPI payment</small>
+            </span>
+          </button>
+          <button type="button" class="payment-option" data-payment="Google Pay">
+            <span class="payment-icon gpay">G</span>
+            <span>
+              <strong>Google Pay</strong>
+              <small>UPI payment</small>
+            </span>
+          </button>
+          <button type="button" class="payment-option" data-payment="Paytm">
+            <span class="payment-icon paytm">Pt</span>
+            <span>
+              <strong>Paytm</strong>
+              <small>UPI wallet</small>
+            </span>
+          </button>
+          <button type="button" class="payment-option" data-payment="UPI">
+            <span class="payment-icon upi">UPI</span>
+            <span>
+              <strong>Any UPI App</strong>
+              <small>BHIM, bank UPI</small>
+            </span>
+          </button>
+          <button type="button" class="payment-option cod-option" data-payment="Cash On Delivery">
+            <span class="payment-icon cod">COD</span>
+            <span>
+              <strong>Cash On Delivery</strong>
+              <small>Pay at delivery</small>
+            </span>
+          </button>
+        </div>
+
+        <p class="payment-note" id="paymentNote">You will be redirected to your UPI app to complete payment.</p>
+
+        <div class="upi-id-box" id="upiIdBox">
+          <div>
+            <small>Pay to UPI ID</small>
+            <strong id="merchantUpiText">Add your UPI ID</strong>
+          </div>
+          <button type="button" onclick="copyUpiId()">Copy</button>
+        </div>
+      </div>
+
+      <button class="place-order-btn" id="placeOrderBtn" type="submit">Pay & Place Order</button>
+    </form>
+
+    <aside class="checkout-panel checkout-summary-card">
+      <div class="checkout-section-heading">
+        <span>2</span>
+        <div>
+          <h2>Order Summary</h2>
+          <p>Review your product before placing the order.</p>
+        </div>
+      </div>
+
+      <div class="checkout-product">
+        <img id="checkoutProductImage" src="" alt="Selected product">
+        <div>
+          <h3 id="productName">Product Name</h3>
+          <p>Premium Designer Collection</p>
+        </div>
+      </div>
+
+      <div class="checkout-price-row">
+        <span>Product Price</span>
+        <strong>Rs. <span id="productPrice">0</span></strong>
+      </div>
+      <div class="checkout-price-row">
+        <span>Delivery</span>
+        <strong>Free</strong>
+      </div>
+      <div class="checkout-price-row checkout-total-row">
+        <span>Total</span>
+        <strong>Rs. <span id="finalCheckoutTotal">0</span></strong>
+      </div>
+
+      <div class="checkout-trust">
+        <span>Quality Checked</span>
+        <span>Secure Payment</span>
+        <span>Fast Delivery</span>
+      </div>
+    </aside>
+  </section>
+</main>
 
 <script src="checkout.js"></script>
 </body>

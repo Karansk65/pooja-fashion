@@ -11,29 +11,46 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<body>
+<body><div class="bottom-nav">
+  <a href="index.html">🏠<span>Home</span></a>
+  <a href="#shop">▦<span>Categories</span></a>
+  <a href="#">♡<span>Wishlist</span></a>
+  <a href="checkout.html">🛍️<span>Cart</span></a>
+  <a href="#contact">👤<span>Account</span></a>
+</div>
 
 <div class="offer-bar">
   <marquee>
-    🔥 5% OFF Today • 🚚 Free Delivery Above ₹5000 • 💃 New Designer Gown Collection • 🎉 Wedding Special Offer • 📸 Photoshoot Dresses Available • 💎 Premium Quality Fabric • 🛍️ Shop Now
+    🔥 5% OFF Today • 🚚 Free Delivery Above ₹6500 • 💃 New Designer Gown Collection • 🎉 pregnancy gowns • 📸 Photoshoot Dresses Available • 💎 Premium Quality Fabric • 🛍️ Shop Now
   </marquee>
 </div>
 
 <header class="header">
-  <div class="logo">Pooja Fashion</div>
+
+  <div class="top-header">
+    <div class="mobile-menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search dress...">
+</div>
+
+    <div class="logo">Pooja Fashion</div>
+
+    <div class="header-icons">
+      <i class="fas fa-user"></i>
+     <a href="cart.html" class="cart-link">
+  <i class="fas fa-shopping-bag"></i>
+  <span id="cartCount">0</span>
+</a>
+    </div>
+  </div>
 
   <nav class="nav">
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
+    <a href="#shop">New Arrivals</a>
+    <a href="#trending">Trending</a>
+    <a href="#maternity">Maternity</a>
     <a href="#about">About</a>
-    <a href="#contact">Contact</a>
   </nav>
 
-  <div class="header-icons">
-    <i class="fas fa-search"></i>
-    <i class="fas fa-user"></i>
-    <i class="fas fa-shopping-bag"></i>
-  </div>
 </header>
 
 <section class="hero-banner" id="home">
@@ -41,14 +58,16 @@
 </section>
 
 <section class="categories">
+  <div class="category-card" onclick="filterProducts('gown')"></div>
+  <div class="category-card" onclick="filterProducts('maternity')"></div>
   <h2>Shop By Category</h2>
 
   <div class="category-box">
-    <div>Wedding Gowns</div>
-    <div>Party Wear</div>
-    <div>Photoshoot Dress</div>
-    <div>Designer Collection</div>
-  </div>
+  <div onclick="filterProducts('Princess')">Wedding Gowns</div>
+  <div onclick="filterProducts('Princess')">Party Wear</div>
+  <div onclick="filterProducts('Maternity')">Maternity Gowns</div>
+  <div onclick="filterProducts('all')">All Collection</div>
+</div>
 </section>
 
 <section class="video-section">
@@ -59,21 +78,95 @@
       <source src="./video/PixVerse_V6_Image_Text_360P_Use_the_uploaded_g.mp4" type="video/mp4">
     </video>
 
-    <video controls autoplay muted loop onclick="openVideo(this)">
+    <video controls autoplay muted loop>
       <source src="./video/PixVerse_V6_Image_Text_540P_Use_the_uploaded_y.mp4" type="video/mp4">
     </video>
   </div>
+  
 </section>
-
-<div id="videoPopup" class="video-popup">
-  <span onclick="closeVideo()" class="close-video">×</span>
-  <video id="popupVideo" controls autoplay></video>
-</div>
 
 <section class="shop" id="shop">
   <h2>New Arrivals</h2>
   <div class="products" id="productList"></div>
 </section>
+<section class="trending-section" id="trending">
+
+    <h2 class="trending-heading">
+        Trending Collection
+    </h2>
+
+    <div class="trending-track" id="trendingList"></div>
+
+</section>
+
+</section>
+    <section class="maternity-section" id="maternity">
+    <h2 class="trending-heading">Maternity Collection</h2>
+
+    <div class="products">
+      
+
+        <div class="product-card">
+            <img src="images/maternity-blue.png" alt="">
+            <h3>Royal Blue Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+            <img src="images/maternity-orange.png" alt="">
+            <h3>Orange Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+            <img src="images/maternity-white.png" alt="">
+            <h3>White Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+            <img src="images/maternity-black.png" alt="">
+            <h3>Black Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+            <img src="images/maternity-green.png" alt="">
+            <h3>Mint Green Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+    <img src="images/parrot.png" alt="">
+    <h3>Parrot Green Maternity Gown</h3>
+    <p class="price">₹6500</p>
+</div>
+
+<div class="product-card">
+    <img src="images/darkred.png" alt="">
+    <h3>Dark Red Maternity Gown</h3>
+    <p class="price">₹6500</p>
+</div>
+
+<div class="product-card">
+    <img src="images/faintgreen.png" alt="">
+    <h3>Faint Green Maternity Gown</h3>
+    <p class="price">₹6500</p>
+</div>
+
+        <div class="product-card">
+            <img src="images/maternity-yellow.png" alt="">
+            <h3>Yellow Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+        <div class="product-card">
+            <img src="images/maternity-red.png" alt="">
+            <h3>Red Maternity Gown</h3>
+            <p class="price">₹6500</p>
+        </div>
+
+    </div>
 
 <section class="about" id="about">
   <h2>About Pooja Fashion</h2>
@@ -88,18 +181,15 @@
 <section class="contact" id="contact">
   <h2>Contact Us</h2>
   <p>Email: ks343173@gmail.com</p>
-  <p>WhatsApp: +91 7620986732</p>
+  <p>contact: +91 7620986732</p>
 </section>
 
 <footer>
   <h3>Pooja Fashion</h3>
   <p>Premium Designer Gown Collection</p>
-  <p>© 2026 Pooja Fashion. All Rights Reserved.</p>
+  <p>© 2026 Karan tech vpt ltd cmp . All Rights Reserved.</p>
 </footer>
 
-<a class="floating-whatsapp" href="https://wa.me/917620986732" target="_blank">
-  WhatsApp Order
-</a>
 
 <script src="script.js"></script>
 </body>

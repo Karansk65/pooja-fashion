@@ -6,6 +6,9 @@
 <title>Product Details | Pooja Fashion</title>
 <link rel="stylesheet" href="style.css">
 </head>
+<button class="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  ↑
+</button>
 <body>
 
 <header class="header">
@@ -22,17 +25,22 @@
 
   <div class="product-image">
     <img id="productImage" src="" alt="">
-  </div>
+    <div class="thumb-gallery" id="thumbGallery"></div>
+</div>
 
   <div class="product-info-box">
     <p class="product-label">Premium Designer Collection</p>
 
     <h1 id="productName"></h1>
+    <div class="wishlist-box">
+  <button id="wishlistBtn">🤍 Add to Wishlist</button>
+</div>
 
     <div class="price-box big-price">
       <div class="discount">54% OFF</div>
       <span class="old-price" id="oldPrice">₹11999</span>
       <span class="new-price" id="productPrice">₹5500</span>
+      
     </div>
 
     <p class="product-desc">
@@ -57,22 +65,156 @@
       <p>🔄 Easy Return Support</p>
     </div>
 
-    <button id="checkoutBtn">Buy Now</button>
+    <div class="product-actions">
+      <button id="addToCartBtn">Add To Cart</button>
+      <button type="button" class="buy-now-btn" onclick="buyNow()">Buy Now</button>
+    </div>
+    
+  </div>
+  
+  <div class="trust-badges">
+  <div>✅ 100% Quality Checked</div>
+  <div>🚚 Fast Delivery</div>
+  <div>💳 Secure Payment</div>
+  <div>📞 WhatsApp Support</div>
+</div>
+
+</section>
+
+<section class="reviews-section">
+
+  <h2>Customer Reviews</h2>
+
+  <div class="review-card">
+    ⭐⭐⭐⭐⭐
+    <p>Beautiful gown. Fabric quality is amazing and perfect for photoshoots.</p>
+    <h4>- Priya S.</h4>
+  </div>
+
+  <div class="review-card">
+    ⭐⭐⭐⭐⭐
+    <p>Exactly same as shown in photos. Delivery was fast.</p>
+    <h4>- Sneha K.</h4>
+  </div>
+
+  <div class="review-card">
+    ⭐⭐⭐⭐⭐
+    <p>Very premium look and comfortable fitting.</p>
+    <h4>- Aarti P.</h4>
   </div>
 
 </section>
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-box">
+    <h3>Is this gown suitable for photoshoots?</h3>
+    <p>Yes, this gown is perfect for maternity, wedding, birthday and professional photoshoots.</p>
+  </div>
+
+  <div class="faq-box">
+    <h3>Is delivery available?</h3>
+    <p>Yes, delivery is available. You can order directly through WhatsApp.</p>
+  </div>
+
+  <div class="faq-box">
+    <h3>Can I choose size?</h3>
+    <p>Yes, you can select size from S, M, L, XL and XXL before ordering.</p>
+  </div>
+</section>
+<section class="shipping-section">
+
+  <h2>Shipping & Returns</h2>
+
+  <div class="shipping-grid">
+
+    <div class="shipping-card">
+      <h3>🚚 Delivery</h3>
+      <p>Orders are usually delivered within 4-7 business days across India.</p>
+    </div>
+
+    <div class="shipping-card">
+      <h3>📦 Packaging</h3>
+      <p>Premium quality packaging to keep your gown safe and wrinkle-free.</p>
+    </div>
+
+    <div class="shipping-card">
+      <h3>🔄 Return Policy</h3>
+      <p>Easy return support available for damaged or incorrect products.</p>
+    </div>
+
+    <div class="shipping-card">
+      <h3>📞 Customer Support</h3>
+      <p>WhatsApp support available for order updates and assistance.</p>
+    </div>
+
+  </div>
 
 </section>
+<p class="size-guide-btn" onclick="openSizeGuide()">
+  📏 View Size Guide
+</p>
 
+<div class="size-popup" id="sizePopup">
+
+  <div class="size-popup-content">
+
+    <span class="close-size" onclick="closeSizeGuide()">×</span>
+
+    <h2>Size Guide</h2>
+
+    <table>
+      <tr>
+        <th>Size</th>
+        <th>Bust</th>
+      </tr>
+
+      <tr>
+        <td>S</td>
+        <td>34"</td>
+      </tr>
+
+      <tr>
+        <td>M</td>
+        <td>36"</td>
+      </tr>
+
+      <tr>
+        <td>L</td>
+        <td>38"</td>
+      </tr>
+
+      <tr>
+        <td>XL</td>
+        <td>40"</td>
+      </tr>
+
+      <tr>
+        <td>XXL</td>
+        <td>42"</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
 <section class="related-products">
-
   <h2>You May Also Like</h2>
-
-  <div class="products" id="relatedProducts"></div>
+<div class="products" id="relatedProducts"></div>
 
 </section>
 
 <script src="product.js"></script>
 
+<div class="mobile-sticky-buy">
+  <button class="mobile-add-cart" onclick="document.getElementById('addToCartBtn').click()">
+    Add To Cart
+  </button>
+  <button class="mobile-buy-now" onclick="buyNow()">
+    Buy Now
+  </button>
+
+</div>
 </body>
 </html>
