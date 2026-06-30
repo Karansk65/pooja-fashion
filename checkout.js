@@ -63,7 +63,7 @@ if(merchantUpiText){
     : merchantUpiId;
 }
 if(paymentNoteEl && !hasUpiId){
-  paymentNoteEl.innerText = "UPI is selected. Add shop UPI ID or Razorpay keys to accept online payment.";
+  paymentNoteEl.innerText = "Real UPI QR opens inside Razorpay after you click Pay & Place Order.";
 }
 
 function setPlaceOrderLabel(text){
@@ -94,7 +94,7 @@ function setPaymentUi(paymentMethod){
       ? "Pay in cash when your order is delivered."
       : isGatewayReady
       ? "Secure Razorpay checkout will open for " + displayName + "."
-      : "Online payment needs Razorpay keys or shop UPI ID setup.";
+      : "Add Razorpay keys on the server to accept real " + displayName + " payments.";
   }
 
   setPlaceOrderLabel(isOnlinePayment ? "Pay & Place Order" : "Place COD Order");
@@ -114,7 +114,7 @@ async function refreshPaymentStatus(){
       }
 
       if(paymentNoteEl){
-        paymentNoteEl.innerText = "Razorpay is ready. You can pay using UPI, PhonePe, Google Pay, Paytm or cards.";
+        paymentNoteEl.innerText = "Razorpay is ready. Customers can pay with live UPI QR, apps, cards, netbanking and wallets.";
       }
 
       if(upiIdBox){
