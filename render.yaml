@@ -4,10 +4,6 @@ services:
     runtime: node
     buildCommand: npm --prefix backend install
     startCommand: npm start
-    disk:
-      name: pooja-fashion-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
@@ -16,7 +12,7 @@ services:
       - key: FRONTEND_ORIGIN
         value: "*"
       - key: DATABASE_FILE
-        value: /var/data/pooja-fashion.json
+        value: ./data/pooja-fashion.json
       - key: JWT_SECRET
         sync: false
       - key: ADMIN_PIN
