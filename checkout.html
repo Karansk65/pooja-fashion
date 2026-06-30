@@ -73,56 +73,66 @@
           <span class="payment-status-pill" id="paymentStatusPill">Checking gateway</span>
         </div>
 
-        <input type="hidden" id="paymentMethod" value="PhonePe">
+        <input type="hidden" id="paymentMethod" value="UPI">
 
-        <div class="payment-options premium-payment-options" id="paymentOptions">
-          <button type="button" class="payment-option active" data-payment="PhonePe">
-            <span class="payment-icon phonepe">Pe</span>
-            <span>
-              <strong>PhonePe</strong>
-              <small>UPI via Razorpay</small>
+        <div class="payment-options premium-payment-options checkout-payment-list" id="paymentOptions">
+          <button type="button" class="payment-option payment-option-upi active" data-payment="UPI">
+            <span class="payment-option-head">
+              <span class="payment-icon upi"><i class="fas fa-qrcode"></i></span>
+              <span>
+                <strong>UPI</strong>
+                <small>Scan QR or pay using any UPI app</small>
+              </span>
+              <b class="payment-option-amount">Rs. <span data-payment-amount>0</span></b>
+            </span>
+            <span class="upi-preview-panel">
+              <span class="upi-qr-preview" aria-hidden="true">
+                <i class="fas fa-qrcode"></i>
+              </span>
+              <span class="upi-preview-copy">
+                <strong>Secure UPI QR opens after order creation</strong>
+                <small>PhonePe, Google Pay, Paytm, BHIM and bank UPI supported through Razorpay.</small>
+                <span class="upi-app-row" aria-label="Supported UPI apps">
+                  <em>Pe</em><em>GPay</em><em>Paytm</em><em>BHIM</em>
+                </span>
+              </span>
             </span>
             <i class="fas fa-check"></i>
           </button>
-          <button type="button" class="payment-option" data-payment="Google Pay">
-            <span class="payment-icon gpay">G</span>
-            <span>
-              <strong>Google Pay</strong>
-              <small>UPI via Razorpay</small>
-            </span>
-            <i class="fas fa-check"></i>
-          </button>
-          <button type="button" class="payment-option" data-payment="Paytm">
-            <span class="payment-icon paytm">Pt</span>
-            <span>
-              <strong>Paytm</strong>
-              <small>Wallet / UPI</small>
-            </span>
-            <i class="fas fa-check"></i>
-          </button>
-          <button type="button" class="payment-option" data-payment="UPI">
-            <span class="payment-icon upi">UPI</span>
-            <span>
-              <strong>Any UPI App</strong>
-              <small>BHIM, bank UPI</small>
-            </span>
-            <i class="fas fa-check"></i>
-          </button>
-          <button type="button" class="payment-option" data-payment="Card / NetBanking">
+
+          <button type="button" class="payment-option payment-option-row" data-payment="Debit/Credit Cards">
             <span class="payment-icon card"><i class="fas fa-credit-card"></i></span>
-            <span>
-              <strong>Card / NetBanking</strong>
-              <small>Debit, credit, bank</small>
-            </span>
-            <i class="fas fa-check"></i>
+            <strong>Debit/Credit Cards</strong>
+            <b>Rs. <span data-payment-amount>0</span></b>
+            <i class="fas fa-chevron-right"></i>
           </button>
-          <button type="button" class="payment-option cod-option" data-payment="Cash On Delivery">
+
+          <button type="button" class="payment-option payment-option-row" data-payment="Netbanking">
+            <span class="payment-icon netbanking"><i class="fas fa-building-columns"></i></span>
+            <strong>Netbanking</strong>
+            <b>Rs. <span data-payment-amount>0</span></b>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+
+          <button type="button" class="payment-option payment-option-row" data-payment="Wallets">
+            <span class="payment-icon wallet"><i class="fas fa-wallet"></i></span>
+            <strong>Wallets</strong>
+            <b>Rs. <span data-payment-amount>0</span></b>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+
+          <button type="button" class="payment-option payment-option-row" data-payment="EMI">
+            <span class="payment-icon emi"><i class="fas fa-credit-card"></i></span>
+            <strong>EMI</strong>
+            <b>Rs. <span data-payment-amount>0</span></b>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+
+          <button type="button" class="payment-option payment-option-row cod-option" data-payment="Cash On Delivery">
             <span class="payment-icon cod">COD</span>
-            <span>
-              <strong>Cash On Delivery</strong>
-              <small>Pay at delivery</small>
-            </span>
-            <i class="fas fa-check"></i>
+            <strong>Cash On Delivery</strong>
+            <b>Available</b>
+            <i class="fas fa-chevron-right"></i>
           </button>
         </div>
 

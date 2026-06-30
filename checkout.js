@@ -52,14 +52,18 @@ if(productImageEl){
   }
 }
 
-if(paymentMethodEl) paymentMethodEl.value = "PhonePe";
+document.querySelectorAll("[data-payment-amount]").forEach(amountEl => {
+  amountEl.innerText = productTotal;
+});
+
+if(paymentMethodEl) paymentMethodEl.value = "UPI";
 if(merchantUpiText){
   merchantUpiText.innerText = !hasUpiId
     ? "UPI ID not added"
     : merchantUpiId;
 }
 if(paymentNoteEl && !hasUpiId){
-  paymentNoteEl.innerText = "PhonePe is selected. Add shop UPI ID to accept online payment.";
+  paymentNoteEl.innerText = "UPI is selected. Add shop UPI ID or Razorpay keys to accept online payment.";
 }
 
 function setPlaceOrderLabel(text){
@@ -75,18 +79,21 @@ function setPlaceOrderLabel(text){
 function setPaymentUi(paymentMethod){
   const isCod = paymentMethod === "Cash On Delivery";
   const isOnlinePayment = !isCod;
+  const displayName = paymentMethod === "Debit/Credit Cards"
+    ? "Debit/Credit Card"
+    : paymentMethod;
 
   if(selectedPaymentTitle){
     selectedPaymentTitle.innerText = isCod
       ? "Cash On Delivery selected"
-      : paymentMethod + " selected";
+      : displayName + " selected";
   }
 
   if(paymentNoteEl){
     paymentNoteEl.innerText = isCod
       ? "Pay in cash when your order is delivered."
       : isGatewayReady
-      ? "Secure Razorpay checkout will open for " + paymentMethod + "."
+      ? "Secure Razorpay checkout will open for " + displayName + "."
       : "Online payment needs Razorpay keys or shop UPI ID setup.";
   }
 
@@ -114,7 +121,7 @@ async function refreshPaymentStatus(){
         upiIdBox.style.display = "none";
       }
 
-      setPaymentUi(paymentMethodEl?.value || "PhonePe");
+      setPaymentUi(paymentMethodEl?.value || "UPI");
     }
   }catch(error){
     if(paymentStatusPill){
