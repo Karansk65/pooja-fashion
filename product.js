@@ -219,6 +219,10 @@ function buyNow(){
     "&price=" +
     encodeURIComponent(parseMoney(price));
 
+  if(window.PoojaApi && !window.PoojaApi.requireAuth(checkoutUrl, "checkout")){
+    return;
+  }
+
   window.location.href = checkoutUrl;
 }
 

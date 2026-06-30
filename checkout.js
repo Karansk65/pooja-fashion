@@ -277,6 +277,10 @@ if(copyUpiBtn){
 async function placeOrder(event) {
   if(event) event.preventDefault();
 
+  if(window.PoojaApi && !window.PoojaApi.requireAuth(window.location.href, "checkout")){
+    return;
+  }
+
   const customerName = document.getElementById("customerName").value.trim();
   const customerPhone = document.getElementById("customerPhone").value.trim();
   const customerAddress = document.getElementById("customerAddress").value.trim();

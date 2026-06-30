@@ -2320,6 +2320,24 @@ footer{
   white-space:nowrap;
 }
 
+.account-hero-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.account-hero-actions button{
+  min-height:44px;
+  border:1px solid rgba(255,255,255,0.55);
+  border-radius:8px;
+  background:transparent;
+  color:white;
+  padding:10px 16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
 .account-grid{
   max-width:1180px;
   margin:auto;
@@ -2539,6 +2557,18 @@ footer{
   .account-hero{
     flex-direction:column;
     align-items:flex-start;
+  }
+
+  .account-hero-actions,
+  .account-hero-actions a,
+  .account-hero-actions button{
+    width:100%;
+  }
+
+  .account-hero-actions a,
+  .account-hero-actions button{
+    justify-content:center;
+    text-align:center;
   }
 
   .account-hero h1{

@@ -9,6 +9,23 @@ const totalOrders = document.getElementById("totalOrders");
 const cartItemsCount = document.getElementById("cartItemsCount");
 const savedAddressStatus = document.getElementById("savedAddressStatus");
 const authMessage = document.getElementById("authMessage");
+const authPanel = document.getElementById("authPanel");
+const authIntro = document.getElementById("authIntro");
+const accountDashboard = document.getElementById("accountDashboard");
+const accountLogoutBtn = document.getElementById("accountLogoutBtn");
+const accountParams = new URLSearchParams(window.location.search);
+const redirectAfterAuth = accountParams.get("redirect") || "";
+const authReason = accountParams.get("reason") || "";
+
+function isLoggedIn(){
+  return Boolean(window.PoojaApi?.getToken());
+}
+
+function goToRedirect(){
+  if(!redirectAfterAuth) return false;
+  window.location.href = redirectAfterAuth;
+  return true;
+}
 
 function readProfile(){
   return JSON.parse(localStorage.getItem("customerProfile")) || {
@@ -69,6 +86,7 @@ async function loginAccount(){
     });
     authMessage.innerText = "Login successful.";
     await renderAccount();
+    goToRedirect();
   }catch(error){
     authMessage.innerText = error.message;
   }
@@ -90,14 +108,17 @@ async function registerAccount(){
     });
     authMessage.innerText = "Account created successfully.";
     await renderAccount();
+    goToRedirect();
   }catch(error){
     authMessage.innerText = error.message;
   }
 }
 
-function logoutAccount(){
+async function logoutAccount(){
   window.PoojaApi?.logout();
+  localStorage.removeItem("customerProfile");
   authMessage.innerText = "Logged out.";
+  await renderAccount();
 }
 
 function formatDate(value){
@@ -163,8 +184,18 @@ async function renderAccount(){
   const profile = readProfile();
   let orders = readOrders();
   const cart = readCart();
+  const loggedIn = isLoggedIn();
 
-  if(window.PoojaApi?.isEnabled() && window.PoojaApi.getToken()){
+  if(authPanel) authPanel.hidden = loggedIn;
+  if(accountDashboard) accountDashboard.hidden = !loggedIn;
+  if(accountLogoutBtn) accountLogoutBtn.hidden = !loggedIn;
+  if(authIntro){
+    authIntro.innerText = authReason === "checkout"
+      ? "Login or create an account before checkout. We will bring you back to your order."
+      : "Login to track orders, save address and checkout faster.";
+  }
+
+  if(window.PoojaApi?.isEnabled() && loggedIn){
     try{
       const [meResponse, ordersResponse] = await Promise.all([
         window.PoojaApi.getMe(),
@@ -183,10 +214,14 @@ async function renderAccount(){
   if(profilePhone) profilePhone.value = currentProfile.phone || "";
   if(profileAddress) profileAddress.value = currentProfile.address || "";
 
-  accountName.innerText = currentProfile.name || "Customer";
-  accountPhone.innerText = currentProfile.phone
-    ? "Mobile: " + currentProfile.phone
-    : "Add your mobile number to track your orders.";
+  accountName.innerText = loggedIn
+    ? currentProfile.name || "Customer"
+    : "Guest";
+  accountPhone.innerText = loggedIn
+    ? currentProfile.phone
+      ? "Mobile: " + currentProfile.phone
+      : "Add your mobile number to track your orders."
+    : "Please login or create an account to continue.";
 
   totalOrders.innerText = orders.length;
   cartItemsCount.innerText = cart.length;

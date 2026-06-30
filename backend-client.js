@@ -19,6 +19,21 @@
     localStorage.removeItem("customerToken");
   }
 
+  function isLoggedIn(){
+    return Boolean(getToken());
+  }
+
+  function authUrl(redirectUrl, reason = "checkout"){
+    return "account.html?reason=" + encodeURIComponent(reason) +
+      "&redirect=" + encodeURIComponent(redirectUrl || window.location.href);
+  }
+
+  function requireAuth(redirectUrl, reason = "checkout"){
+    if(!isEnabled() || isLoggedIn()) return true;
+    window.location.href = authUrl(redirectUrl, reason);
+    return false;
+  }
+
   async function request(path, options = {}){
     if(!isEnabled()){
       throw new Error("Backend API URL is not configured");
@@ -52,6 +67,9 @@
   window.PoojaApi = {
     isEnabled,
     getToken,
+    isLoggedIn,
+    requireAuth,
+    authUrl,
     setSession,
     logout,
     request,

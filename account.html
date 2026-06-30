@@ -30,16 +30,18 @@
       <h1>Welcome back, <span id="accountName">Customer</span></h1>
       <span id="accountPhone">Add your details to personalize your account.</span>
     </div>
-    <a href="cart.html">View Cart</a>
+    <div class="account-hero-actions">
+      <a href="cart.html">View Cart</a>
+      <button type="button" id="accountLogoutBtn" onclick="logoutAccount()" hidden>Logout</button>
+    </div>
   </section>
 
   <section class="account-panel auth-panel" id="authPanel">
     <div class="account-section-title">
       <div>
         <h2>Login / Create Account</h2>
-        <p>Use this when backend API is connected.</p>
+        <p id="authIntro">Login to track orders, save address and checkout faster.</p>
       </div>
-      <button type="button" onclick="logoutAccount()">Logout</button>
     </div>
 
     <div class="auth-grid">
@@ -63,7 +65,7 @@
     <p class="account-note" id="authMessage"></p>
   </section>
 
-  <section class="account-grid">
+  <section class="account-grid" id="accountDashboard">
     <aside class="account-panel profile-panel">
       <h2>Profile Details</h2>
       <label for="profileName">Full Name</label>
