@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | Pooja Fashion</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="premium-orders-page">
+
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/orders.html" + window.location.search;
+  }
+</script>
+
+<header class="premium-order-header">
+  <a class="order-logo" href="index.html">Pooja Fashion</a>
+  <nav>
+    <a href="index.html#shop">Shop</a>
+    <a href="account.html">My Account</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
+
+<main class="premium-orders-shell">
+  <section class="orders-hero">
+    <p>My Orders</p>
+    <h1>Track your Pooja Fashion orders</h1>
+    <span>View order status, payment details and product summary in one place.</span>
+  </section>
+
+  <section class="orders-dashboard">
+    <aside class="orders-summary-panel">
+      <div class="orders-summary-card">
+        <span id="ordersTotalCount">0</span>
+        <p>Total Orders</p>
+      </div>
+      <div class="orders-summary-card">
+        <span id="ordersPaidCount">0</span>
+        <p>Paid Orders</p>
+      </div>
+      <div class="orders-summary-card">
+        <span id="ordersCodCount">0</span>
+        <p>COD Orders</p>
+      </div>
+      <div class="orders-support-card">
+        <strong>Need order help?</strong>
+        <p>Keep your order ID ready when you contact support.</p>
+        <a href="https://wa.me/917620986732" target="_blank" rel="noreferrer">
+          <i class="fab fa-whatsapp"></i> WhatsApp Support
+        </a>
+      </div>
+    </aside>
+
+    <section class="orders-list-panel">
+      <div class="orders-toolbar">
+        <div>
+          <p>Order History</p>
+          <h2>Your Recent Orders</h2>
+        </div>
+        <div class="orders-filters">
+          <button type="button" data-order-filter="all" class="active">All</button>
+          <button type="button" data-order-filter="paid">Paid</button>
+          <button type="button" data-order-filter="cod">COD</button>
+          <button type="button" data-order-filter="pending">Pending</button>
+        </div>
+      </div>
+
+      <div class="orders-list" id="ordersList"></div>
+    </section>
+  </section>
+</main>
+
+<div class="bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="index.html#shop"><i class="fas fa-border-all"></i><span>Shop</span></a>
+  <a href="orders.html"><i class="fas fa-receipt"></i><span>Orders</span></a>
+  <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
+</div>
+
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
+<script src="orders.js"></script>
+</body>
+</html>

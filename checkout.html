@@ -5,68 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout | Pooja Fashion</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
+<body class="premium-checkout-page">
 
-<header class="header checkout-header">
-  <div class="logo">Pooja Fashion</div>
-  <a href="index.html" class="header-btn">Back to Shop</a>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/checkout.html" + window.location.search;
+  }
+</script>
+
+<div class="checkout-offer-bar">
+  <span>Secure payment</span>
+  <span>Free delivery above Rs. 6500</span>
+  <span>WhatsApp order support</span>
+</div>
+
+<header class="premium-checkout-header">
+  <a class="checkout-logo" href="index.html">Pooja Fashion</a>
+  <div class="checkout-header-actions">
+    <a href="account.html"><i class="fas fa-user"></i> My Account</a>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Shop</a>
+  </div>
 </header>
 
-<main class="checkout-page">
-  <section class="checkout-title">
+<main class="checkout-page premium-checkout-shell">
+  <section class="checkout-title premium-checkout-title">
     <p>Secure Checkout</p>
     <h1>Complete Your Order</h1>
+    <div class="checkout-progress" aria-label="Checkout steps">
+      <span class="active"><b>1</b> Details</span>
+      <span class="active" id="checkoutStepPayment"><b>2</b> Payment</span>
+      <span><b>3</b> Confirmation</span>
+    </div>
   </section>
 
-  <section class="checkout-layout">
-    <form class="checkout-panel checkout-details" onsubmit="placeOrder(event)">
-      <div class="checkout-section-heading">
+  <section class="checkout-layout premium-checkout-layout">
+    <form class="checkout-panel checkout-details premium-checkout-card" id="checkoutForm">
+      <div class="checkout-section-heading premium-section-heading">
         <span>1</span>
         <div>
-          <h2>Delivery Details</h2>
-          <p>We will use this information to confirm your order.</p>
+          <p>Delivery Information</p>
+          <h2>Where should we send your order?</h2>
         </div>
       </div>
 
-      <label for="customerName">Full Name</label>
-      <input type="text" id="customerName" placeholder="Enter full name" autocomplete="name">
-
-      <label for="customerPhone">Mobile Number</label>
-      <input type="tel" id="customerPhone" placeholder="Enter 10 digit mobile number" autocomplete="tel">
+      <div class="checkout-field-grid">
+        <div>
+          <label for="customerName">Full Name</label>
+          <input type="text" id="customerName" placeholder="Enter full name" autocomplete="name">
+        </div>
+        <div>
+          <label for="customerPhone">Mobile Number</label>
+          <input type="tel" id="customerPhone" placeholder="10 digit mobile number" autocomplete="tel">
+        </div>
+      </div>
 
       <label for="customerAddress">Full Address</label>
       <textarea id="customerAddress" placeholder="House no, area, city, state, pincode"></textarea>
 
-      <div class="checkout-payment-box">
-        <div class="payment-box-title">
-          <h3>Choose Payment Option</h3>
-          <p>Pay securely using your preferred method.</p>
+      <div class="checkout-payment-box premium-payment-box">
+        <div class="payment-box-title premium-payment-title">
+          <div>
+            <p>Payment Method</p>
+            <h3>Choose how you want to pay</h3>
+          </div>
+          <span class="payment-status-pill" id="paymentStatusPill">Checking gateway</span>
         </div>
 
         <input type="hidden" id="paymentMethod" value="PhonePe">
 
-        <div class="payment-options" id="paymentOptions">
+        <div class="payment-options premium-payment-options" id="paymentOptions">
           <button type="button" class="payment-option active" data-payment="PhonePe">
             <span class="payment-icon phonepe">Pe</span>
             <span>
               <strong>PhonePe</strong>
-              <small>UPI payment</small>
+              <small>UPI via Razorpay</small>
             </span>
+            <i class="fas fa-check"></i>
           </button>
           <button type="button" class="payment-option" data-payment="Google Pay">
             <span class="payment-icon gpay">G</span>
             <span>
               <strong>Google Pay</strong>
-              <small>UPI payment</small>
+              <small>UPI via Razorpay</small>
             </span>
+            <i class="fas fa-check"></i>
           </button>
           <button type="button" class="payment-option" data-payment="Paytm">
             <span class="payment-icon paytm">Pt</span>
             <span>
               <strong>Paytm</strong>
-              <small>UPI wallet</small>
+              <small>Wallet / UPI</small>
             </span>
+            <i class="fas fa-check"></i>
           </button>
           <button type="button" class="payment-option" data-payment="UPI">
             <span class="payment-icon upi">UPI</span>
@@ -74,6 +106,15 @@
               <strong>Any UPI App</strong>
               <small>BHIM, bank UPI</small>
             </span>
+            <i class="fas fa-check"></i>
+          </button>
+          <button type="button" class="payment-option" data-payment="Card / NetBanking">
+            <span class="payment-icon card"><i class="fas fa-credit-card"></i></span>
+            <span>
+              <strong>Card / NetBanking</strong>
+              <small>Debit, credit, bank</small>
+            </span>
+            <i class="fas fa-check"></i>
           </button>
           <button type="button" class="payment-option cod-option" data-payment="Cash On Delivery">
             <span class="payment-icon cod">COD</span>
@@ -81,38 +122,62 @@
               <strong>Cash On Delivery</strong>
               <small>Pay at delivery</small>
             </span>
+            <i class="fas fa-check"></i>
           </button>
         </div>
 
-        <p class="payment-note" id="paymentNote">You will be redirected to your UPI app to complete payment.</p>
+        <div class="selected-payment-preview">
+          <div class="selected-payment-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div>
+            <strong id="selectedPaymentTitle">PhonePe selected</strong>
+            <p class="payment-note" id="paymentNote">You will be redirected to secure Razorpay checkout.</p>
+          </div>
+        </div>
+
+        <div class="payment-secure-line" id="paymentSecureLine">
+          <span><i class="fas fa-shield-halved"></i> Razorpay protected</span>
+          <span><i class="fas fa-mobile-screen"></i> UPI supported</span>
+          <span><i class="fas fa-credit-card"></i> Card supported</span>
+        </div>
 
         <div class="upi-id-box" id="upiIdBox">
           <div>
             <small>Pay to UPI ID</small>
             <strong id="merchantUpiText">Add your UPI ID</strong>
           </div>
-          <button type="button" onclick="copyUpiId()">Copy</button>
+          <button type="button" id="copyUpiBtn">Copy</button>
         </div>
       </div>
 
-      <button class="place-order-btn" id="placeOrderBtn" type="submit">Pay & Place Order</button>
+      <button class="place-order-btn premium-place-order" id="placeOrderBtn" type="submit">
+        <i class="fas fa-lock"></i>
+        <span>Pay & Place Order</span>
+      </button>
     </form>
 
-    <aside class="checkout-panel checkout-summary-card">
-      <div class="checkout-section-heading">
+    <aside class="checkout-panel checkout-summary-card premium-summary-card">
+      <div class="checkout-section-heading premium-section-heading">
         <span>2</span>
         <div>
+          <p>Your Selection</p>
           <h2>Order Summary</h2>
-          <p>Review your product before placing the order.</p>
         </div>
       </div>
 
-      <div class="checkout-product">
+      <div class="checkout-product premium-summary-product">
         <img id="checkoutProductImage" src="" alt="Selected product">
         <div>
+          <small>Premium Designer Collection</small>
           <h3 id="productName">Product Name</h3>
-          <p>Premium Designer Collection</p>
+          <p id="checkoutProductMeta">Quality checked before dispatch</p>
         </div>
+      </div>
+
+      <div class="summary-coupon-box">
+        <span>Sale offer applied</span>
+        <strong>54% OFF</strong>
       </div>
 
       <div class="checkout-price-row">
@@ -123,20 +188,33 @@
         <span>Delivery</span>
         <strong>Free</strong>
       </div>
+      <div class="checkout-price-row">
+        <span>Payment Security</span>
+        <strong>Included</strong>
+      </div>
       <div class="checkout-price-row checkout-total-row">
         <span>Total</span>
         <strong>Rs. <span id="finalCheckoutTotal">0</span></strong>
       </div>
 
-      <div class="checkout-trust">
-        <span>Quality Checked</span>
-        <span>Secure Payment</span>
-        <span>Fast Delivery</span>
+      <div class="checkout-trust premium-checkout-trust">
+        <span><i class="fas fa-circle-check"></i> Quality Checked</span>
+        <span><i class="fas fa-lock"></i> Secure Payment</span>
+        <span><i class="fas fa-truck-fast"></i> Fast Delivery</span>
+      </div>
+
+      <div class="checkout-help-card">
+        <strong>Need help with payment?</strong>
+        <p>Contact us on WhatsApp for order support and size guidance.</p>
+        <a href="tel:+917620986732"><i class="fas fa-phone"></i> Call Support</a>
       </div>
     </aside>
   </section>
 </main>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
 <script src="checkout.js"></script>
 </body>
 </html>

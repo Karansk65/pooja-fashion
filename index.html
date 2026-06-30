@@ -4,192 +4,298 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pooja Fashion | Premium Designer Gowns</title>
-
   <link rel="stylesheet" href="style.css">
-
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+<body class="storefront-page boutique-home">
 
-<body><div class="bottom-nav">
-  <a href="index.html">🏠<span>Home</span></a>
-  <a href="#shop">▦<span>Categories</span></a>
-  <a href="#">♡<span>Wishlist</span></a>
-  <a href="checkout.html">🛍️<span>Cart</span></a>
-  <a href="#contact">👤<span>Account</span></a>
-</div>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/" + window.location.search;
+  }
+</script>
 
 <div class="offer-bar">
-  <marquee>
-    🔥 5% OFF Today • 🚚 Free Delivery Above ₹6500 • 💃 New Designer Gown Collection • 🎉 pregnancy gowns • 📸 Photoshoot Dresses Available • 💎 Premium Quality Fabric • 🛍️ Shop Now
-  </marquee>
+  <div class="offer-track">
+    <span>54% off on designer gowns</span>
+    <span>Free delivery above Rs. 6500</span>
+    <span>Secure Razorpay payments</span>
+    <span>WhatsApp support for size and order help</span>
+  </div>
 </div>
 
-<header class="header">
+<header class="header storefront-header boutique-header">
+  <div class="top-header boutique-top-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
 
-  <div class="top-header">
-    <div class="mobile-menu-btn" onclick="toggleMenu()">☰</div>
-    <div class="search-box">
-  <input type="text" id="searchInput" placeholder="Search dress...">
-</div>
+    <a class="logo boutique-logo" href="index.html">Pooja Fashion</a>
 
-    <div class="logo">Pooja Fashion</div>
+    <div class="search-box boutique-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search gowns, colors, maternity">
+    </div>
 
-    <div class="header-icons">
-      <i class="fas fa-user"></i>
-     <a href="cart.html" class="cart-link">
-  <i class="fas fa-shopping-bag"></i>
-  <span id="cartCount">0</span>
-</a>
+    <div class="header-icons boutique-icons">
+      <a href="account.html" aria-label="My account"><i class="fas fa-user"></i></a>
+      <a href="cart.html" class="cart-link" aria-label="Cart">
+        <i class="fas fa-shopping-bag"></i>
+        <span id="cartCount">0</span>
+      </a>
     </div>
   </div>
 
-  <nav class="nav">
-    <a href="#shop">New Arrivals</a>
-    <a href="#trending">Trending</a>
-    <a href="#maternity">Maternity</a>
-    <a href="#about">About</a>
+  <nav class="nav boutique-nav">
+    <a href="#shop" data-filter="all">New In</a>
+    <a href="#shop" data-filter="princess">Princess Gowns</a>
+    <a href="#shop" data-filter="maternity">Maternity</a>
+    <a href="#shop" data-filter="yellow">Yellow Edit</a>
+    <a href="#videos">Videos</a>
+    <a href="#contact">Contact</a>
   </nav>
-
 </header>
 
-<section class="hero-banner" id="home">
-  <img src="./images/banner.png" alt="Pooja Fashion Banner">
-</section>
+<main>
+  <section class="boutique-hero" id="home">
+    <picture>
+      <source media="(max-width: 768px)" srcset="./images/banner.png">
+      <img src="./images/banner.png" alt="Pooja Fashion premium gown collection">
+    </picture>
+    <div class="boutique-hero-copy">
+      <p>Premium Designer Collection</p>
+      <h1>Designer Gowns For Every Celebration</h1>
+      <span>Wedding, partywear, maternity shoots and photo-ready silhouettes.</span>
+      <div class="hero-actions">
+        <a href="#shop">Shop New Arrivals</a>
+        <a href="#videos" class="secondary-action">Watch Looks</a>
+      </div>
+    </div>
+  </section>
 
-<section class="categories">
-  <div class="category-card" onclick="filterProducts('gown')"></div>
-  <div class="category-card" onclick="filterProducts('maternity')"></div>
-  <h2>Shop By Category</h2>
+  <section class="boutique-strip" aria-label="Store promises">
+    <span><i class="fas fa-truck-fast"></i> Free delivery above Rs. 6500</span>
+    <span><i class="fas fa-shield-heart"></i> Secure checkout</span>
+    <span><i class="fas fa-headset"></i> WhatsApp support</span>
+  </section>
 
-  <div class="category-box">
-  <div onclick="filterProducts('Princess')">Wedding Gowns</div>
-  <div onclick="filterProducts('Princess')">Party Wear</div>
-  <div onclick="filterProducts('Maternity')">Maternity Gowns</div>
-  <div onclick="filterProducts('all')">All Collection</div>
-</div>
-</section>
-
-<section class="video-section">
-  <h2>Latest Fashion Videos</h2>
-
-  <div class="video-grid">
-    <video controls autoplay muted loop>
-      <source src="./video/PixVerse_V6_Image_Text_360P_Use_the_uploaded_g.mp4" type="video/mp4">
-    </video>
-
-    <video controls autoplay muted loop>
-      <source src="./video/PixVerse_V6_Image_Text_540P_Use_the_uploaded_y.mp4" type="video/mp4">
-    </video>
-  </div>
-  
-</section>
-
-<section class="shop" id="shop">
-  <h2>New Arrivals</h2>
-  <div class="products" id="productList"></div>
-</section>
-<section class="trending-section" id="trending">
-
-    <h2 class="trending-heading">
-        Trending Collection
-    </h2>
-
-    <div class="trending-track" id="trendingList"></div>
-
-</section>
-
-</section>
-    <section class="maternity-section" id="maternity">
-    <h2 class="trending-heading">Maternity Collection</h2>
-
-    <div class="products">
-      
-
-        <div class="product-card">
-            <img src="images/maternity-blue.png" alt="">
-            <h3>Royal Blue Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-            <img src="images/maternity-orange.png" alt="">
-            <h3>Orange Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-            <img src="images/maternity-white.png" alt="">
-            <h3>White Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-            <img src="images/maternity-black.png" alt="">
-            <h3>Black Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-            <img src="images/maternity-green.png" alt="">
-            <h3>Mint Green Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-    <img src="images/parrot.png" alt="">
-    <h3>Parrot Green Maternity Gown</h3>
-    <p class="price">₹6500</p>
-</div>
-
-<div class="product-card">
-    <img src="images/darkred.png" alt="">
-    <h3>Dark Red Maternity Gown</h3>
-    <p class="price">₹6500</p>
-</div>
-
-<div class="product-card">
-    <img src="images/faintgreen.png" alt="">
-    <h3>Faint Green Maternity Gown</h3>
-    <p class="price">₹6500</p>
-</div>
-
-        <div class="product-card">
-            <img src="images/maternity-yellow.png" alt="">
-            <h3>Yellow Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
-        <div class="product-card">
-            <img src="images/maternity-red.png" alt="">
-            <h3>Red Maternity Gown</h3>
-            <p class="price">₹6500</p>
-        </div>
-
+  <section class="category-showcase" aria-label="Shop collections">
+    <div class="section-heading left-heading">
+      <p>Shop The Edit</p>
+      <h2>Curated for every occasion</h2>
     </div>
 
-<section class="about" id="about">
-  <h2>About Pooja Fashion</h2>
-  <p>
-    This premium designer gown is crafted for a royal and elegant look.
-    It features a beautiful flare, comfortable fitting and luxury finish,
-    making it perfect for weddings, receptions, parties, birthdays,
-    festive events and professional photoshoots.
-  </p>
-</section>
+    <div class="category-showcase-grid">
+      <button class="category-tile large-tile" type="button" data-filter="princess">
+        <img src="./images/orange-blue.png.png" alt="Princess gowns">
+        <span>Princess Gowns</span>
+      </button>
+      <button class="category-tile" type="button" data-filter="maternity">
+        <img src="./images/maternity-orange.png" alt="Maternity gowns">
+        <span>Maternity Shoots</span>
+      </button>
+      <button class="category-tile" type="button" data-filter="yellow">
+        <img src="./images/yellow-1.png" alt="Yellow gowns">
+        <span>Haldi Yellow</span>
+      </button>
+      <button class="category-tile" type="button" data-filter="green">
+        <img src="./images/maternity-green.png" alt="Green gowns">
+        <span>Fresh Greens</span>
+      </button>
+    </div>
+  </section>
 
-<section class="contact" id="contact">
-  <h2>Contact Us</h2>
-  <p>Email: ks343173@gmail.com</p>
-  <p>contact: +91 7620986732</p>
-</section>
+  <section class="shop collection-page-section boutique-shop" id="shop">
+    <div class="collection-heading">
+      <div>
+        <p class="breadcrumb">Home / Designer Gowns</p>
+        <h2>New Arrivals</h2>
+        <span id="productCount">0 products</span>
+      </div>
 
-<footer>
-  <h3>Pooja Fashion</h3>
-  <p>Premium Designer Gown Collection</p>
-  <p>© 2026 Karan tech vpt ltd cmp . All Rights Reserved.</p>
+      <div class="collection-tools">
+        <button type="button" id="filterToggle">
+          <i class="fas fa-sliders"></i>
+          Filter
+        </button>
+        <label for="sortSelect">Sort</label>
+        <select id="sortSelect">
+          <option value="featured">Featured</option>
+          <option value="price-low">Price, low to high</option>
+          <option value="price-high">Price, high to low</option>
+          <option value="name-az">Alphabetically, A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="collection-links boutique-pills" aria-label="Quick product filters">
+      <button type="button" data-filter="all" class="active">All</button>
+      <button type="button" data-filter="princess">Princess Gowns</button>
+      <button type="button" data-filter="maternity">Maternity</button>
+      <button type="button" data-filter="yellow">Yellow</button>
+      <button type="button" data-filter="green">Green</button>
+      <button type="button" data-filter="red">Red</button>
+      <button type="button" data-filter="sale">Sale</button>
+    </div>
+
+    <div class="collection-shell">
+      <aside class="filter-panel" id="filterPanel">
+        <div class="filter-block">
+          <h3>Availability</h3>
+          <label><input type="checkbox" checked disabled> In stock</label>
+          <label><input type="checkbox" disabled> Ready to ship</label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Shop By Discount</h3>
+          <button type="button" data-filter="all">All offers</button>
+          <button type="button" data-filter="sale">54% off</button>
+        </div>
+
+        <div class="filter-block">
+          <h3>Category</h3>
+          <button type="button" data-filter="princess">Princess Gowns</button>
+          <button type="button" data-filter="maternity">Maternity Gowns</button>
+        </div>
+
+        <div class="filter-block color-filter">
+          <h3>Color</h3>
+          <button type="button" data-filter="black"><span style="background:#111"></span>Black</button>
+          <button type="button" data-filter="blue"><span style="background:#3f7eca"></span>Blue</button>
+          <button type="button" data-filter="green"><span style="background:#22764f"></span>Green</button>
+          <button type="button" data-filter="red"><span style="background:#8e1f2f"></span>Red</button>
+          <button type="button" data-filter="yellow"><span style="background:#e2b529"></span>Yellow</button>
+          <button type="button" data-filter="white"><span style="background:#fff"></span>White</button>
+        </div>
+      </aside>
+
+      <div class="products premium-product-grid" id="productList"></div>
+    </div>
+  </section>
+
+  <section class="editorial-row">
+    <div class="editorial-copy">
+      <p>Most Loved</p>
+      <h2>Photo-ready gowns for weddings, birthdays and maternity shoots.</h2>
+      <a href="#shop" data-filter="princess">Explore best sellers</a>
+    </div>
+    <div class="editorial-image">
+      <img src="./images/orange-red.png.png" alt="Wine red princess gown">
+    </div>
+  </section>
+
+  <section class="trending-section boutique-trending" id="trending">
+    <div class="section-heading">
+      <p>Customer Picks</p>
+      <h2 class="trending-heading">Trending Now</h2>
+    </div>
+    <div class="trending-track" id="trendingList"></div>
+  </section>
+
+  <section class="occasion-edit">
+    <div class="occasion-card">
+      <img src="./images/maternity-blue.png" alt="Maternity shoot gown">
+      <div>
+        <p>Maternity Edit</p>
+        <h3>Soft gowns for memorable shoots.</h3>
+        <button type="button" data-filter="maternity">Shop Maternity</button>
+      </div>
+    </div>
+    <div class="occasion-card">
+      <img src="./images/yellow-2.png" alt="Yellow designer gown">
+      <div>
+        <p>Haldi Edit</p>
+        <h3>Bright yellow looks for festive days.</h3>
+        <button type="button" data-filter="yellow">Shop Yellow</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-section premium-videos boutique-videos" id="videos">
+    <div class="section-heading">
+      <p>In Motion</p>
+      <h2>Latest Fashion Videos</h2>
+    </div>
+
+    <div class="video-grid">
+      <video controls autoplay muted loop playsinline>
+        <source src="./video/PixVerse_V6_Image_Text_360P_Use_the_uploaded_g.mp4" type="video/mp4">
+      </video>
+      <video controls autoplay muted loop playsinline>
+        <source src="./video/PixVerse_V6_Image_Text_540P_Use_the_uploaded_y.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
+  <section class="store-benefits boutique-benefits">
+    <div>
+      <i class="fas fa-gem"></i>
+      <h3>Premium Finish</h3>
+      <p>Designer-looking gowns selected for celebration wear.</p>
+    </div>
+    <div>
+      <i class="fas fa-bag-shopping"></i>
+      <h3>Easy Ordering</h3>
+      <p>Cart, account dashboard and secure payment support.</p>
+    </div>
+    <div>
+      <i class="fas fa-phone-volume"></i>
+      <h3>Personal Help</h3>
+      <p>Support for size, color and order confirmation.</p>
+    </div>
+  </section>
+
+  <section class="newsletter-band">
+    <div>
+      <p>Join The Pooja Fashion List</p>
+      <h2>Get new collection updates and offers.</h2>
+    </div>
+    <form>
+      <input type="email" placeholder="Enter your email">
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+</main>
+
+<footer class="store-footer boutique-footer" id="contact">
+  <div>
+    <h3>Pooja Fashion</h3>
+    <p>Premium designer gown collection for parties, weddings, maternity shoots and special moments.</p>
+  </div>
+  <div>
+    <h4>Contact</h4>
+    <p>Email: ks343173@gmail.com</p>
+    <p>Phone: +91 7620986732</p>
+  </div>
+  <div>
+    <h4>Shop</h4>
+    <a href="#shop" data-filter="all">New Arrivals</a>
+    <a href="#shop" data-filter="maternity">Maternity</a>
+    <a href="cart.html">Cart</a>
+    <a href="account.html">My Account</a>
+  </div>
 </footer>
 
+<div class="bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="#shop"><i class="fas fa-border-all"></i><span>Shop</span></a>
+  <a href="#videos"><i class="fas fa-play"></i><span>Videos</span></a>
+  <a href="cart.html"><i class="fas fa-shopping-bag"></i><span>Cart</span></a>
+  <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
+</div>
+
+<div class="quick-view-modal" id="quickViewModal" aria-hidden="true">
+  <div class="quick-view-card">
+    <button class="quick-close" type="button" id="quickViewClose" aria-label="Close quick view">x</button>
+    <img id="quickViewImage" src="" alt="">
+    <div>
+      <p class="product-label">Quick View</p>
+      <h2 id="quickViewName"></h2>
+      <p id="quickViewPrice"></p>
+      <button type="button" id="quickViewOpen">View Product</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>

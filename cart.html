@@ -1,81 +1,198 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Cart | Pooja Fashion</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | Pooja Fashion</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
+<body class="premium-cart-page">
 
-<header class="header">
-  <div class="logo">Pooja Fashion</div>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/cart.html" + window.location.search;
+  }
+</script>
+
+<div class="cart-offer-bar">
+  <span>Secure checkout</span>
+  <span>Free delivery above Rs. 6500</span>
+  <span>Premium designer gowns</span>
+</div>
+
+<header class="premium-cart-header">
+  <a class="cart-logo" href="index.html">Pooja Fashion</a>
+  <nav>
+    <a href="index.html"><i class="fas fa-store"></i> Shop</a>
+    <a href="orders.html"><i class="fas fa-receipt"></i> Orders</a>
+    <a href="account.html"><i class="fas fa-user"></i> Account</a>
+  </nav>
 </header>
 
-<section class="cart-page">
-  <h1>Your Cart</h1>
+<main class="premium-cart-shell">
+  <section class="cart-hero-title">
+    <p>Shopping Bag</p>
+    <h1>Your Cart</h1>
+    <span id="cartItemCount">0 items selected</span>
+  </section>
 
-  <div id="cartItems"></div>
+  <section class="premium-cart-layout">
+    <div class="premium-cart-left">
+      <div class="cart-list-panel">
+        <div class="cart-panel-heading">
+          <div>
+            <p>Selected Products</p>
+            <h2>Review your items</h2>
+          </div>
+          <a href="index.html#shop">Continue Shopping</a>
+        </div>
 
-  <h2>Total: <span id="cartTotal">₹0</span></h2>
-  <div class="order-summary">
-<div class="coupon-box">
-  <input type="text" id="couponCode" placeholder="Enter Coupon Code">
-  <button onclick="applyCoupon()">Apply</button>
-</div>
-  <h2>Order Summary</h2>
+        <div id="cartItems" class="premium-cart-items"></div>
+      </div>
 
-  <div class="summary-row">
-    <span>Products Total</span>
-    <span id="productsTotal">₹0</span>
-  </div>
+      <form class="cart-checkout-panel" id="cartCheckoutForm">
+        <div class="cart-panel-heading">
+          <div>
+            <p>Delivery Details</p>
+            <h2>Where should we send this order?</h2>
+          </div>
+        </div>
 
-  <div class="summary-row">
-    <span>Shipping</span>
-    <span>FREE</span>
-  </div>
+        <div class="cart-field-grid">
+          <div>
+            <label for="customerName">Full Name</label>
+            <input type="text" id="customerName" placeholder="Enter full name" autocomplete="name">
+          </div>
+          <div>
+            <label for="customerPhone">Mobile Number</label>
+            <input type="tel" id="customerPhone" placeholder="10 digit mobile number" autocomplete="tel">
+          </div>
+        </div>
 
-  <div class="summary-row">
-    <span>Discount</span>
-    <span id="discountAmount">₹500</span>
-  </div>
+        <label for="customerAddress">Full Address</label>
+        <textarea id="customerAddress" placeholder="House no, area, city, state, pincode"></textarea>
 
-  <hr>
+        <div class="cart-payment-panel">
+          <div class="payment-box-title">
+            <div>
+              <p>Payment Method</p>
+              <h3>Choose payment option</h3>
+            </div>
+            <span class="payment-status-pill" id="cartPaymentStatus">Checking gateway</span>
+          </div>
 
-  <div class="summary-row total-row">
-    <span>Final Total</span>
-    <span id="finalTotal">₹0</span>
-  </div>
+          <input type="hidden" id="paymentMethod" value="PhonePe">
 
-</div>
+          <div class="payment-options cart-payment-options">
+            <button type="button" class="payment-option active" data-payment="PhonePe">
+              <span class="payment-icon phonepe">Pe</span>
+              <span>
+                <strong>PhonePe</strong>
+                <small>UPI via Razorpay</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="payment-option" data-payment="Google Pay">
+              <span class="payment-icon gpay">G</span>
+              <span>
+                <strong>Google Pay</strong>
+                <small>UPI via Razorpay</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="payment-option" data-payment="Paytm">
+              <span class="payment-icon paytm">Pt</span>
+              <span>
+                <strong>Paytm</strong>
+                <small>Wallet / UPI</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="payment-option" data-payment="UPI">
+              <span class="payment-icon upi">UPI</span>
+              <span>
+                <strong>Any UPI App</strong>
+                <small>BHIM, bank UPI</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="payment-option" data-payment="Card / NetBanking">
+              <span class="payment-icon card"><i class="fas fa-credit-card"></i></span>
+              <span>
+                <strong>Card / NetBanking</strong>
+                <small>Debit, credit, bank</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="payment-option cod-option" data-payment="Cash On Delivery">
+              <span class="payment-icon cod">COD</span>
+              <span>
+                <strong>Cash On Delivery</strong>
+                <small>Pay at delivery</small>
+              </span>
+              <i class="fas fa-check"></i>
+            </button>
+          </div>
 
-  <div class="checkout-form">
-    <h2>Customer Details</h2>
+          <p class="payment-note" id="cartPaymentNote">Secure Razorpay checkout will open after order creation.</p>
+        </div>
+      </form>
+    </div>
 
-    <input type="text" id="customerName" placeholder="Full Name">
-    <input type="tel" id="customerPhone" placeholder="Mobile Number">
-    <textarea id="customerAddress" placeholder="Full Address"></textarea>
-    <select id="paymentMethod">
+    <aside class="premium-cart-summary">
+      <div class="cart-summary-card">
+        <div class="cart-panel-heading compact-heading">
+          <div>
+            <p>Order Summary</p>
+            <h2>Price Details</h2>
+          </div>
+        </div>
 
-  <select id="paymentMethod">
-  <option value="">Select Payment Method</option>
+        <div class="cart-coupon-box">
+          <label for="couponCode">Coupon Code</label>
+          <div>
+            <input type="text" id="couponCode" placeholder="Try POOJA500">
+            <button type="button" id="applyCouponBtn">Apply</button>
+          </div>
+          <small id="couponMessage">Use POOJA500 on orders above Rs. 6500.</small>
+        </div>
 
-  <option value="PhonePe">🟣 PhonePe</option>
-  <option value="Google Pay">🔵 Google Pay</option>
-  <option value="Paytm">🔷 Paytm</option>
-  <option value="UPI">💳 Any UPI App</option>
+        <div class="summary-row">
+          <span>Products Total</span>
+          <strong id="productsTotal">Rs. 0</strong>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <strong id="shippingAmount">Free</strong>
+        </div>
+        <div class="summary-row">
+          <span>Discount</span>
+          <strong id="discountAmount">Rs. 0</strong>
+        </div>
+        <div class="summary-row total-row">
+          <span>Final Total</span>
+          <strong id="finalTotal">Rs. 0</strong>
+        </div>
 
-  <option value="Visa Card">💳 Visa Card</option>
-  <option value="Master Card">💳 Master Card</option>
-  <option value="RuPay Card">💳 RuPay Card</option>
+        <button type="submit" form="cartCheckoutForm" id="cartPlaceOrderBtn" class="cart-place-order-btn">
+          <i class="fas fa-lock"></i>
+          <span>Pay & Place Order</span>
+        </button>
 
-  <option value="Net Banking">🏦 Net Banking</option>
+        <div class="cart-trust-list">
+          <span><i class="fas fa-shield-halved"></i> Secure payment</span>
+          <span><i class="fas fa-truck-fast"></i> Fast delivery</span>
+          <span><i class="fas fa-headset"></i> WhatsApp support</span>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
 
-  <option value="Cash On Delivery">📦 Cash On Delivery</option>
-</select>
-
-    <button onclick="placeOrder()">Place Order</button>
-  </div>
-</section>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
 <script src="cart.js"></script>
 </body>
 </html>

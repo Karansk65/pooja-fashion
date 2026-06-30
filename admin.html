@@ -1,21 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Panel | Pooja Fashion</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Orders | Pooja Fashion</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
+<body class="admin-dashboard-page">
 
-<header class="header">
-  <div class="logo">Pooja Fashion Admin</div>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/admin.html" + window.location.search;
+  }
+</script>
+
+<header class="admin-dashboard-header">
+  <div>
+    <p>Store Dashboard</p>
+    <h1>Pooja Fashion Orders</h1>
+  </div>
+  <nav>
+    <a href="index.html">Website</a>
+    <a href="orders.html">Customer Orders</a>
+    <button type="button" id="refreshOrdersBtn"><i class="fas fa-rotate"></i> Refresh</button>
+  </nav>
 </header>
 
-<section class="admin-page">
-  <h1>Order Dashboard</h1>
+<main class="admin-dashboard-shell">
+  <section class="admin-summary-grid">
+    <div>
+      <span>Total Orders</span>
+      <strong id="adminTotalOrders">0</strong>
+    </div>
+    <div>
+      <span>Paid Orders</span>
+      <strong id="adminPaidOrders">0</strong>
+    </div>
+    <div>
+      <span>COD Orders</span>
+      <strong id="adminCodOrders">0</strong>
+    </div>
+    <div>
+      <span>Latest Update</span>
+      <strong id="adminUpdatedAt">-</strong>
+    </div>
+  </section>
 
-  <div id="adminOrders"></div>
-</section>
+  <section class="admin-toolbar">
+    <div>
+      <h2>Incoming Orders</h2>
+      <p id="adminStatus">Loading orders...</p>
+    </div>
+    <input type="search" id="adminSearch" placeholder="Search name, phone, order id, address">
+  </section>
 
+  <section id="adminOrders" class="admin-orders-list"></section>
+</main>
+
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>

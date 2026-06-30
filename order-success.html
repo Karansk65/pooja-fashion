@@ -1,18 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Order Success | Pooja Fashion</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed | Pooja Fashion</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
+<body class="premium-order-page">
 
-<section class="success-page">
-  <h1>✅ Order Placed Successfully!</h1>
-  <p>Thank you for shopping with Pooja Fashion.</p>
-  <p>We will contact you soon for confirmation.</p>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/order-success.html" + window.location.search;
+  }
+</script>
 
-  <a href="index.html">Continue Shopping</a>
-</section>
+<header class="premium-order-header">
+  <a class="order-logo" href="index.html">Pooja Fashion</a>
+  <nav>
+    <a href="index.html#shop">Shop</a>
+    <a href="orders.html">Orders</a>
+    <a href="account.html">My Account</a>
+  </nav>
+</header>
 
+<main class="premium-order-shell">
+  <section class="order-confirmation-hero">
+    <div class="order-success-mark">
+      <i class="fas fa-check"></i>
+    </div>
+    <p>Order Confirmed</p>
+    <h1>Thank you for shopping with Pooja Fashion</h1>
+    <span id="successMessage">Your order has been placed successfully. We will contact you soon for confirmation.</span>
+  </section>
+
+  <section class="order-confirmation-layout">
+    <div class="order-confirmation-card order-main-card">
+      <div class="order-card-heading">
+        <div>
+          <p>Order Details</p>
+          <h2 id="successOrderId">Order ID</h2>
+        </div>
+        <span id="successOrderStatus">Placed</span>
+      </div>
+
+      <div class="order-product-list" id="successProducts"></div>
+
+      <div class="order-total-panel">
+        <div>
+          <span>Payment Method</span>
+          <strong id="successPaymentMethod">-</strong>
+        </div>
+        <div>
+          <span>Payment Status</span>
+          <strong id="successPaymentStatus">-</strong>
+        </div>
+        <div>
+          <span>Total Paid / Payable</span>
+          <strong>Rs. <span id="successTotal">0</span></strong>
+        </div>
+      </div>
+
+      <div class="order-actions">
+        <a href="orders.html"><i class="fas fa-receipt"></i> View My Orders</a>
+        <a href="account.html" class="secondary-order-action"><i class="fas fa-user"></i> My Account</a>
+        <a href="index.html#shop" class="secondary-order-action"><i class="fas fa-bag-shopping"></i> Continue Shopping</a>
+        <button type="button" id="printOrderBtn"><i class="fas fa-print"></i> Print</button>
+      </div>
+    </div>
+
+    <aside class="order-confirmation-card order-side-card">
+      <div class="order-card-heading compact-heading">
+        <div>
+          <p>Delivery</p>
+          <h2>Customer Details</h2>
+        </div>
+      </div>
+
+      <div class="customer-summary">
+        <span>Name</span>
+        <strong id="successCustomerName">Customer</strong>
+        <span>Mobile</span>
+        <strong id="successCustomerPhone">-</strong>
+        <span>Address</span>
+        <strong id="successCustomerAddress">-</strong>
+      </div>
+
+      <div class="order-timeline">
+        <h3>What happens next?</h3>
+        <div class="timeline-step active">
+          <i class="fas fa-check"></i>
+          <div>
+            <strong>Order received</strong>
+            <span id="successOrderDate">Today</span>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <i class="fas fa-phone"></i>
+          <div>
+            <strong>Confirmation call</strong>
+            <span>We will confirm size and address.</span>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <i class="fas fa-truck-fast"></i>
+          <div>
+            <strong>Dispatch</strong>
+            <span>Product will be quality checked first.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-support-box">
+        <strong>Need help?</strong>
+        <p>Contact support with your order ID.</p>
+        <a id="successWhatsappLink" href="tel:+917620986732"><i class="fas fa-phone"></i> Contact Support</a>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<script src="order-success.js"></script>
 </body>
 </html>

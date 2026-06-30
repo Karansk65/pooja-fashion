@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | Pooja Fashion</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/account.html" + window.location.search;
+  }
+</script>
+
+<header class="header checkout-header">
+  <a class="logo" href="index.html">Pooja Fashion</a>
+  <div class="account-header-actions">
+    <a href="orders.html" class="header-btn">My Orders</a>
+    <a href="index.html#shop" class="header-btn">Continue Shopping</a>
+  </div>
+</header>
+
+<main class="account-page">
+  <section class="account-hero">
+    <div>
+      <p>My Account</p>
+      <h1>Welcome back, <span id="accountName">Customer</span></h1>
+      <span id="accountPhone">Add your details to personalize your account.</span>
+    </div>
+    <a href="cart.html">View Cart</a>
+  </section>
+
+  <section class="account-panel auth-panel" id="authPanel">
+    <div class="account-section-title">
+      <div>
+        <h2>Login / Create Account</h2>
+        <p>Use this when backend API is connected.</p>
+      </div>
+      <button type="button" onclick="logoutAccount()">Logout</button>
+    </div>
+
+    <div class="auth-grid">
+      <div>
+        <h3>Login</h3>
+        <input type="text" id="loginIdentifier" placeholder="Phone or email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button type="button" onclick="loginAccount()">Login</button>
+      </div>
+
+      <div>
+        <h3>Create Account</h3>
+        <input type="text" id="registerName" placeholder="Full name">
+        <input type="tel" id="registerPhone" placeholder="Mobile number">
+        <input type="email" id="registerEmail" placeholder="Email optional">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button type="button" onclick="registerAccount()">Create Account</button>
+      </div>
+    </div>
+
+    <p class="account-note" id="authMessage"></p>
+  </section>
+
+  <section class="account-grid">
+    <aside class="account-panel profile-panel">
+      <h2>Profile Details</h2>
+      <label for="profileName">Full Name</label>
+      <input type="text" id="profileName" placeholder="Enter your name">
+
+      <label for="profilePhone">Mobile Number</label>
+      <input type="tel" id="profilePhone" placeholder="Enter mobile number">
+
+      <label for="profileAddress">Default Address</label>
+      <textarea id="profileAddress" placeholder="Enter delivery address"></textarea>
+
+      <button type="button" onclick="saveProfile()">Save Profile</button>
+      <p class="account-note" id="profileMessage"></p>
+    </aside>
+
+    <section class="account-main">
+      <div class="account-stats">
+        <div>
+          <span id="totalOrders">0</span>
+          <p>Total Orders</p>
+        </div>
+        <div>
+          <span id="cartItemsCount">0</span>
+          <p>Cart Items</p>
+        </div>
+        <div>
+          <span id="savedAddressStatus">No</span>
+          <p>Saved Address</p>
+        </div>
+      </div>
+
+      <div class="account-panel">
+        <div class="account-section-title">
+          <div>
+            <h2>Recent Orders</h2>
+            <p>Orders placed from this device will appear here.</p>
+          </div>
+          <a href="orders.html">View All Orders</a>
+        </div>
+        <div id="accountOrders"></div>
+      </div>
+
+      <div class="account-panel">
+        <div class="account-section-title">
+          <div>
+            <h2>Quick Actions</h2>
+            <p>Useful links for a faster shopping experience.</p>
+          </div>
+        </div>
+        <div class="account-actions">
+          <a href="index.html#shop"><i class="fas fa-border-all"></i> Shop Collection</a>
+          <a href="cart.html"><i class="fas fa-shopping-bag"></i> Open Cart</a>
+          <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
+          <a href="index.html#contact"><i class="fas fa-headset"></i> Contact Support</a>
+        </div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div class="bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="index.html#shop"><i class="fas fa-border-all"></i><span>Shop</span></a>
+  <a href="cart.html"><i class="fas fa-shopping-bag"></i><span>Cart</span></a>
+  <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
+</div>
+
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
+<script src="account.js"></script>
+</body>
+</html>

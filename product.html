@@ -1,220 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Details | Pooja Fashion</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Pooja Fashion</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<button class="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-  ↑
-</button>
-<body>
+<body class="premium-product-page">
 
-<header class="header">
-  <div class="logo">Pooja Fashion</div>
+<script>
+  if (window.location.protocol === "file:") {
+    window.location.href = "http://localhost:5000/product.html" + window.location.search;
+  }
+</script>
 
-  <nav class="nav">
+<div class="product-offer-bar">
+  <span>54% off designer gowns</span>
+  <span>Secure Razorpay payment</span>
+  <span>Size guidance on WhatsApp</span>
+</div>
+
+<header class="premium-product-header">
+  <a class="product-logo" href="index.html">Pooja Fashion</a>
+  <button class="product-menu-toggle" type="button" id="productMenuToggle" aria-label="Open menu" aria-controls="productHeaderNav" aria-expanded="false">
+    <i class="fas fa-bars"></i>
+  </button>
+  <nav id="productHeaderNav">
     <a href="index.html">Home</a>
     <a href="index.html#shop">Shop</a>
-    <a href="checkout.html">Checkout</a>
+    <a href="orders.html">Orders</a>
+    <a href="account.html">Account</a>
   </nav>
 </header>
 
-<section class="product-details">
+<button class="back-to-top premium-back-top" type="button" id="backToTopBtn" aria-label="Back to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
-  <div class="product-image">
-    <img id="productImage" src="" alt="">
-    <div class="thumb-gallery" id="thumbGallery"></div>
-</div>
+<main class="premium-product-shell">
+  <section class="product-breadcrumb">
+    <a href="index.html">Home</a>
+    <span>/</span>
+    <a href="index.html#shop">Designer Gowns</a>
+    <span>/</span>
+    <strong id="breadcrumbProductName">Product</strong>
+  </section>
 
-  <div class="product-info-box">
-    <p class="product-label">Premium Designer Collection</p>
-
-    <h1 id="productName"></h1>
-    <div class="wishlist-box">
-  <button id="wishlistBtn">🤍 Add to Wishlist</button>
-</div>
-
-    <div class="price-box big-price">
-      <div class="discount">54% OFF</div>
-      <span class="old-price" id="oldPrice">₹11999</span>
-      <span class="new-price" id="productPrice">₹5500</span>
-      
+  <section class="premium-product-layout">
+    <div class="premium-product-gallery">
+      <div class="gallery-badges">
+        <span>Sale</span>
+        <span>Quality Checked</span>
+      </div>
+      <div class="main-product-frame">
+        <img id="productImage" src="" alt="Selected product">
+      </div>
+      <div class="thumb-gallery premium-thumb-gallery" id="thumbGallery"></div>
     </div>
 
-    <p class="product-desc">
-      Premium soft net designer gown with royal flare, comfortable inner lining
-      and elegant finish. Perfect for wedding, reception, party, birthday,
-      festive events and photoshoots.
-    </p>
+    <aside class="premium-product-info product-info-box">
+      <p class="product-label">Premium Designer Collection</p>
+      <h1 id="productName">Product Name</h1>
 
-    <div class="size-box">
-      <h3>Select Size</h3>
-      <button>S</button>
-      <button>M</button>
-      <button>L</button>
-      <button>XL</button>
-      <button>XXL</button>
+      <div class="product-rating-line">
+        <span><i class="fas fa-star"></i> 5.0</span>
+        <span>Customer loved design</span>
+        <span>Ready for photoshoots</span>
+      </div>
+
+      <div class="price-box premium-price-box">
+        <span class="discount">54% OFF</span>
+        <span class="old-price" id="oldPrice">Rs. 11999</span>
+        <span class="new-price" id="productPrice">Rs. 5500</span>
+      </div>
+      <p class="price-note">Inclusive of taxes. Delivery charges calculated at checkout if applicable.</p>
+
+      <p class="product-desc">
+        Premium designer gown with photo-ready flare, comfortable lining and elegant finish.
+        Suitable for weddings, receptions, birthdays, maternity shoots and party occasions.
+      </p>
+
+      <div class="product-choice-panel">
+        <div class="choice-heading">
+          <h3>Select Size</h3>
+          <button type="button" id="sizeGuideBtn">Size Guide</button>
+        </div>
+        <div class="size-box premium-size-box" id="sizeBox">
+          <button type="button">S</button>
+          <button type="button">M</button>
+          <button type="button">L</button>
+          <button type="button">XL</button>
+          <button type="button">XXL</button>
+          <button type="button">XXXL</button>
+        </div>
+      </div>
+
+      <div class="product-choice-panel quantity-choice-panel">
+        <div>
+          <h3>Quantity</h3>
+          <p>Choose quantity before placing the order.</p>
+        </div>
+        <div class="quantity-stepper">
+          <button type="button" id="qtyMinus">-</button>
+          <strong id="productQty">1</strong>
+          <button type="button" id="qtyPlus">+</button>
+        </div>
+      </div>
+
+      <div class="wishlist-box premium-wishlist">
+        <button id="wishlistBtn" type="button"><i class="far fa-heart"></i> Add to Wishlist</button>
+      </div>
+
+      <div class="product-actions premium-product-actions">
+        <button id="addToCartBtn" type="button"><i class="fas fa-bag-shopping"></i> Add To Cart</button>
+        <button type="button" class="buy-now-btn"><i class="fas fa-lock"></i> Buy Now</button>
+      </div>
+
+      <div class="product-payment-note">
+        <div>
+          <i class="fas fa-shield-halved"></i>
+          <strong>Secure checkout</strong>
+          <span>UPI, cards, net banking and COD options available.</span>
+        </div>
+        <div>
+          <i class="fas fa-phone-volume"></i>
+          <strong>Order support</strong>
+          <span>We can help with size, color and delivery confirmation.</span>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="product-service-strip">
+    <div>
+      <i class="fas fa-truck-fast"></i>
+      <strong>Fast Delivery</strong>
+      <span>4-7 business days across India.</span>
+    </div>
+    <div>
+      <i class="fas fa-gem"></i>
+      <strong>Premium Finish</strong>
+      <span>Soft fabric, elegant flare, event-ready look.</span>
+    </div>
+    <div>
+      <i class="fas fa-rotate-left"></i>
+      <strong>Return Support</strong>
+      <span>Support for damaged or incorrect products.</span>
+    </div>
+    <div>
+      <i class="fas fa-headset"></i>
+      <strong>WhatsApp Help</strong>
+      <span>Assistance for order and size selection.</span>
+    </div>
+  </section>
+
+  <section class="product-story-grid">
+    <div class="product-story-card">
+      <p>Why You Will Love It</p>
+      <h2>Designed for celebrations and beautiful photographs.</h2>
+      <ul>
+        <li>Royal gown flare for a premium designer look.</li>
+        <li>Comfortable inner lining for longer wear.</li>
+        <li>Ideal for wedding, party and maternity shoot styling.</li>
+        <li>Quality checked before dispatch.</li>
+      </ul>
+    </div>
+    <div class="product-order-process">
+      <p>Order Process</p>
+      <h2>Simple, secure and easy.</h2>
+      <div class="product-process-step">
+        <span>1</span>
+        <div>
+          <strong>Select size and quantity</strong>
+          <small>Choose the size that fits best.</small>
+        </div>
+      </div>
+      <div class="product-process-step">
+        <span>2</span>
+        <div>
+          <strong>Pay securely or choose COD</strong>
+          <small>Razorpay supports UPI, cards and net banking.</small>
+        </div>
+      </div>
+      <div class="product-process-step">
+        <span>3</span>
+        <div>
+          <strong>Confirmation and dispatch</strong>
+          <small>We confirm details before shipping.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-size-chart-section" id="sizeChart">
+    <div class="section-heading left-heading">
+      <p>Size Chart</p>
+      <h2>Find your perfect gown fit</h2>
     </div>
 
-    <div class="product-benefits">
-      <p>🚚 Free Delivery Above ₹5000</p>
-      <p>💎 Premium Quality Fabric</p>
-      <p>📸 Perfect for Photoshoot</p>
-      <p>🔄 Easy Return Support</p>
+    <div class="size-chart-layout">
+      <div class="size-chart-table-card">
+        <table class="product-size-chart">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Bust</th>
+              <th>Waist</th>
+              <th>Length</th>
+              <th>Best Fit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S</td>
+              <td>34"</td>
+              <td>28"</td>
+              <td>56"</td>
+              <td>Small fit</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>36"</td>
+              <td>30"</td>
+              <td>56"</td>
+              <td>Regular fit</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>38"</td>
+              <td>32"</td>
+              <td>57"</td>
+              <td>Comfort fit</td>
+            </tr>
+            <tr>
+              <td>XL</td>
+              <td>40"</td>
+              <td>34"</td>
+              <td>57"</td>
+              <td>Relaxed fit</td>
+            </tr>
+            <tr>
+              <td>XXL</td>
+              <td>42"</td>
+              <td>36"</td>
+              <td>58"</td>
+              <td>Plus fit</td>
+            </tr>
+            <tr>
+              <td>XXXL</td>
+              <td>44"</td>
+              <td>38"</td>
+              <td>58"</td>
+              <td>Extended plus fit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="measure-guide-card">
+        <h3>How to measure</h3>
+        <div>
+          <strong>Bust</strong>
+          <span>Measure around the fullest part of your chest.</span>
+        </div>
+        <div>
+          <strong>Waist</strong>
+          <span>Measure around your natural waistline.</span>
+        </div>
+        <div>
+          <strong>Length</strong>
+          <span>Measure from shoulder to floor with heels if needed.</span>
+        </div>
+        <p>Tip: If you are between two sizes, choose the larger size for a comfortable fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-info-tabs">
+    <details open>
+      <summary>Product Details</summary>
+      <p>Designer gown with premium-looking finish, soft lining and elegant flare. Best suited for wedding events, parties, birthdays, receptions, maternity shoots and professional photoshoots.</p>
+    </details>
+    <details>
+      <summary>Fabric & Care</summary>
+      <p>Store on hanger, avoid harsh machine wash, and use light steam ironing when required. Dry clean is recommended for best finish.</p>
+    </details>
+    <details>
+      <summary>Shipping & Returns</summary>
+      <p>Orders usually dispatch after confirmation. Delivery may take 4-7 business days. Return support is available for damaged or incorrect products.</p>
+    </details>
+  </section>
+
+  <section class="reviews-section premium-reviews-section">
+    <div class="section-heading">
+      <p>Customer Love</p>
+      <h2>Reviews from shoppers</h2>
     </div>
 
-    <div class="product-actions">
-      <button id="addToCartBtn">Add To Cart</button>
-      <button type="button" class="buy-now-btn" onclick="buyNow()">Buy Now</button>
-    </div>
-    
-  </div>
-  
-  <div class="trust-badges">
-  <div>✅ 100% Quality Checked</div>
-  <div>🚚 Fast Delivery</div>
-  <div>💳 Secure Payment</div>
-  <div>📞 WhatsApp Support</div>
-</div>
-
-</section>
-
-<section class="reviews-section">
-
-  <h2>Customer Reviews</h2>
-
-  <div class="review-card">
-    ⭐⭐⭐⭐⭐
-    <p>Beautiful gown. Fabric quality is amazing and perfect for photoshoots.</p>
-    <h4>- Priya S.</h4>
-  </div>
-
-  <div class="review-card">
-    ⭐⭐⭐⭐⭐
-    <p>Exactly same as shown in photos. Delivery was fast.</p>
-    <h4>- Sneha K.</h4>
-  </div>
-
-  <div class="review-card">
-    ⭐⭐⭐⭐⭐
-    <p>Very premium look and comfortable fitting.</p>
-    <h4>- Aarti P.</h4>
-  </div>
-
-</section>
-<section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-
-  <div class="faq-box">
-    <h3>Is this gown suitable for photoshoots?</h3>
-    <p>Yes, this gown is perfect for maternity, wedding, birthday and professional photoshoots.</p>
-  </div>
-
-  <div class="faq-box">
-    <h3>Is delivery available?</h3>
-    <p>Yes, delivery is available. You can order directly through WhatsApp.</p>
-  </div>
-
-  <div class="faq-box">
-    <h3>Can I choose size?</h3>
-    <p>Yes, you can select size from S, M, L, XL and XXL before ordering.</p>
-  </div>
-</section>
-<section class="shipping-section">
-
-  <h2>Shipping & Returns</h2>
-
-  <div class="shipping-grid">
-
-    <div class="shipping-card">
-      <h3>🚚 Delivery</h3>
-      <p>Orders are usually delivered within 4-7 business days across India.</p>
+    <div class="review-compose-card">
+      <div>
+        <h3>Write a review</h3>
+        <p>Share fitting, fabric quality and delivery experience for other customers.</p>
+      </div>
+      <form id="reviewForm" class="review-form">
+        <input type="text" id="reviewName" placeholder="Your name" autocomplete="name">
+        <select id="reviewRating" aria-label="Rating">
+          <option value="5">5 stars - Excellent</option>
+          <option value="4">4 stars - Very good</option>
+          <option value="3">3 stars - Good</option>
+          <option value="2">2 stars - Average</option>
+          <option value="1">1 star - Poor</option>
+        </select>
+        <textarea id="reviewComment" placeholder="Write your review"></textarea>
+        <button type="submit">Submit Review</button>
+      </form>
+      <p id="reviewMessage" class="review-message"></p>
     </div>
 
-    <div class="shipping-card">
-      <h3>📦 Packaging</h3>
-      <p>Premium quality packaging to keep your gown safe and wrinkle-free.</p>
+    <div class="premium-review-grid" id="reviewGrid">
+      <div class="review-card">
+        <strong>5.0</strong>
+        <p>Beautiful gown. Fabric quality is amazing and perfect for photoshoots.</p>
+        <h4>- Priya S.</h4>
+      </div>
     </div>
+  </section>
 
-    <div class="shipping-card">
-      <h3>🔄 Return Policy</h3>
-      <p>Easy return support available for damaged or incorrect products.</p>
+  <section class="related-products premium-related-products">
+    <div class="section-heading">
+      <p>More From Pooja Fashion</p>
+      <h2>You May Also Like</h2>
     </div>
+    <div class="products premium-product-grid" id="relatedProducts"></div>
+  </section>
+</main>
 
-    <div class="shipping-card">
-      <h3>📞 Customer Support</h3>
-      <p>WhatsApp support available for order updates and assistance.</p>
-    </div>
-
-  </div>
-
-</section>
-<p class="size-guide-btn" onclick="openSizeGuide()">
-  📏 View Size Guide
-</p>
-
-<div class="size-popup" id="sizePopup">
-
-  <div class="size-popup-content">
-
-    <span class="close-size" onclick="closeSizeGuide()">×</span>
-
-    <h2>Size Guide</h2>
-
+<div class="size-popup premium-size-popup" id="sizePopup">
+  <div class="size-popup-content premium-size-popup-content">
+    <button class="close-size" type="button" id="closeSizeGuide" aria-label="Close size guide">x</button>
+    <p>Size Guide</p>
+    <h2>Choose Your Fit</h2>
     <table>
       <tr>
         <th>Size</th>
         <th>Bust</th>
+        <th>Waist</th>
+        <th>Length</th>
+        <th>Best For</th>
       </tr>
-
       <tr>
         <td>S</td>
         <td>34"</td>
+        <td>28"</td>
+        <td>56"</td>
+        <td>Small fit</td>
       </tr>
-
       <tr>
         <td>M</td>
         <td>36"</td>
+        <td>30"</td>
+        <td>56"</td>
+        <td>Regular fit</td>
       </tr>
-
       <tr>
         <td>L</td>
         <td>38"</td>
+        <td>32"</td>
+        <td>57"</td>
+        <td>Comfort fit</td>
       </tr>
-
       <tr>
         <td>XL</td>
         <td>40"</td>
+        <td>34"</td>
+        <td>57"</td>
+        <td>Relaxed fit</td>
       </tr>
-
       <tr>
         <td>XXL</td>
         <td>42"</td>
+        <td>36"</td>
+        <td>58"</td>
+        <td>Plus fit</td>
       </tr>
-
+      <tr>
+        <td>XXXL</td>
+        <td>44"</td>
+        <td>38"</td>
+        <td>58"</td>
+        <td>Extended plus fit</td>
+      </tr>
     </table>
-
   </div>
-
 </div>
-<section class="related-products">
-  <h2>You May Also Like</h2>
-<div class="products" id="relatedProducts"></div>
 
-</section>
+<div class="mobile-sticky-buy premium-mobile-sticky-buy">
+  <button class="mobile-add-cart" type="button">Add To Cart</button>
+  <button class="mobile-buy-now" type="button">Buy Now</button>
+</div>
 
+<script src="config.js"></script>
+<script src="backend-client.js"></script>
 <script src="product.js"></script>
-
-<div class="mobile-sticky-buy">
-  <button class="mobile-add-cart" onclick="document.getElementById('addToCartBtn').click()">
-    Add To Cart
-  </button>
-  <button class="mobile-buy-now" onclick="buyNow()">
-    Buy Now
-  </button>
-
-</div>
 </body>
 </html>
