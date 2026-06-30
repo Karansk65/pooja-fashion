@@ -402,6 +402,36 @@ app.get("/api/orders", authRequired, (req, res) => {
   res.json({ orders });
 });
 
+app.patch("/api/orders/:orderId/cancel", authRequired, (req, res) => {
+  const db = readDb();
+  const order = db.orders.find(item => {
+    return item.order_id === req.params.orderId && item.user_id === req.user.id;
+  });
+
+  if(!order){
+    return res.status(404).json({ message:"Order not found" });
+  }
+
+  if(/cancel/i.test(order.status || "")){
+    return res.status(400).json({ message:"Order is already cancelled" });
+  }
+
+  if(/shipped|delivered/i.test(order.status || "")){
+    return res.status(400).json({ message:"This order cannot be cancelled online. Please contact support." });
+  }
+
+  if(/paid/i.test(order.payment_status || "")){
+    order.status = "Cancel Requested";
+  }else{
+    order.status = "Cancelled";
+    order.payment_status = "Cancelled";
+  }
+
+  order.cancelled_at = new Date().toISOString();
+  writeDb(db);
+  res.json({ order });
+});
+
 app.post("/api/orders", orderLimiter, optionalAuth, (req, res) => {
   const { customerName, customerPhone, customerAddress, paymentMethod, couponCode, items } = req.body;
 

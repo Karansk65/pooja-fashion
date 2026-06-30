@@ -4787,6 +4787,12 @@ footer{
   color:var(--wine);
 }
 
+.orders-card-top strong.cancelled{
+  background:#f3f4f6;
+  border-color:#d7dbe1;
+  color:#5b6470;
+}
+
 .orders-history-info h3{
   font-size:18px;
   margin-bottom:6px;
@@ -4842,6 +4848,12 @@ footer{
 .orders-card-actions a{
   background:white;
   color:var(--ink);
+}
+
+.orders-card-actions .cancel-order-btn{
+  background:#fff5f3;
+  border-color:#e6b8ae;
+  color:#8c2418;
 }
 
 .orders-empty-state{

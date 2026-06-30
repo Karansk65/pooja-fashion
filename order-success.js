@@ -48,6 +48,11 @@ function normalizeOrder(order){
   };
 }
 
+function canCancelOrder(order){
+  const state = (order.status + " " + order.paymentStatus).toLowerCase();
+  return !/cancel|shipped|delivered|refunded/i.test(state);
+}
+
 function getLatestOrder(){
   const lastOrder = readJson("lastOrder", null);
   if(lastOrder) return normalizeOrder(lastOrder);
@@ -111,10 +116,64 @@ function renderOrder(){
   }
 
   renderProducts(order);
+
+  const cancelOrderBtn = document.getElementById("cancelOrderBtn");
+  if(cancelOrderBtn){
+    cancelOrderBtn.hidden = !canCancelOrder(order);
+  }
+}
+
+function saveLocalCancelledOrder(orderId, updatedOrder){
+  const orders = readJson("orders", []);
+  const updatedOrders = orders.map(order => {
+    if(normalizeOrder(order).orderId !== orderId) return order;
+    return updatedOrder || {
+      ...order,
+      status:"Cancelled",
+      paymentStatus:"Cancelled",
+      payment_status:"Cancelled",
+      cancelledAt:new Date().toISOString()
+    };
+  });
+
+  localStorage.setItem("orders", JSON.stringify(updatedOrders));
+  localStorage.setItem("lastOrder", JSON.stringify(updatedOrder || {
+    ...getLatestOrder(),
+    status:"Cancelled",
+    paymentStatus:"Cancelled",
+    payment_status:"Cancelled",
+    cancelledAt:new Date().toISOString()
+  }));
+}
+
+async function cancelLatestOrder(){
+  const order = getLatestOrder();
+  if(!canCancelOrder(order)) return;
+
+  const message = /paid/i.test(order.paymentStatus)
+    ? "Paid order ke liye cancel request admin ko jayegi. Refund manually confirm hoga. Cancel request bhejni hai?"
+    : "Is order ko cancel karna hai?";
+
+  if(!confirm(message)) return;
+
+  try{
+    if(window.PoojaApi?.isEnabled() && window.PoojaApi.getToken()){
+      const response = await window.PoojaApi.cancelOrder(order.orderId);
+      saveLocalCancelledOrder(order.orderId, response.order);
+    }else{
+      saveLocalCancelledOrder(order.orderId);
+    }
+
+    renderOrder();
+  }catch(error){
+    alert(error.message);
+  }
 }
 
 document.getElementById("printOrderBtn")?.addEventListener("click", () => {
   window.print();
 });
+
+document.getElementById("cancelOrderBtn")?.addEventListener("click", cancelLatestOrder);
 
 renderOrder();

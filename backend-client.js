@@ -96,6 +96,9 @@
       return data;
     }),
     getOrders: () => request("/api/orders"),
+    cancelOrder: orderId => request("/api/orders/" + encodeURIComponent(orderId) + "/cancel", {
+      method:"PATCH"
+    }),
     createOrder: payload => request("/api/orders", {
       method:"POST",
       body: JSON.stringify(payload)

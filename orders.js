@@ -55,6 +55,11 @@ function normalizeOrder(order){
   };
 }
 
+function canCancelOrder(order){
+  const state = (order.status + " " + order.paymentStatus).toLowerCase();
+  return !/cancel|shipped|delivered|refunded/i.test(state);
+}
+
 function readLocalOrders(){
   const orders = readJson("orders", []).map(normalizeOrder);
   const lastOrder = readJson("lastOrder", null);
@@ -69,8 +74,9 @@ function readLocalOrders(){
 }
 
 function statusGroup(order){
-  const status = (order.paymentStatus + " " + order.paymentMethod).toLowerCase();
+  const status = (order.status + " " + order.paymentStatus + " " + order.paymentMethod).toLowerCase();
 
+  if(status.includes("cancel")) return "cancelled";
   if(status.includes("paid")) return "paid";
   if(status.includes("cash on delivery")) return "cod";
   if(status.includes("pending")) return "pending";
@@ -117,6 +123,9 @@ function renderOrders(){
     const product = order.products[0] || {};
     const itemsCount = order.products.reduce((sum, item) => sum + Number(item.quantity || 1), 0);
     const badgeClass = statusGroup(order);
+    const statusText = /cancel/i.test(order.status)
+      ? order.status
+      : order.paymentStatus;
 
     return `
       <article class="orders-history-card">
@@ -124,7 +133,7 @@ function renderOrders(){
         <div class="orders-history-info">
           <div class="orders-card-top">
             <span>${order.orderId}</span>
-            <strong class="${badgeClass}">${order.paymentStatus}</strong>
+            <strong class="${badgeClass}">${statusText}</strong>
           </div>
           <h3>${product.name || "Pooja Fashion Order"}</h3>
           <p>${itemsCount} item(s)${product.size ? " - Size " + product.size : ""} - ${formatDate(order.createdAt)}</p>
@@ -135,6 +144,7 @@ function renderOrders(){
         </div>
         <div class="orders-card-actions">
           <button type="button" data-order-id="${order.orderId}">View Details</button>
+          ${canCancelOrder(order) ? `<button type="button" class="cancel-order-btn" data-cancel-order-id="${order.orderId}">Cancel Order</button>` : ""}
           <a href="https://wa.me/917620986732?text=${encodeURIComponent("Hello Pooja Fashion, I need help with order " + order.orderId)}" target="_blank" rel="noreferrer">Support</a>
         </div>
       </article>
@@ -150,6 +160,71 @@ function renderOrders(){
       }
     });
   });
+
+  ordersList.querySelectorAll("[data-cancel-order-id]").forEach(button => {
+    button.addEventListener("click", () => cancelOrder(button.dataset.cancelOrderId));
+  });
+}
+
+function saveLocalCancelledOrder(orderId, updatedOrder){
+  const orders = readJson("orders", []);
+  const updatedOrders = orders.map(order => {
+    const normalized = normalizeOrder(order);
+    if(normalized.orderId !== orderId) return order;
+    return updatedOrder || {
+      ...order,
+      status:"Cancelled",
+      paymentStatus:"Cancelled",
+      payment_status:"Cancelled",
+      cancelledAt:new Date().toISOString()
+    };
+  });
+
+  localStorage.setItem("orders", JSON.stringify(updatedOrders));
+
+  const lastOrder = readJson("lastOrder", null);
+  if(lastOrder && normalizeOrder(lastOrder).orderId === orderId){
+    localStorage.setItem("lastOrder", JSON.stringify(updatedOrder || {
+      ...lastOrder,
+      status:"Cancelled",
+      paymentStatus:"Cancelled",
+      payment_status:"Cancelled",
+      cancelledAt:new Date().toISOString()
+    }));
+  }
+}
+
+async function cancelOrder(orderId){
+  const order = allOrders.find(item => item.orderId === orderId);
+  if(!order || !canCancelOrder(order)) return;
+
+  const message = /paid/i.test(order.paymentStatus)
+    ? "Paid order ke liye cancel request admin ko jayegi. Refund manually confirm hoga. Cancel request bhejni hai?"
+    : "Is order ko cancel karna hai?";
+
+  if(!confirm(message)) return;
+
+  try{
+    if(window.PoojaApi?.isEnabled() && window.PoojaApi.getToken()){
+      const response = await window.PoojaApi.cancelOrder(orderId);
+      const normalized = normalizeOrder(response.order);
+      allOrders = allOrders.map(item => item.orderId === orderId ? normalized : item);
+      saveLocalCancelledOrder(orderId, response.order);
+    }else{
+      const updated = {
+        ...order,
+        status:"Cancelled",
+        paymentStatus:"Cancelled"
+      };
+      allOrders = allOrders.map(item => item.orderId === orderId ? updated : item);
+      saveLocalCancelledOrder(orderId, updated);
+    }
+
+    renderStats();
+    renderOrders();
+  }catch(error){
+    alert(error.message);
+  }
 }
 
 function setupFilters(){
