@@ -1457,6 +1457,33 @@ footer{
   font-weight:600;
 }
 
+.upi-app-chips{
+  display:flex;
+  flex-direction:row !important;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:7px;
+}
+
+.upi-app-chips em{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:4px 7px;
+  border-radius:999px;
+  background:#f6f7f3;
+  border:1px solid #dfe5ec;
+  color:#27364a;
+  font-size:11px;
+  font-style:normal;
+  font-weight:900;
+}
+
+.upi-app-chips em:hover{
+  border-color:#111;
+  background:white;
+}
+
 .cod-option{
   grid-column:1 / -1;
 }

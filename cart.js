@@ -446,5 +446,24 @@ document.querySelectorAll(".cart-payment-options .payment-option").forEach(optio
   });
 });
 
+document.querySelectorAll(".cart-payment-options [data-upi-app]").forEach(appChip => {
+  appChip.addEventListener("click", event => {
+    event.stopPropagation();
+
+    document.querySelectorAll(".cart-payment-options .payment-option").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    const upiOption = appChip.closest(".payment-option");
+    upiOption?.classList.add("active");
+    paymentMethodEl.value = appChip.dataset.upiApp;
+    setPaymentUi(appChip.dataset.upiApp);
+
+    if(cartPaymentNote){
+      cartPaymentNote.innerText = appChip.dataset.upiApp + " will open from secure Razorpay checkout on mobile.";
+    }
+  });
+});
+
 renderCart();
 refreshGatewayStatus();

@@ -178,6 +178,25 @@ document.querySelectorAll(".payment-option").forEach(option => {
   });
 });
 
+document.querySelectorAll("[data-upi-app]").forEach(appChip => {
+  appChip.addEventListener("click", event => {
+    event.stopPropagation();
+
+    document.querySelectorAll(".payment-option").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    const upiOption = appChip.closest(".payment-option");
+    upiOption?.classList.add("active");
+    paymentMethodEl.value = appChip.dataset.upiApp;
+    setPaymentUi(appChip.dataset.upiApp);
+
+    if(paymentNoteEl){
+      paymentNoteEl.innerText = appChip.dataset.upiApp + " will open from secure Razorpay checkout on mobile.";
+    }
+  });
+});
+
 function buildUpiPaymentUrl(paymentMethod) {
   const params = new URLSearchParams({
     pa: merchantUpiId,
