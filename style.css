@@ -7684,7 +7684,6 @@ footer{
     overflow:hidden !important;
   }
 
-  .offer-track,
   .product-offer-bar,
   .cart-offer-bar,
   .checkout-offer-bar{
@@ -7697,7 +7696,6 @@ footer{
     white-space:normal !important;
   }
 
-  .offer-track span,
   .product-offer-bar span,
   .cart-offer-bar span,
   .checkout-offer-bar span{
@@ -7778,22 +7776,6 @@ footer{
 }
 
 @media(max-width:768px){
-  body.boutique-home .offer-track{
-    width:100% !important;
-    max-width:100% !important;
-    padding:8px 10px !important;
-    transform:none !important;
-    animation:none !important;
-    display:flex !important;
-    flex-wrap:wrap !important;
-    justify-content:center !important;
-  }
-
-  body.boutique-home .offer-track span{
-    flex:0 1 auto !important;
-    white-space:normal !important;
-  }
-
   .boutique-pills{
     display:flex !important;
     flex-wrap:wrap !important;
