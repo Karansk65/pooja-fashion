@@ -202,7 +202,7 @@ async function refreshGatewayStatus(){
         cartPaymentStatus.classList.toggle("ready", isGatewayReady);
       }
 
-      setPaymentUi(paymentMethodEl?.value || "PhonePe");
+      setPaymentUi(paymentMethodEl?.value || "UPI");
       return;
     }
   }catch(error){

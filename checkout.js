@@ -52,14 +52,14 @@ if(productImageEl){
   }
 }
 
-if(paymentMethodEl) paymentMethodEl.value = "PhonePe";
+if(paymentMethodEl) paymentMethodEl.value = "UPI";
 if(merchantUpiText){
   merchantUpiText.innerText = !hasUpiId
     ? "UPI ID not added"
     : merchantUpiId;
 }
 if(paymentNoteEl && !hasUpiId){
-  paymentNoteEl.innerText = "PhonePe is selected. Add shop UPI ID to accept online payment.";
+  paymentNoteEl.innerText = "UPI is selected. Razorpay checkout will show QR and UPI apps.";
 }
 
 function setPlaceOrderLabel(text){
@@ -107,14 +107,14 @@ async function refreshPaymentStatus(){
       }
 
       if(paymentNoteEl){
-        paymentNoteEl.innerText = "Razorpay is ready. You can pay using UPI, PhonePe, Google Pay, Paytm or cards.";
+        paymentNoteEl.innerText = "Razorpay is ready. Customers can pay using UPI, cards, EMI, netbanking, wallet or pay later.";
       }
 
       if(upiIdBox){
         upiIdBox.style.display = "none";
       }
 
-      setPaymentUi(paymentMethodEl?.value || "PhonePe");
+      setPaymentUi(paymentMethodEl?.value || "UPI");
     }
   }catch(error){
     if(paymentStatusPill){

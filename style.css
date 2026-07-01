@@ -1490,6 +1490,26 @@ footer{
   background:#111;
 }
 
+.payment-icon.card{
+  background:#7a4b27;
+}
+
+.payment-icon.emi{
+  background:#8b5a46;
+}
+
+.payment-icon.netbanking{
+  background:#6d7788;
+}
+
+.payment-icon.wallet{
+  background:#5c6f4f;
+}
+
+.payment-icon.paylater{
+  background:#be123c;
+}
+
 .payment-icon.cod{
   background:#0a8f35;
 }
