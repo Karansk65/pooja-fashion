@@ -253,7 +253,7 @@ function calculateDiscount(products, couponCode){
   };
 }
 
-function createOrderRecord({ user, customerName, customerPhone, customerAddress, paymentMethod, couponCode, items }){
+function createOrderRecord({ user, customerName, customerPhone, customerAddress, deliveryInfo, paymentMethod, couponCode, items }){
   const db = readDb();
   const products = normalizeItems(items);
   const pricing = calculateDiscount(products, couponCode);
@@ -265,6 +265,7 @@ function createOrderRecord({ user, customerName, customerPhone, customerAddress,
     customer_name: customerName,
     customer_phone: customerPhone,
     customer_address: customerAddress,
+    delivery_info: deliveryInfo || null,
     payment_method: paymentMethod,
     payment_status: paymentMethod === "Cash On Delivery" ? "Cash On Delivery" : "Pending",
     status: "Placed",
@@ -433,7 +434,7 @@ app.patch("/api/orders/:orderId/cancel", authRequired, (req, res) => {
 });
 
 app.post("/api/orders", orderLimiter, optionalAuth, (req, res) => {
-  const { customerName, customerPhone, customerAddress, paymentMethod, couponCode, items } = req.body;
+  const { customerName, customerPhone, customerAddress, deliveryInfo, paymentMethod, couponCode, items } = req.body;
 
   if(!customerName || !customerPhone || !customerAddress || !paymentMethod){
     return res.status(400).json({ message:"Customer details and payment method are required" });
@@ -449,6 +450,7 @@ app.post("/api/orders", orderLimiter, optionalAuth, (req, res) => {
       customerName,
       customerPhone,
       customerAddress,
+      deliveryInfo,
       paymentMethod,
       couponCode,
       items

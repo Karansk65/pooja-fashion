@@ -32,6 +32,80 @@ const checkoutForm = document.getElementById("checkoutForm");
 const copyUpiBtn = document.getElementById("copyUpiBtn");
 const paymentStatusPill = document.getElementById("paymentStatusPill");
 const selectedPaymentTitle = document.getElementById("selectedPaymentTitle");
+const saveDeliveryInfo = document.getElementById("saveDeliveryInfo");
+
+function readStoredDeliveryInfo(){
+  const saved = JSON.parse(localStorage.getItem("deliveryInfo") || "null");
+  if(saved) return saved;
+
+  const profile = JSON.parse(localStorage.getItem("customerProfile") || "null");
+  if(!profile) return null;
+
+  const nameParts = String(profile.name || "").trim().split(/\s+/);
+  return {
+    country:"India",
+    firstName:nameParts.shift() || "",
+    lastName:nameParts.join(" "),
+    phone:profile.phone || "",
+    addressLine1:profile.address || "",
+    addressLine2:"",
+    city:"",
+    state:"Maharashtra",
+    pinCode:""
+  };
+}
+
+function setFieldValue(id, value){
+  const field = document.getElementById(id);
+  if(field) field.value = value || "";
+}
+
+function fillDeliveryForm(){
+  const saved = readStoredDeliveryInfo();
+  if(!saved) return;
+
+  setFieldValue("deliveryCountry", saved.country || "India");
+  setFieldValue("firstName", saved.firstName);
+  setFieldValue("lastName", saved.lastName);
+  setFieldValue("addressLine1", saved.addressLine1);
+  setFieldValue("addressLine2", saved.addressLine2);
+  setFieldValue("city", saved.city);
+  setFieldValue("state", saved.state || "Maharashtra");
+  setFieldValue("pinCode", saved.pinCode);
+  setFieldValue("customerPhone", saved.phone);
+  if(saveDeliveryInfo) saveDeliveryInfo.checked = true;
+}
+
+function collectDeliveryInfo(){
+  const info = {
+    country:document.getElementById("deliveryCountry")?.value.trim() || "India",
+    firstName:document.getElementById("firstName")?.value.trim() || "",
+    lastName:document.getElementById("lastName")?.value.trim() || "",
+    addressLine1:document.getElementById("addressLine1")?.value.trim() || "",
+    addressLine2:document.getElementById("addressLine2")?.value.trim() || "",
+    city:document.getElementById("city")?.value.trim() || "",
+    state:document.getElementById("state")?.value.trim() || "",
+    pinCode:document.getElementById("pinCode")?.value.trim() || "",
+    phone:document.getElementById("customerPhone")?.value.trim() || ""
+  };
+
+  const customerName = [info.firstName, info.lastName].filter(Boolean).join(" ");
+  const customerAddress = [
+    info.addressLine1,
+    info.addressLine2,
+    info.city,
+    info.state,
+    info.pinCode ? "PIN " + info.pinCode : "",
+    info.country
+  ].filter(Boolean).join(", ");
+
+  return {
+    ...info,
+    customerName,
+    customerPhone:info.phone,
+    customerAddress
+  };
+}
 
 if(productNameEl) productNameEl.innerText = productName;
 if(productPriceEl) productPriceEl.innerText = productQuantity > 1 ? productPrice + " x " + productQuantity : productPrice;
@@ -51,6 +125,8 @@ if(productImageEl){
     productImageEl.style.display = "none";
   }
 }
+
+fillDeliveryForm();
 
 if(paymentMethodEl) paymentMethodEl.value = "UPI";
 if(merchantUpiText){
@@ -250,6 +326,7 @@ function buildOrderSnapshot(order, fallback = {}){
     customerName: order.customer_name || fallback.customerName || "",
     customerPhone: order.customer_phone || fallback.customerPhone || "",
     customerAddress: order.customer_address || fallback.customerAddress || "",
+    deliveryInfo: order.delivery_info || fallback.deliveryInfo || null,
     paymentMethod: order.payment_method || fallback.paymentMethod || paymentMethodEl.value,
     paymentStatus: fallback.paymentStatus || order.payment_status || "Order Placed",
     status: order.status || fallback.status || "Placed",
@@ -293,13 +370,19 @@ async function placeOrder(event) {
     return;
   }
 
-  const customerName = document.getElementById("customerName").value.trim();
-  const customerPhone = document.getElementById("customerPhone").value.trim();
-  const customerAddress = document.getElementById("customerAddress").value.trim();
+  const deliveryInfo = collectDeliveryInfo();
+  const customerName = deliveryInfo.customerName;
+  const customerPhone = deliveryInfo.customerPhone;
+  const customerAddress = deliveryInfo.customerAddress;
   const paymentMethod = paymentMethodEl.value;
 
   if(!customerName || !customerPhone || !customerAddress || !paymentMethod){
-    alert("Please fill all details.");
+    alert("Please fill delivery details.");
+    return;
+  }
+
+  if(!deliveryInfo.addressLine1 || !deliveryInfo.city || !deliveryInfo.state || !/^\d{6}$/.test(deliveryInfo.pinCode)){
+    alert("Please enter address, city, state and a valid 6 digit PIN code.");
     return;
   }
 
@@ -326,16 +409,20 @@ async function placeOrder(event) {
         isGatewayReady = true;
       }
 
-      localStorage.setItem("customerProfile", JSON.stringify({
-        name: customerName,
-        phone: customerPhone,
-        address: customerAddress
-      }));
+      if(saveDeliveryInfo?.checked){
+        localStorage.setItem("deliveryInfo", JSON.stringify(deliveryInfo));
+        localStorage.setItem("customerProfile", JSON.stringify({
+          name: customerName,
+          phone: customerPhone,
+          address: customerAddress
+        }));
+      }
 
       const orderResponse = await window.PoojaApi.createOrder({
         customerName,
         customerPhone,
         customerAddress,
+        deliveryInfo,
         paymentMethod,
         items: [{
           name: productName,
@@ -350,6 +437,7 @@ async function placeOrder(event) {
         customerName,
         customerPhone,
         customerAddress,
+        deliveryInfo,
         paymentMethod,
         paymentStatus: paymentMethod === "Cash On Delivery" ? "Cash On Delivery" : "Pending",
         total: productTotal
@@ -434,13 +522,14 @@ async function placeOrder(event) {
     return;
   }
 
-  const profile = {
-    name: customerName,
-    phone: customerPhone,
-    address: customerAddress
-  };
-
-  localStorage.setItem("customerProfile", JSON.stringify(profile));
+  if(saveDeliveryInfo?.checked){
+    localStorage.setItem("deliveryInfo", JSON.stringify(deliveryInfo));
+    localStorage.setItem("customerProfile", JSON.stringify({
+      name: customerName,
+      phone: customerPhone,
+      address: customerAddress
+    }));
+  }
 
   orders.push({
     orderId: "PF-" + Date.now(),
@@ -448,6 +537,7 @@ async function placeOrder(event) {
     customerName,
     customerPhone,
     customerAddress,
+    deliveryInfo,
     paymentMethod,
     paymentStatus: isUpiPayment ? "Payment Started" : "Cash On Delivery",
     total: Number(productTotal),
