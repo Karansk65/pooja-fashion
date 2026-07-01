@@ -7826,3 +7826,53 @@ footer{
     word-break:break-word;
   }
 }
+
+@media(max-width:768px){
+  body.boutique-home .offer-bar{
+    min-height:34px !important;
+    display:flex;
+    align-items:center;
+  }
+
+  body.boutique-home .offer-track{
+    width:max-content !important;
+    max-width:none !important;
+    min-width:max-content !important;
+    padding:0 !important;
+    flex-wrap:nowrap !important;
+    justify-content:flex-start !important;
+    gap:32px !important;
+    white-space:nowrap !important;
+    animation:mobileOfferScroll 22s linear infinite !important;
+  }
+
+  body.boutique-home .offer-track span{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+    font-size:11px !important;
+    line-height:1;
+  }
+
+  .boutique-strip{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:1px !important;
+  }
+
+  .boutique-strip span{
+    min-height:52px !important;
+    padding:8px 5px;
+    gap:5px;
+    flex-direction:column;
+    font-size:11px;
+    line-height:1.2;
+  }
+
+  .boutique-strip i{
+    font-size:15px;
+  }
+}
+
+@keyframes mobileOfferScroll{
+  from{ transform:translateX(100vw); }
+  to{ transform:translateX(-100%); }
+}
