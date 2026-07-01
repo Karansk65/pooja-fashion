@@ -50,13 +50,18 @@ function formatDate(value){
   });
 }
 
+function parseAdminAmount(value){
+  const matches = String(value || "0").match(/\d+(?:\.\d+)?/g);
+  return Number(matches ? matches.join("") : "0") || 0;
+}
+
 function formatMoney(value){
-  const amount = Number(String(value || "0").replace(/[^\d.]/g, "")) || 0;
+  const amount = parseAdminAmount(value);
   return "Rs. " + amount.toLocaleString("en-IN");
 }
 
 function moneyNumber(value){
-  return Number(String(value || "0").replace(/[^\d.]/g, "")) || 0;
+  return parseAdminAmount(value);
 }
 
 function orderId(order){
