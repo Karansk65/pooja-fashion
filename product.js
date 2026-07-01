@@ -83,7 +83,7 @@ function openProductAuthModal(checkoutUrl){
   if(productForgotPanel) productForgotPanel.hidden = true;
   productAuthModal?.classList.add("active");
   productAuthModal?.setAttribute("aria-hidden", "false");
-  setTimeout(() => document.getElementById("productLoginIdentifier")?.focus(), 50);
+  setTimeout(() => document.getElementById("productOtpPhone")?.focus(), 50);
 }
 
 function closeProductAuthModal(){

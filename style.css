@@ -2490,12 +2490,42 @@ footer{
   gap:16px;
 }
 
+.otp-only-grid{
+  grid-template-columns:minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items:stretch;
+}
+
 .otp-auth-box{
-  grid-column:1 / -1;
   padding:16px;
   border:1px solid #eadfd6;
   border-radius:12px;
   background:#fffaf6;
+}
+
+.primary-otp-auth{
+  display:grid;
+  gap:11px;
+  padding:22px;
+  background:linear-gradient(180deg, #fff 0%, #fff8f4 100%);
+}
+
+.primary-otp-auth p{
+  color:#675f59;
+  line-height:1.45;
+  margin-bottom:2px;
+}
+
+.auth-safe-pill{
+  display:inline-flex;
+  width:max-content;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#eef8f1;
+  color:#1f7a3b;
+  font-size:12px;
+  font-weight:900;
 }
 
 .otp-auth-box small{
@@ -2503,6 +2533,10 @@ footer{
   margin-top:8px;
   color:#675f59;
   font-weight:700;
+}
+
+.otp-auth-box input{
+  margin-bottom:0;
 }
 
 .otp-row{
@@ -2515,6 +2549,44 @@ footer{
   min-height:46px;
   padding:0 16px;
   white-space:nowrap;
+}
+
+.auth-benefits-box{
+  padding:22px;
+  border:1px solid #eadfd6;
+  border-radius:12px;
+  background:#111;
+  color:white;
+}
+
+.auth-benefits-box h3{
+  margin-bottom:14px;
+}
+
+.auth-benefits-box ul{
+  display:grid;
+  gap:12px;
+  list-style:none;
+}
+
+.auth-benefits-box li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#f6f0eb;
+  font-weight:800;
+}
+
+.auth-benefits-box i{
+  width:26px;
+  height:26px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  font-size:12px;
 }
 
 .auth-grid h3{
@@ -2733,6 +2805,15 @@ footer{
   }
 
   .auth-grid{
+    grid-template-columns:1fr;
+  }
+
+  .otp-only-grid{
+    grid-template-columns:1fr;
+  }
+
+  .otp-row,
+  .product-otp-row{
     grid-template-columns:1fr;
   }
 
@@ -5842,7 +5923,16 @@ footer{
   background:#fffaf7;
 }
 
+.primary-product-otp{
+  margin-top:16px;
+  padding:16px;
+  background:linear-gradient(180deg, #fff 0%, #fff8f4 100%);
+}
+
 .product-otp-box span{
+  display:flex;
+  align-items:center;
+  gap:8px;
   font-weight:900;
   color:var(--ink);
 }
@@ -5872,6 +5962,12 @@ footer{
   font-weight:900;
   cursor:pointer;
   white-space:nowrap;
+}
+
+.product-otp-box small{
+  color:#6c635d;
+  font-weight:800;
+  line-height:1.4;
 }
 
 .product-forgot-btn{

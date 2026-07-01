@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account | Pooja Fashion</title>
-  <link rel="stylesheet" href="style.css?v=otp-payment-1">
+  <link rel="stylesheet" href="style.css?v=otp-only-auth-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -39,38 +39,34 @@
   <section class="account-panel auth-panel" id="authPanel">
     <div class="account-section-title">
       <div>
-        <h2>Login / Create Account</h2>
-        <p id="authIntro">Login to track orders, save address and checkout faster.</p>
+        <h2>Login or Create Account</h2>
+        <p id="authIntro">Use mobile OTP to continue safely.</p>
       </div>
     </div>
 
-    <div class="auth-grid">
-      <div>
-        <h3>Login</h3>
-        <input type="text" id="loginIdentifier" placeholder="Phone or email">
-        <input type="password" id="loginPassword" placeholder="Password">
-        <button type="button" onclick="loginAccount()">Login</button>
-      </div>
-
-      <div>
-        <h3>Create Account</h3>
-        <input type="text" id="registerName" placeholder="Full name">
-        <input type="tel" id="registerPhone" placeholder="Mobile number">
-        <input type="email" id="registerEmail" placeholder="Email optional">
-        <input type="password" id="registerPassword" placeholder="Password">
-        <button type="button" onclick="registerAccount()">Create Account</button>
-      </div>
-
-      <div class="otp-auth-box">
-        <h3>Login with Phone OTP</h3>
+    <div class="auth-grid otp-only-grid">
+      <div class="otp-auth-box primary-otp-auth">
+        <span class="auth-safe-pill"><i class="fas fa-shield-halved"></i> Secure OTP verification</span>
+        <h3>Enter mobile number</h3>
+        <p>We will send a 6 digit OTP. New customers are registered automatically after verification.</p>
         <input type="tel" id="otpPhone" placeholder="Mobile number">
-        <input type="text" id="otpName" placeholder="Full name for new account">
+        <input type="text" id="otpName" placeholder="Full name optional">
         <div class="otp-row">
           <input type="text" id="otpCode" placeholder="6 digit OTP" maxlength="6">
           <button type="button" onclick="sendAccountOtp()">Send OTP</button>
         </div>
-        <button type="button" onclick="verifyAccountOtp()">Verify OTP</button>
-        <small>Use OTP for quick login or account creation.</small>
+        <button type="button" onclick="verifyAccountOtp()">Verify & Continue</button>
+        <small>By continuing, you can track orders, save address and checkout faster.</small>
+      </div>
+
+      <div class="auth-benefits-box">
+        <h3>Why login?</h3>
+        <ul>
+          <li><i class="fas fa-location-dot"></i> Save delivery address</li>
+          <li><i class="fas fa-receipt"></i> Track order history</li>
+          <li><i class="fas fa-bell"></i> Get order confirmation updates</li>
+          <li><i class="fas fa-headset"></i> Faster WhatsApp support</li>
+        </ul>
       </div>
     </div>
 
@@ -145,8 +141,8 @@
   <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
 </div>
 
-<script src="config.js?v=otp-payment-1"></script>
-<script src="backend-client.js?v=otp-payment-1"></script>
-<script src="account.js?v=otp-payment-1"></script>
+<script src="config.js?v=otp-only-auth-1"></script>
+<script src="backend-client.js?v=otp-only-auth-1"></script>
+<script src="account.js?v=otp-only-auth-1"></script>
 </body>
 </html>

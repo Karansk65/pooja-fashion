@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details | Pooja Fashion</title>
-  <link rel="stylesheet" href="style.css?v=otp-payment-1">
+  <link rel="stylesheet" href="style.css?v=otp-only-auth-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="premium-product-page">
@@ -398,47 +398,20 @@
 <div class="product-auth-modal" id="productAuthModal" aria-hidden="true">
   <div class="product-auth-card" role="dialog" aria-modal="true" aria-labelledby="productAuthTitle">
     <button class="product-auth-close" type="button" id="productAuthClose" aria-label="Close login popup">x</button>
-    <p>Account Required</p>
-    <h2 id="productAuthTitle">Login to continue checkout</h2>
-    <span class="product-auth-subtitle">Your product is ready. Login or create an account to place the order.</span>
+    <p>Secure Checkout</p>
+    <h2 id="productAuthTitle">Verify mobile number</h2>
+    <span class="product-auth-subtitle">We use OTP login so customers do not need to remember passwords.</span>
 
-    <div class="product-auth-tabs">
-      <button type="button" class="active" data-auth-tab="login">Login</button>
-      <button type="button" data-auth-tab="register">Create Account</button>
-    </div>
-
-    <form class="product-auth-form active" id="productLoginForm">
-      <input type="text" id="productLoginIdentifier" placeholder="Phone or email" autocomplete="username">
-      <input type="password" id="productLoginPassword" placeholder="Password" autocomplete="current-password">
-      <button type="submit">Login & Buy Now</button>
-      <button class="product-forgot-btn" type="button" id="productForgotBtn">Forgot password?</button>
-      <button class="product-auth-link" type="button" data-auth-switch="register">Create new account</button>
-    </form>
-
-    <div class="product-otp-box">
-      <span>Quick phone OTP login</span>
+    <div class="product-otp-box primary-product-otp">
+      <span><i class="fas fa-mobile-screen"></i> Continue with phone OTP</span>
       <input type="tel" id="productOtpPhone" placeholder="Mobile number" autocomplete="tel">
-      <input type="text" id="productOtpName" placeholder="Full name for new account" autocomplete="name">
+      <input type="text" id="productOtpName" placeholder="Full name optional" autocomplete="name">
       <div class="product-otp-row">
         <input type="text" id="productOtpCode" placeholder="6 digit OTP" maxlength="6">
         <button type="button" id="productSendOtpBtn">Send OTP</button>
       </div>
-      <button type="button" id="productVerifyOtpBtn">Verify OTP & Buy Now</button>
-    </div>
-
-    <form class="product-auth-form" id="productRegisterForm">
-      <input type="text" id="productRegisterName" placeholder="Full name" autocomplete="name">
-      <input type="tel" id="productRegisterPhone" placeholder="Mobile number" autocomplete="tel">
-      <input type="email" id="productRegisterEmail" placeholder="Email optional" autocomplete="email">
-      <input type="password" id="productRegisterPassword" placeholder="Create password" autocomplete="new-password">
-      <button type="submit">Create Account & Buy Now</button>
-      <button class="product-auth-link" type="button" data-auth-switch="login">Already have an account? Login</button>
-    </form>
-
-    <div class="product-forgot-panel" id="productForgotPanel" hidden>
-      <strong>Password help</strong>
-      <span>For now, message us on WhatsApp with your registered phone number and we will help reset your account.</span>
-      <a href="https://wa.me/917620986732?text=Hello%20Pooja%20Fashion%2C%20I%20forgot%20my%20account%20password" target="_blank" rel="noreferrer">WhatsApp Support</a>
+      <button type="button" id="productVerifyOtpBtn">Verify & Continue to Checkout</button>
+      <small>New account will be created automatically after OTP verification.</small>
     </div>
 
     <p class="product-auth-message" id="productAuthMessage"></p>
@@ -450,8 +423,8 @@
   <button class="mobile-buy-now" type="button">Buy Now</button>
 </div>
 
-<script src="config.js?v=otp-payment-1"></script>
-<script src="backend-client.js?v=otp-payment-1"></script>
-<script src="product.js?v=otp-payment-1"></script>
+<script src="config.js?v=otp-only-auth-1"></script>
+<script src="backend-client.js?v=otp-only-auth-1"></script>
+<script src="product.js?v=otp-only-auth-1"></script>
 </body>
 </html>
