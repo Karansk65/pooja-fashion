@@ -52,18 +52,14 @@ if(productImageEl){
   }
 }
 
-document.querySelectorAll("[data-payment-amount]").forEach(amountEl => {
-  amountEl.innerText = productTotal;
-});
-
-if(paymentMethodEl) paymentMethodEl.value = "UPI";
+if(paymentMethodEl) paymentMethodEl.value = "PhonePe";
 if(merchantUpiText){
   merchantUpiText.innerText = !hasUpiId
     ? "UPI ID not added"
     : merchantUpiId;
 }
 if(paymentNoteEl && !hasUpiId){
-  paymentNoteEl.innerText = "Real UPI QR opens inside Razorpay after you click Pay & Place Order.";
+  paymentNoteEl.innerText = "PhonePe is selected. Add shop UPI ID to accept online payment.";
 }
 
 function setPlaceOrderLabel(text){
@@ -79,22 +75,19 @@ function setPlaceOrderLabel(text){
 function setPaymentUi(paymentMethod){
   const isCod = paymentMethod === "Cash On Delivery";
   const isOnlinePayment = !isCod;
-  const displayName = paymentMethod === "Debit/Credit Cards"
-    ? "Debit/Credit Card"
-    : paymentMethod;
 
   if(selectedPaymentTitle){
     selectedPaymentTitle.innerText = isCod
       ? "Cash On Delivery selected"
-      : displayName + " selected";
+      : paymentMethod + " selected";
   }
 
   if(paymentNoteEl){
     paymentNoteEl.innerText = isCod
       ? "Pay in cash when your order is delivered."
       : isGatewayReady
-      ? "Secure Razorpay checkout will open for " + displayName + "."
-      : "Add Razorpay keys on the server to accept real " + displayName + " payments.";
+      ? "Secure Razorpay checkout will open for " + paymentMethod + "."
+      : "Online payment needs Razorpay keys or shop UPI ID setup.";
   }
 
   setPlaceOrderLabel(isOnlinePayment ? "Pay & Place Order" : "Place COD Order");
@@ -114,14 +107,14 @@ async function refreshPaymentStatus(){
       }
 
       if(paymentNoteEl){
-        paymentNoteEl.innerText = "Razorpay is ready. Customers can pay with live UPI QR, apps, cards, netbanking and wallets.";
+        paymentNoteEl.innerText = "Razorpay is ready. You can pay using UPI, PhonePe, Google Pay, Paytm or cards.";
       }
 
       if(upiIdBox){
         upiIdBox.style.display = "none";
       }
 
-      setPaymentUi(paymentMethodEl?.value || "UPI");
+      setPaymentUi(paymentMethodEl?.value || "PhonePe");
     }
   }catch(error){
     if(paymentStatusPill){
