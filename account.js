@@ -230,8 +230,8 @@ async function renderAccount(){
   if(accountLogoutBtn) accountLogoutBtn.hidden = !loggedIn;
   if(authIntro){
     authIntro.innerText = authReason === "checkout"
-      ? "Login or create an account before checkout. We will bring you back to your order."
-      : "Login to track orders, save address and checkout faster.";
+      ? "Verify your mobile number before checkout. We will bring you back to your order."
+      : "Use mobile OTP to track orders, save address and checkout faster.";
   }
 
   if(window.PoojaApi?.isEnabled() && loggedIn){

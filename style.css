@@ -7613,6 +7613,122 @@ footer{
   }
 }
 
+/* Mobile QA fixes */
+@media(max-width:768px){
+  .checkout-header{
+    display:grid !important;
+    grid-template-columns:1fr;
+    gap:10px;
+    align-items:center;
+    padding:12px 14px !important;
+  }
+
+  .checkout-header .logo{
+    width:100% !important;
+    margin:0 !important;
+    text-align:center !important;
+    font-size:28px !important;
+    line-height:1.05;
+    white-space:normal;
+    overflow:visible;
+  }
+
+  .account-header-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .account-header-actions .header-btn{
+    width:100%;
+    min-height:42px;
+    padding:9px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:13px;
+    line-height:1.15;
+  }
+
+  .account-page{
+    padding:22px 14px 118px;
+  }
+
+  .account-hero,
+  .account-panel{
+    border-radius:10px;
+  }
+
+  .account-hero{
+    padding:22px;
+    margin-bottom:20px;
+  }
+
+  .account-hero h1{
+    font-size:27px;
+    line-height:1.08;
+  }
+
+  .primary-otp-auth,
+  .auth-benefits-box{
+    padding:18px;
+  }
+
+  .offer-bar,
+  .product-offer-bar,
+  .cart-offer-bar,
+  .checkout-offer-bar{
+    min-height:auto;
+    overflow:hidden !important;
+  }
+
+  .offer-track,
+  .product-offer-bar,
+  .cart-offer-bar,
+  .checkout-offer-bar{
+    transform:none !important;
+    animation:none !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    gap:8px 12px !important;
+    white-space:normal !important;
+  }
+
+  .offer-track span,
+  .product-offer-bar span,
+  .cart-offer-bar span,
+  .checkout-offer-bar span{
+    flex:0 1 auto !important;
+    white-space:normal !important;
+    text-align:center;
+    line-height:1.25;
+  }
+
+  .premium-product-page .product-offer-bar,
+  .cart-offer-bar{
+    overflow-x:hidden !important;
+  }
+
+  .size-table-wrap,
+  .premium-size-popup-content{
+    max-width:100%;
+    overflow-x:auto;
+  }
+}
+
+@media(max-width:390px){
+  .account-header-actions{
+    grid-template-columns:1fr;
+  }
+
+  .checkout-header .logo{
+    font-size:26px !important;
+  }
+}
+
 @media(max-width:420px){
   .premium-cart-header nav{
     grid-template-columns:1fr;
@@ -7620,5 +7736,93 @@ footer{
 
   .cart-hero-title h1{
     font-size:36px;
+  }
+}
+
+@media(max-width:768px){
+  body .header.checkout-header{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    gap:10px !important;
+    padding:12px 14px !important;
+  }
+
+  body .header.checkout-header > .logo{
+    order:1 !important;
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:block !important;
+    text-align:center !important;
+    font-size:28px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+  }
+
+  body .header.checkout-header > .account-header-actions{
+    order:2 !important;
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+}
+
+@media(max-width:390px){
+  body .header.checkout-header > .account-header-actions{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media(max-width:768px){
+  body.boutique-home .offer-track{
+    width:100% !important;
+    max-width:100% !important;
+    padding:8px 10px !important;
+    transform:none !important;
+    animation:none !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+  }
+
+  body.boutique-home .offer-track span{
+    flex:0 1 auto !important;
+    white-space:normal !important;
+  }
+
+  .boutique-pills{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    overflow:visible !important;
+    gap:8px !important;
+  }
+
+  .boutique-pills button{
+    flex:1 1 calc(50% - 8px);
+    min-width:0;
+    white-space:normal;
+  }
+
+  .premium-product-page .product-size-chart,
+  .premium-product-page .premium-size-popup-content table,
+  .product-size-chart,
+  .premium-size-popup-content table{
+    min-width:0 !important;
+    width:100% !important;
+    table-layout:fixed;
+  }
+
+  .premium-product-page .product-size-chart th,
+  .premium-product-page .product-size-chart td,
+  .product-size-chart th,
+  .product-size-chart td{
+    padding:8px 4px !important;
+    font-size:11px !important;
+    line-height:1.25;
+    word-break:break-word;
   }
 }
