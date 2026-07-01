@@ -23,6 +23,14 @@ const reviewName = document.getElementById("reviewName");
 const reviewRating = document.getElementById("reviewRating");
 const reviewComment = document.getElementById("reviewComment");
 const reviewMessage = document.getElementById("reviewMessage");
+const productAuthModal = document.getElementById("productAuthModal");
+const productAuthClose = document.getElementById("productAuthClose");
+const productLoginForm = document.getElementById("productLoginForm");
+const productRegisterForm = document.getElementById("productRegisterForm");
+const productAuthMessage = document.getElementById("productAuthMessage");
+const productForgotBtn = document.getElementById("productForgotBtn");
+const productForgotPanel = document.getElementById("productForgotPanel");
+let pendingCheckoutUrl = "";
 
 const name = localStorage.getItem("productName") || "Premium Designer Gown";
 const image = localStorage.getItem("productImage") || "images/banner.png";
@@ -65,6 +73,34 @@ function currentProductPayload(){
     size: selectedSize,
     quantity: selectedQuantity
   };
+}
+
+function openProductAuthModal(checkoutUrl){
+  pendingCheckoutUrl = checkoutUrl;
+  if(productAuthMessage) productAuthMessage.innerText = "";
+  if(productForgotPanel) productForgotPanel.hidden = true;
+  productAuthModal?.classList.add("active");
+  productAuthModal?.setAttribute("aria-hidden", "false");
+  setTimeout(() => document.getElementById("productLoginIdentifier")?.focus(), 50);
+}
+
+function closeProductAuthModal(){
+  productAuthModal?.classList.remove("active");
+  productAuthModal?.setAttribute("aria-hidden", "true");
+}
+
+function switchAuthTab(tabName){
+  document.querySelectorAll("[data-auth-tab]").forEach(button => {
+    button.classList.toggle("active", button.dataset.authTab === tabName);
+  });
+
+  productLoginForm?.classList.toggle("active", tabName === "login");
+  productRegisterForm?.classList.toggle("active", tabName === "register");
+  if(productAuthMessage) productAuthMessage.innerText = "";
+}
+
+function continuePendingCheckout(){
+  window.location.href = pendingCheckoutUrl || "checkout.html";
 }
 
 const defaultReviews = [
@@ -219,7 +255,8 @@ function buyNow(){
     "&price=" +
     encodeURIComponent(parseMoney(price));
 
-  if(window.PoojaApi && !window.PoojaApi.requireAuth(checkoutUrl, "checkout")){
+  if(window.PoojaApi?.isEnabled() && !window.PoojaApi.isLoggedIn()){
+    openProductAuthModal(checkoutUrl);
     return;
   }
 
@@ -246,6 +283,68 @@ if(wishlistBtn){
     );
   });
 }
+
+document.querySelectorAll("[data-auth-tab]").forEach(button => {
+  button.addEventListener("click", () => switchAuthTab(button.dataset.authTab));
+});
+
+document.querySelectorAll("[data-auth-switch]").forEach(button => {
+  button.addEventListener("click", () => switchAuthTab(button.dataset.authSwitch));
+});
+
+productAuthClose?.addEventListener("click", closeProductAuthModal);
+productAuthModal?.addEventListener("click", event => {
+  if(event.target === productAuthModal) closeProductAuthModal();
+});
+
+productForgotBtn?.addEventListener("click", () => {
+  if(productForgotPanel) productForgotPanel.hidden = !productForgotPanel.hidden;
+});
+
+productLoginForm?.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if(!window.PoojaApi?.isEnabled()){
+    if(productAuthMessage) productAuthMessage.innerText = "Backend is not connected.";
+    return;
+  }
+
+  try{
+    if(productAuthMessage) productAuthMessage.innerText = "Logging in...";
+    await window.PoojaApi.login({
+      identifier: document.getElementById("productLoginIdentifier").value.trim(),
+      password: document.getElementById("productLoginPassword").value
+    });
+    if(productAuthMessage) productAuthMessage.innerText = "Login successful. Opening checkout...";
+    continuePendingCheckout();
+  }catch(error){
+    if(productAuthMessage) productAuthMessage.innerText = error.message;
+  }
+});
+
+productRegisterForm?.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if(!window.PoojaApi?.isEnabled()){
+    if(productAuthMessage) productAuthMessage.innerText = "Backend is not connected.";
+    return;
+  }
+
+  try{
+    if(productAuthMessage) productAuthMessage.innerText = "Creating account...";
+    await window.PoojaApi.register({
+      name: document.getElementById("productRegisterName").value.trim(),
+      phone: document.getElementById("productRegisterPhone").value.trim(),
+      email: document.getElementById("productRegisterEmail").value.trim(),
+      password: document.getElementById("productRegisterPassword").value,
+      address: ""
+    });
+    if(productAuthMessage) productAuthMessage.innerText = "Account created. Opening checkout...";
+    continuePendingCheckout();
+  }catch(error){
+    if(productAuthMessage) productAuthMessage.innerText = error.message;
+  }
+});
 
 sizeGuideBtn?.addEventListener("click", () => {
   if(sizePopup) sizePopup.style.display = "block";
