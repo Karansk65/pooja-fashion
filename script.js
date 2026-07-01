@@ -238,6 +238,63 @@ function updateCartCount(){
   if(cartCount) cartCount.innerText = cart.length;
 }
 
+function startMobileOfferMarquee(){
+  const track = document.querySelector(".offer-track");
+  if(!track) return;
+
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
+  let frameId = null;
+  let position = 0;
+  let lastTime = 0;
+  let loopWidth = 0;
+  let cloned = false;
+
+  function stop(){
+    if(frameId) cancelAnimationFrame(frameId);
+    frameId = null;
+    track.style.transform = "";
+  }
+
+  function step(time){
+    if(!lastTime) lastTime = time;
+    const delta = time - lastTime;
+    lastTime = time;
+    position -= delta * 0.045;
+
+    if(loopWidth && Math.abs(position) >= loopWidth){
+      position = 0;
+    }
+
+    track.style.transform = "translateX(" + position + "px)";
+    frameId = requestAnimationFrame(step);
+  }
+
+  function start(){
+    stop();
+
+    if(!mobileQuery.matches){
+      lastTime = 0;
+      return;
+    }
+
+    if(!cloned){
+      track.innerHTML = track.innerHTML + track.innerHTML;
+      cloned = true;
+    }
+
+    loopWidth = Math.max(1, track.scrollWidth / 2);
+    position = 0;
+    lastTime = 0;
+    track.style.willChange = "transform";
+    frameId = requestAnimationFrame(step);
+  }
+
+  mobileQuery.addEventListener?.("change", start);
+  window.addEventListener("resize", start);
+  start();
+}
+
 renderProducts();
 renderTrending();
 updateCartCount();
+startMobileOfferMarquee();

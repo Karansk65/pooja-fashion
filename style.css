@@ -7838,12 +7838,13 @@ footer{
     width:max-content !important;
     max-width:none !important;
     min-width:max-content !important;
+    margin-left:0 !important;
     padding:0 !important;
     flex-wrap:nowrap !important;
     justify-content:flex-start !important;
     gap:32px !important;
     white-space:nowrap !important;
-    animation:mobileOfferScroll 22s linear infinite !important;
+    animation:none !important;
   }
 
   body.boutique-home .offer-track span{
@@ -7875,4 +7876,9 @@ footer{
 @keyframes mobileOfferScroll{
   from{ transform:translateX(100vw); }
   to{ transform:translateX(-100%); }
+}
+
+@keyframes mobileOfferSlide{
+  from{ margin-left:100vw; }
+  to{ margin-left:-920px; }
 }
