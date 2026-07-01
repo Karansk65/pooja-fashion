@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout | Pooja Fashion</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=otp-payment-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="premium-checkout-page">
@@ -126,10 +126,10 @@
             <span>
               <strong>UPI</strong>
               <small>QR, PhonePe, GPay, Paytm</small>
-              <span class="upi-app-chips" aria-label="UPI apps">
-                <em data-upi-app="PhonePe">PhonePe</em>
-                <em data-upi-app="Google Pay">GPay</em>
-                <em data-upi-app="Paytm">Paytm</em>
+              <span class="upi-app-chips brand-chips" aria-label="UPI apps">
+                <em class="brand-chip phonepe-logo" data-upi-app="PhonePe">PhonePe</em>
+                <em class="brand-chip gpay-logo" data-upi-app="Google Pay">GPay</em>
+                <em class="brand-chip paytm-logo" data-upi-app="Paytm">Paytm</em>
               </span>
             </span>
             <i class="fas fa-check"></i>
@@ -139,6 +139,11 @@
             <span>
               <strong>Cards</strong>
               <small>Debit and credit cards</small>
+              <span class="brand-chips compact">
+                <em class="brand-chip visa-logo">VISA</em>
+                <em class="brand-chip mastercard-logo">MC</em>
+                <em class="brand-chip rupay-logo">RuPay</em>
+              </span>
             </span>
             <i class="fas fa-check"></i>
           </button>
@@ -155,6 +160,11 @@
             <span>
               <strong>Netbanking</strong>
               <small>Pay from your bank</small>
+              <span class="brand-chips compact">
+                <em class="brand-chip bank-logo">SBI</em>
+                <em class="brand-chip bank-logo">HDFC</em>
+                <em class="brand-chip bank-logo">ICICI</em>
+              </span>
             </span>
             <i class="fas fa-check"></i>
           </button>
@@ -163,6 +173,10 @@
             <span>
               <strong>Wallet</strong>
               <small>Supported wallets</small>
+              <span class="brand-chips compact">
+                <em class="brand-chip paytm-logo">Paytm</em>
+                <em class="brand-chip wallet-logo">Mobikwik</em>
+              </span>
             </span>
             <i class="fas fa-check"></i>
           </button>
@@ -271,8 +285,8 @@
 </main>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="config.js"></script>
-<script src="backend-client.js"></script>
-<script src="checkout.js"></script>
+<script src="config.js?v=otp-payment-1"></script>
+<script src="backend-client.js?v=otp-payment-1"></script>
+<script src="checkout.js?v=otp-payment-1"></script>
 </body>
 </html>

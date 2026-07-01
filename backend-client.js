@@ -1,6 +1,7 @@
 (function(){
   const config = window.POOJA_CONFIG || {};
   const apiBaseUrl = (config.API_BASE_URL || "").replace(/\/$/, "");
+  const apiHostLabel = config.API_HOST_LABEL || apiBaseUrl || "backend";
 
   function isEnabled(){
     return Boolean(apiBaseUrl);
@@ -52,7 +53,10 @@
         }
       });
     }catch(error){
-      throw new Error("Backend is not running. Start it with: npm.cmd start");
+      throw new Error(
+        "Backend connection failed for " + apiHostLabel +
+        ". Open this site on phone as http://192.168.1.33:5000 and keep the PC server running."
+      );
     }
 
     const data = await response.json().catch(() => ({}));
@@ -81,6 +85,17 @@
       return data;
     }),
     login: payload => request("/api/auth/login", {
+      method:"POST",
+      body: JSON.stringify(payload)
+    }).then(data => {
+      setSession(data);
+      return data;
+    }),
+    sendOtp: payload => request("/api/auth/send-otp", {
+      method:"POST",
+      body: JSON.stringify(payload)
+    }),
+    verifyOtp: payload => request("/api/auth/verify-otp", {
       method:"POST",
       body: JSON.stringify(payload)
     }).then(data => {

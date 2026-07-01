@@ -17,6 +17,11 @@ const frontendOrigin = process.env.FRONTEND_ORIGIN || "*";
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID || "";
 const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET || "";
 const adminPin = process.env.ADMIN_PIN || "";
+const smsProvider = String(process.env.SMS_PROVIDER || "").trim().toLowerCase();
+const fast2SmsApiKey = process.env.FAST2SMS_API_KEY || "";
+const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID || "";
+const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN || "";
+const twilioFromNumber = process.env.TWILIO_FROM_NUMBER || "";
 const isProduction = process.env.NODE_ENV === "production";
 const databasePath = path.resolve(__dirname, "..", databaseFile);
 const frontendDir = path.resolve(__dirname, "..", "..");
@@ -24,6 +29,9 @@ const hasRazorpayKeys =
   razorpayKeyId &&
   razorpayKeySecret &&
   !/your|xxxxx|change/i.test(razorpayKeyId + " " + razorpayKeySecret);
+const hasSmsProvider =
+  (smsProvider === "fast2sms" && fast2SmsApiKey) ||
+  (smsProvider === "twilio" && twilioAccountSid && twilioAuthToken && twilioFromNumber);
 
 if(isProduction){
   if(!jwtSecret || jwtSecret.length < 32 || /change|secret|dev/i.test(jwtSecret)){
@@ -72,7 +80,8 @@ function ensureDatabase(){
       users:[],
       orders:[],
       payments:[],
-      reviews:[]
+      reviews:[],
+      otps:[]
     }, null, 2));
   }
 }
@@ -84,6 +93,7 @@ function readDb(){
   db.orders = Array.isArray(db.orders) ? db.orders : [];
   db.payments = Array.isArray(db.payments) ? db.payments : [];
   db.reviews = Array.isArray(db.reviews) ? db.reviews : [];
+  db.otps = Array.isArray(db.otps) ? db.otps : [];
   return db;
 }
 
@@ -107,6 +117,97 @@ function publicUser(user){
 
 function signToken(user){
   return jwt.sign({ userId: user.id }, jwtSecret, { expiresIn:"30d" });
+}
+
+function normalizePhone(value){
+  return String(value || "").replace(/\D/g, "").slice(-10);
+}
+
+function isValidIndianPhone(value){
+  return /^[6-9]\d{9}$/.test(normalizePhone(value));
+}
+
+function hashOtp(phone, otp){
+  return crypto
+    .createHash("sha256")
+    .update(normalizePhone(phone) + "|" + String(otp) + "|" + jwtSecret)
+    .digest("hex");
+}
+
+async function sendSms(phone, message){
+  const cleanPhone = normalizePhone(phone);
+
+  if(!hasSmsProvider){
+    console.log("[sms disabled]", cleanPhone, message);
+    return { sent:false, provider:"disabled" };
+  }
+
+  if(smsProvider === "fast2sms"){
+    const response = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+      method:"POST",
+      headers:{
+        authorization:fast2SmsApiKey,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        route:"q",
+        message,
+        language:"english",
+        flash:0,
+        numbers:cleanPhone
+      })
+    });
+
+    if(!response.ok){
+      throw new Error("SMS provider failed");
+    }
+
+    return { sent:true, provider:"fast2sms" };
+  }
+
+  if(smsProvider === "twilio"){
+    const credentials = Buffer.from(twilioAccountSid + ":" + twilioAuthToken).toString("base64");
+    const body = new URLSearchParams({
+      To:"+91" + cleanPhone,
+      From:twilioFromNumber,
+      Body:message
+    });
+    const response = await fetch(
+      "https://api.twilio.com/2010-04-01/Accounts/" + encodeURIComponent(twilioAccountSid) + "/Messages.json",
+      {
+        method:"POST",
+        headers:{
+          Authorization:"Basic " + credentials,
+          "Content-Type":"application/x-www-form-urlencoded"
+        },
+        body
+      }
+    );
+
+    if(!response.ok){
+      throw new Error("SMS provider failed");
+    }
+
+    return { sent:true, provider:"twilio" };
+  }
+
+  return { sent:false, provider:"disabled" };
+}
+
+async function notifyOrderConfirmed(order){
+  const message = "Pooja Fashion: Your order " + order.order_id +
+    " is confirmed. Amount Rs. " + order.total +
+    ". We will contact you before dispatch. Thank you.";
+
+  try{
+    const result = await sendSms(order.customer_phone, message);
+    order.customer_sms_status = result.sent ? "Sent" : "Not configured";
+    order.customer_sms_provider = result.provider;
+    order.customer_sms_at = new Date().toISOString();
+  }catch(error){
+    order.customer_sms_status = "Failed";
+    order.customer_sms_error = error.message;
+  }
 }
 
 function authRequired(req, res, next){
@@ -301,8 +402,98 @@ app.get("/api/health", (_req, res) => {
 app.get("/api/config", (_req, res) => {
   res.json({
     razorpayKeyId,
-    gatewayReady: Boolean(razorpay)
+    gatewayReady: Boolean(razorpay),
+    smsReady: Boolean(hasSmsProvider)
   });
+});
+
+app.post("/api/auth/send-otp", authLimiter, async (req, res) => {
+  const phone = normalizePhone(req.body.phone);
+
+  if(!isValidIndianPhone(phone)){
+    return res.status(400).json({ message:"Valid 10 digit mobile number is required" });
+  }
+
+  const otp = String(Math.floor(100000 + Math.random() * 900000));
+  const db = readDb();
+  const now = Date.now();
+  db.otps = db.otps.filter(item => {
+    return item.phone !== phone && new Date(item.expires_at).getTime() > now;
+  });
+  db.otps.push({
+    id:newId("otp"),
+    phone,
+    otp_hash:hashOtp(phone, otp),
+    purpose:String(req.body.purpose || "login").slice(0, 24),
+    attempts:0,
+    expires_at:new Date(now + 5 * 60 * 1000).toISOString(),
+    created_at:new Date().toISOString()
+  });
+  writeDb(db);
+
+  try{
+    const smsResult = await sendSms(phone, "Pooja Fashion OTP is " + otp + ". It is valid for 5 minutes.");
+    res.json({
+      message:smsResult.sent ? "OTP sent to your phone." : "OTP generated for testing.",
+      smsSent:smsResult.sent,
+      devOtp:isProduction ? undefined : otp
+    });
+  }catch(error){
+    res.status(503).json({
+      message:"OTP created, but SMS could not be sent. Try again or use password login.",
+      devOtp:isProduction ? undefined : otp
+    });
+  }
+});
+
+app.post("/api/auth/verify-otp", authLimiter, (req, res) => {
+  const phone = normalizePhone(req.body.phone);
+  const otp = String(req.body.otp || "").trim();
+  const name = String(req.body.name || "").trim();
+
+  if(!isValidIndianPhone(phone) || !/^\d{6}$/.test(otp)){
+    return res.status(400).json({ message:"Phone and 6 digit OTP are required" });
+  }
+
+  const db = readDb();
+  const now = Date.now();
+  const otpRecord = db.otps.find(item => {
+    return item.phone === phone && new Date(item.expires_at).getTime() > now;
+  });
+
+  if(!otpRecord){
+    return res.status(400).json({ message:"OTP expired. Please request a new OTP." });
+  }
+
+  otpRecord.attempts = Number(otpRecord.attempts || 0) + 1;
+
+  if(otpRecord.attempts > 5 || otpRecord.otp_hash !== hashOtp(phone, otp)){
+    writeDb(db);
+    return res.status(401).json({ message:"Invalid OTP" });
+  }
+
+  let user = db.users.find(item => item.phone === phone);
+
+  if(!user){
+    user = {
+      id:newId("user"),
+      name:name || "Pooja Fashion Customer",
+      phone,
+      email:"",
+      password_hash:"",
+      address:"",
+      created_at:new Date().toISOString(),
+      created_with:"otp"
+    };
+    db.users.push(user);
+  }else if(name && (!user.name || user.name === "Pooja Fashion Customer")){
+    user.name = name;
+  }
+
+  db.otps = db.otps.filter(item => item.id !== otpRecord.id);
+  writeDb(db);
+
+  res.json({ token:signToken(user), user:publicUser(user) });
 });
 
 app.post("/api/auth/register", authLimiter, (req, res) => {
@@ -312,7 +503,7 @@ app.post("/api/auth/register", authLimiter, (req, res) => {
     return res.status(400).json({ message:"Name, phone and password are required" });
   }
 
-  if(!/^[6-9]\d{9}$/.test(String(phone).trim())){
+  if(!isValidIndianPhone(phone)){
     return res.status(400).json({ message:"Valid 10 digit mobile number is required" });
   }
 
@@ -321,7 +512,7 @@ app.post("/api/auth/register", authLimiter, (req, res) => {
   }
 
   const db = readDb();
-  const normalizedPhone = String(phone).trim();
+  const normalizedPhone = normalizePhone(phone);
   const normalizedEmail = email ? String(email).trim().toLowerCase() : "";
   const exists = db.users.some(user => {
     return user.phone === normalizedPhone || (normalizedEmail && user.email === normalizedEmail);
@@ -356,11 +547,12 @@ app.post("/api/auth/login", authLimiter, (req, res) => {
 
   const db = readDb();
   const loginId = String(identifier).trim().toLowerCase();
+  const phoneId = normalizePhone(identifier);
   const user = db.users.find(item => {
-    return item.phone === identifier || (item.email && item.email.toLowerCase() === loginId);
+    return item.phone === phoneId || (item.email && item.email.toLowerCase() === loginId);
   });
 
-  if(!user || !bcrypt.compareSync(password, user.password_hash)){
+  if(!user || !user.password_hash || !bcrypt.compareSync(password, user.password_hash)){
     return res.status(401).json({ message:"Invalid login details" });
   }
 
@@ -433,14 +625,14 @@ app.patch("/api/orders/:orderId/cancel", authRequired, (req, res) => {
   res.json({ order });
 });
 
-app.post("/api/orders", orderLimiter, optionalAuth, (req, res) => {
+app.post("/api/orders", orderLimiter, optionalAuth, async (req, res) => {
   const { customerName, customerPhone, customerAddress, deliveryInfo, paymentMethod, couponCode, items } = req.body;
 
   if(!customerName || !customerPhone || !customerAddress || !paymentMethod){
     return res.status(400).json({ message:"Customer details and payment method are required" });
   }
 
-  if(!/^[6-9]\d{9}$/.test(String(customerPhone).trim())){
+  if(!isValidIndianPhone(customerPhone)){
     return res.status(400).json({ message:"Valid 10 digit mobile number is required" });
   }
 
@@ -448,13 +640,28 @@ app.post("/api/orders", orderLimiter, optionalAuth, (req, res) => {
     const order = createOrderRecord({
       user: req.user,
       customerName,
-      customerPhone,
+      customerPhone:normalizePhone(customerPhone),
       customerAddress,
       deliveryInfo,
       paymentMethod,
       couponCode,
       items
     });
+
+    if(paymentMethod === "Cash On Delivery"){
+      await notifyOrderConfirmed(order);
+      const db = readDb();
+      const storedOrder = db.orders.find(item => item.id === order.id);
+      if(storedOrder){
+        Object.assign(storedOrder, {
+          customer_sms_status:order.customer_sms_status,
+          customer_sms_provider:order.customer_sms_provider,
+          customer_sms_at:order.customer_sms_at,
+          customer_sms_error:order.customer_sms_error
+        });
+        writeDb(db);
+      }
+    }
 
     res.status(201).json({ order });
   }catch(error){
@@ -568,7 +775,7 @@ app.post("/api/payments/razorpay/create-order", paymentLimiter, optionalAuth, as
   }
 });
 
-app.post("/api/payments/razorpay/verify", paymentLimiter, optionalAuth, (req, res) => {
+app.post("/api/payments/razorpay/verify", paymentLimiter, optionalAuth, async (req, res) => {
   const {
     orderId,
     razorpay_order_id,
@@ -597,6 +804,7 @@ app.post("/api/payments/razorpay/verify", paymentLimiter, optionalAuth, (req, re
 
   order.payment_status = "Paid";
   order.status = "Confirmed";
+  await notifyOrderConfirmed(order);
 
   const payment = db.payments.find(item => {
     return item.order_id === order.id && item.razorpay_order_id === razorpay_order_id;

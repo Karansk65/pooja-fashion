@@ -1484,6 +1484,85 @@ footer{
   background:white;
 }
 
+.brand-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:8px;
+  align-items:center;
+}
+
+.brand-chips.compact{
+  gap:5px;
+  margin-top:7px;
+}
+
+.brand-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:42px;
+  min-height:24px;
+  padding:4px 8px;
+  border-radius:6px;
+  border:1px solid #dde3ea;
+  background:#fff;
+  color:#111;
+  font-size:10px;
+  font-weight:900;
+  font-style:normal;
+  letter-spacing:0;
+  box-shadow:0 3px 10px rgba(18, 24, 32, 0.08);
+}
+
+.phonepe-logo{
+  color:#fff !important;
+  background:#5f259f !important;
+  border-color:#5f259f !important;
+}
+
+.gpay-logo{
+  color:#1a73e8 !important;
+  background:linear-gradient(90deg, #fff 0 52%, #e6f4ea 52% 100%) !important;
+  border-color:#d9e7ff !important;
+}
+
+.paytm-logo{
+  color:#00baf2 !important;
+  background:#f4fbff !important;
+  border-color:#c9ecfb !important;
+}
+
+.visa-logo{
+  color:#1434cb !important;
+  background:#fff !important;
+  border-color:#dbe2ff !important;
+}
+
+.mastercard-logo{
+  color:#fff !important;
+  background:linear-gradient(90deg, #eb001b 0 50%, #f79e1b 50% 100%) !important;
+  border-color:#f0b08b !important;
+}
+
+.rupay-logo{
+  color:#0b7f41 !important;
+  background:#fff !important;
+  border-color:#cfe8d9 !important;
+}
+
+.bank-logo{
+  color:#0f4c81 !important;
+  background:#f3f8ff !important;
+  border-color:#d7e7f9 !important;
+}
+
+.wallet-logo{
+  color:#e21b5a !important;
+  background:#fff5f8 !important;
+  border-color:#f6c8d7 !important;
+}
+
 .cod-option{
   grid-column:1 / -1;
 }
@@ -2409,6 +2488,33 @@ footer{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:16px;
+}
+
+.otp-auth-box{
+  grid-column:1 / -1;
+  padding:16px;
+  border:1px solid #eadfd6;
+  border-radius:12px;
+  background:#fffaf6;
+}
+
+.otp-auth-box small{
+  display:block;
+  margin-top:8px;
+  color:#675f59;
+  font-weight:700;
+}
+
+.otp-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+}
+
+.otp-row button{
+  min-height:46px;
+  padding:0 16px;
+  white-space:nowrap;
 }
 
 .auth-grid h3{
@@ -5724,6 +5830,48 @@ footer{
   color:white;
   font-weight:900;
   cursor:pointer;
+}
+
+.product-otp-box{
+  display:grid;
+  gap:10px;
+  margin:14px 0;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fffaf7;
+}
+
+.product-otp-box span{
+  font-weight:900;
+  color:var(--ink);
+}
+
+.product-otp-box input{
+  width:100%;
+  min-height:44px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:11px 12px;
+  font:inherit;
+}
+
+.product-otp-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+
+.product-otp-box button{
+  min-height:44px;
+  border:0;
+  border-radius:8px;
+  background:var(--ink);
+  color:white;
+  padding:0 14px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
 }
 
 .product-forgot-btn{

@@ -30,6 +30,8 @@ const productRegisterForm = document.getElementById("productRegisterForm");
 const productAuthMessage = document.getElementById("productAuthMessage");
 const productForgotBtn = document.getElementById("productForgotBtn");
 const productForgotPanel = document.getElementById("productForgotPanel");
+const productSendOtpBtn = document.getElementById("productSendOtpBtn");
+const productVerifyOtpBtn = document.getElementById("productVerifyOtpBtn");
 let pendingCheckoutUrl = "";
 
 const name = localStorage.getItem("productName") || "Premium Designer Gown";
@@ -340,6 +342,48 @@ productRegisterForm?.addEventListener("submit", async event => {
       address: ""
     });
     if(productAuthMessage) productAuthMessage.innerText = "Account created. Opening checkout...";
+    continuePendingCheckout();
+  }catch(error){
+    if(productAuthMessage) productAuthMessage.innerText = error.message;
+  }
+});
+
+productSendOtpBtn?.addEventListener("click", async () => {
+  if(!window.PoojaApi?.isEnabled()){
+    if(productAuthMessage) productAuthMessage.innerText = "Backend is not connected.";
+    return;
+  }
+
+  try{
+    if(productAuthMessage) productAuthMessage.innerText = "Sending OTP...";
+    const response = await window.PoojaApi.sendOtp({
+      phone: document.getElementById("productOtpPhone").value.trim(),
+      purpose: "checkout"
+    });
+    if(productAuthMessage){
+      productAuthMessage.innerText = response.devOtp
+        ? response.message + " Testing OTP: " + response.devOtp
+        : response.message;
+    }
+  }catch(error){
+    if(productAuthMessage) productAuthMessage.innerText = error.message;
+  }
+});
+
+productVerifyOtpBtn?.addEventListener("click", async () => {
+  if(!window.PoojaApi?.isEnabled()){
+    if(productAuthMessage) productAuthMessage.innerText = "Backend is not connected.";
+    return;
+  }
+
+  try{
+    if(productAuthMessage) productAuthMessage.innerText = "Verifying OTP...";
+    await window.PoojaApi.verifyOtp({
+      phone: document.getElementById("productOtpPhone").value.trim(),
+      otp: document.getElementById("productOtpCode").value.trim(),
+      name: document.getElementById("productOtpName").value.trim()
+    });
+    if(productAuthMessage) productAuthMessage.innerText = "OTP verified. Opening checkout...";
     continuePendingCheckout();
   }catch(error){
     if(productAuthMessage) productAuthMessage.innerText = error.message;

@@ -3,5 +3,6 @@ const poojaApiBaseUrl = window.location.protocol === "file:"
   : window.location.origin;
 
 window.POOJA_CONFIG = {
-  API_BASE_URL: poojaApiBaseUrl
+  API_BASE_URL: poojaApiBaseUrl,
+  API_HOST_LABEL: new URL(poojaApiBaseUrl).host
 };

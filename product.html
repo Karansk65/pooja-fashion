@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details | Pooja Fashion</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=otp-payment-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="premium-product-page">
@@ -415,6 +415,17 @@
       <button class="product-auth-link" type="button" data-auth-switch="register">Create new account</button>
     </form>
 
+    <div class="product-otp-box">
+      <span>Quick phone OTP login</span>
+      <input type="tel" id="productOtpPhone" placeholder="Mobile number" autocomplete="tel">
+      <input type="text" id="productOtpName" placeholder="Full name for new account" autocomplete="name">
+      <div class="product-otp-row">
+        <input type="text" id="productOtpCode" placeholder="6 digit OTP" maxlength="6">
+        <button type="button" id="productSendOtpBtn">Send OTP</button>
+      </div>
+      <button type="button" id="productVerifyOtpBtn">Verify OTP & Buy Now</button>
+    </div>
+
     <form class="product-auth-form" id="productRegisterForm">
       <input type="text" id="productRegisterName" placeholder="Full name" autocomplete="name">
       <input type="tel" id="productRegisterPhone" placeholder="Mobile number" autocomplete="tel">
@@ -439,8 +450,8 @@
   <button class="mobile-buy-now" type="button">Buy Now</button>
 </div>
 
-<script src="config.js"></script>
-<script src="backend-client.js"></script>
-<script src="product.js"></script>
+<script src="config.js?v=otp-payment-1"></script>
+<script src="backend-client.js?v=otp-payment-1"></script>
+<script src="product.js?v=otp-payment-1"></script>
 </body>
 </html>

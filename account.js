@@ -114,6 +114,45 @@ async function registerAccount(){
   }
 }
 
+async function sendAccountOtp(){
+  if(!window.PoojaApi?.isEnabled()){
+    authMessage.innerText = "Backend API URL is not configured in config.js.";
+    return;
+  }
+
+  try{
+    const response = await window.PoojaApi.sendOtp({
+      phone: document.getElementById("otpPhone").value.trim(),
+      purpose: "account"
+    });
+    authMessage.innerText = response.devOtp
+      ? response.message + " Testing OTP: " + response.devOtp
+      : response.message;
+  }catch(error){
+    authMessage.innerText = error.message;
+  }
+}
+
+async function verifyAccountOtp(){
+  if(!window.PoojaApi?.isEnabled()){
+    authMessage.innerText = "Backend API URL is not configured in config.js.";
+    return;
+  }
+
+  try{
+    await window.PoojaApi.verifyOtp({
+      phone: document.getElementById("otpPhone").value.trim(),
+      otp: document.getElementById("otpCode").value.trim(),
+      name: document.getElementById("otpName").value.trim()
+    });
+    authMessage.innerText = "OTP verified. Login successful.";
+    await renderAccount();
+    goToRedirect();
+  }catch(error){
+    authMessage.innerText = error.message;
+  }
+}
+
 async function logoutAccount(){
   window.PoojaApi?.logout();
   localStorage.removeItem("customerProfile");

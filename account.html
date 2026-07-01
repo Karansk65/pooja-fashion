@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account | Pooja Fashion</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=otp-payment-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -59,6 +59,18 @@
         <input type="email" id="registerEmail" placeholder="Email optional">
         <input type="password" id="registerPassword" placeholder="Password">
         <button type="button" onclick="registerAccount()">Create Account</button>
+      </div>
+
+      <div class="otp-auth-box">
+        <h3>Login with Phone OTP</h3>
+        <input type="tel" id="otpPhone" placeholder="Mobile number">
+        <input type="text" id="otpName" placeholder="Full name for new account">
+        <div class="otp-row">
+          <input type="text" id="otpCode" placeholder="6 digit OTP" maxlength="6">
+          <button type="button" onclick="sendAccountOtp()">Send OTP</button>
+        </div>
+        <button type="button" onclick="verifyAccountOtp()">Verify OTP</button>
+        <small>Use OTP for quick login or account creation.</small>
       </div>
     </div>
 
@@ -133,8 +145,8 @@
   <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
 </div>
 
-<script src="config.js"></script>
-<script src="backend-client.js"></script>
-<script src="account.js"></script>
+<script src="config.js?v=otp-payment-1"></script>
+<script src="backend-client.js?v=otp-payment-1"></script>
+<script src="account.js?v=otp-payment-1"></script>
 </body>
 </html>
