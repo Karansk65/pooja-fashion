@@ -194,6 +194,38 @@ async function sendSms(phone, message){
   return { sent:false, provider:"disabled" };
 }
 
+async function sendOtpSms(phone, otp){
+  const cleanPhone = normalizePhone(phone);
+
+  if(!hasSmsProvider){
+    console.log("[otp sms disabled]", cleanPhone, otp);
+    return { sent:false, provider:"disabled" };
+  }
+
+  if(smsProvider === "fast2sms"){
+    const query = new URLSearchParams({
+      authorization:fast2SmsApiKey,
+      route:"otp",
+      variables_values:String(otp),
+      numbers:cleanPhone
+    });
+    const response = await fetch("https://www.fast2sms.com/dev/bulkV2?" + query.toString());
+
+    if(!response.ok){
+      throw new Error("OTP SMS provider failed");
+    }
+
+    const data = await response.json().catch(() => ({}));
+    if(data.return === false){
+      throw new Error(data.message || "OTP SMS provider failed");
+    }
+
+    return { sent:true, provider:"fast2sms-otp" };
+  }
+
+  return sendSms(phone, "Pooja Fashion OTP is " + otp + ". It is valid for 5 minutes.");
+}
+
 async function notifyOrderConfirmed(order){
   const message = "Pooja Fashion: Your order " + order.order_id +
     " is confirmed. Amount Rs. " + order.total +
@@ -432,7 +464,7 @@ app.post("/api/auth/send-otp", authLimiter, async (req, res) => {
   writeDb(db);
 
   try{
-    const smsResult = await sendSms(phone, "Pooja Fashion OTP is " + otp + ". It is valid for 5 minutes.");
+    const smsResult = await sendOtpSms(phone, otp);
     res.json({
       message:smsResult.sent ? "OTP sent to your phone." : "OTP generated for testing.",
       smsSent:smsResult.sent,
