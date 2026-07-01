@@ -6080,6 +6080,63 @@ footer{
   font:inherit;
 }
 
+.admin-pin-panel{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px;
+  margin-bottom:14px;
+  background:#fffaf7;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+
+.admin-pin-panel[hidden]{
+  display:none;
+}
+
+.admin-pin-panel h3{
+  font-size:22px;
+  margin-bottom:4px;
+}
+
+.admin-pin-panel p{
+  color:#6c635d;
+}
+
+.admin-pin-panel form{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.admin-pin-panel input{
+  min-height:44px;
+  width:190px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:12px;
+  font:inherit;
+}
+
+.admin-pin-panel button{
+  min-height:44px;
+  border:1px solid var(--ink);
+  border-radius:7px;
+  background:var(--ink);
+  color:white;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.admin-pin-panel button[type="button"]{
+  background:white;
+  color:var(--ink);
+}
+
 .admin-orders-list{
   display:grid;
   gap:14px;
@@ -6265,8 +6322,15 @@ footer{
   }
 
   .admin-toolbar,
+  .admin-pin-panel,
   .admin-order-top{
     display:grid;
+  }
+
+  .admin-pin-panel form,
+  .admin-pin-panel input,
+  .admin-pin-panel button{
+    width:100%;
   }
 
   .admin-order-total{

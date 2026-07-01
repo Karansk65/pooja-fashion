@@ -55,6 +55,18 @@
     <input type="search" id="adminSearch" placeholder="Search name, phone, order id, address">
   </section>
 
+  <section class="admin-pin-panel" id="adminPinPanel">
+    <div>
+      <h3>Admin PIN</h3>
+      <p>Enter your admin PIN to view customer name, phone number and address.</p>
+    </div>
+    <form id="adminPinForm">
+      <input type="password" id="adminPinInput" placeholder="Enter admin PIN" autocomplete="current-password">
+      <button type="submit">Show Orders</button>
+      <button type="button" id="clearAdminPinBtn">Change PIN</button>
+    </form>
+  </section>
+
   <section id="adminOrders" class="admin-orders-list"></section>
 </main>
 

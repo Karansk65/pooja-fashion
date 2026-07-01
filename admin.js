@@ -6,9 +6,19 @@ const adminTotalOrders = document.getElementById("adminTotalOrders");
 const adminPaidOrders = document.getElementById("adminPaidOrders");
 const adminCodOrders = document.getElementById("adminCodOrders");
 const adminUpdatedAt = document.getElementById("adminUpdatedAt");
+const adminPinPanel = document.getElementById("adminPinPanel");
+const adminPinForm = document.getElementById("adminPinForm");
+const adminPinInput = document.getElementById("adminPinInput");
+const clearAdminPinBtn = document.getElementById("clearAdminPinBtn");
 
 let allOrders = [];
 let adminPin = localStorage.getItem("poojaAdminPin") || "";
+
+if(adminPinInput) adminPinInput.value = adminPin;
+
+function setPinPanelVisible(visible){
+  if(adminPinPanel) adminPinPanel.hidden = !visible;
+}
 
 function escapeHtml(value){
   return String(value || "")
@@ -194,8 +204,16 @@ async function loadAdminOrders(){
   try{
     if(window.PoojaApi?.isEnabled()){
       if(!adminPin){
-        adminPin = prompt("Enter admin PIN to view orders") || "";
-        localStorage.setItem("poojaAdminPin", adminPin);
+        setPinPanelVisible(true);
+        adminStatus.innerText = "Enter Admin PIN to view latest backend orders.";
+        renderSummary([]);
+        adminOrders.innerHTML = `
+          <div class="admin-empty-state">
+            <h3>Admin PIN required</h3>
+            <p>Orders are protected. Enter the PIN above to view customer details.</p>
+          </div>
+        `;
+        return;
       }
 
       const response = await window.PoojaApi.request("/api/admin/orders", {
@@ -205,6 +223,7 @@ async function loadAdminOrders(){
       });
 
       allOrders = response.orders || [];
+      setPinPanelVisible(false);
       adminStatus.innerText = "Showing latest backend orders. Auto refresh is on.";
       renderOrders(allOrders);
       return;
@@ -213,7 +232,9 @@ async function loadAdminOrders(){
     if(/pin|401/i.test(error.message)){
       localStorage.removeItem("poojaAdminPin");
       adminPin = "";
-      adminStatus.innerText = "Wrong Admin PIN. Refresh button dabakar sahi PIN enter karo.";
+      if(adminPinInput) adminPinInput.value = "";
+      setPinPanelVisible(true);
+      adminStatus.innerText = "Wrong Admin PIN. Enter the correct PIN below.";
       adminOrders.innerHTML = `
         <div class="admin-empty-state">
           <h3>Admin PIN required</h3>
@@ -236,6 +257,19 @@ async function loadAdminOrders(){
 
 refreshOrdersBtn?.addEventListener("click", loadAdminOrders);
 adminSearch?.addEventListener("input", filterOrders);
+adminPinForm?.addEventListener("submit", event => {
+  event.preventDefault();
+  adminPin = adminPinInput.value.trim();
+  localStorage.setItem("poojaAdminPin", adminPin);
+  loadAdminOrders();
+});
+clearAdminPinBtn?.addEventListener("click", () => {
+  adminPin = "";
+  localStorage.removeItem("poojaAdminPin");
+  if(adminPinInput) adminPinInput.value = "";
+  setPinPanelVisible(true);
+  loadAdminOrders();
+});
 
 loadAdminOrders();
 setInterval(loadAdminOrders, 30000);
