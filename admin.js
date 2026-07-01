@@ -6,6 +6,15 @@ const adminTotalOrders = document.getElementById("adminTotalOrders");
 const adminPaidOrders = document.getElementById("adminPaidOrders");
 const adminCodOrders = document.getElementById("adminCodOrders");
 const adminUpdatedAt = document.getElementById("adminUpdatedAt");
+const adminRevenue = document.getElementById("adminRevenue");
+const adminPendingOrders = document.getElementById("adminPendingOrders");
+const adminCancelledOrders = document.getElementById("adminCancelledOrders");
+const adminFilterAll = document.getElementById("adminFilterAll");
+const adminFilterPaid = document.getElementById("adminFilterPaid");
+const adminFilterCod = document.getElementById("adminFilterCod");
+const adminFilterPending = document.getElementById("adminFilterPending");
+const adminFilterCancelled = document.getElementById("adminFilterCancelled");
+const adminFilterTabs = document.querySelectorAll("[data-admin-filter]");
 const adminPinPanel = document.getElementById("adminPinPanel");
 const adminPinForm = document.getElementById("adminPinForm");
 const adminPinInput = document.getElementById("adminPinInput");
@@ -13,6 +22,7 @@ const clearAdminPinBtn = document.getElementById("clearAdminPinBtn");
 
 let allOrders = [];
 let adminPin = localStorage.getItem("poojaAdminPin") || "";
+let activeFilter = "all";
 
 if(adminPinInput) adminPinInput.value = adminPin;
 
@@ -43,6 +53,10 @@ function formatDate(value){
 function formatMoney(value){
   const amount = Number(String(value || "0").replace(/[^\d.]/g, "")) || 0;
   return "Rs. " + amount.toLocaleString("en-IN");
+}
+
+function moneyNumber(value){
+  return Number(String(value || "0").replace(/[^\d.]/g, "")) || 0;
 }
 
 function orderId(order){
@@ -77,6 +91,26 @@ function paymentStatus(order){
   return order.payment_status || order.paymentStatus || "Pending";
 }
 
+function orderStatus(order){
+  return order.status || order.order_status || order.orderStatus || "Placed";
+}
+
+function isCancelled(order){
+  return /cancel/i.test(orderStatus(order) + " " + paymentStatus(order));
+}
+
+function isPaid(order){
+  return /paid|confirmed|success|captured/i.test(paymentStatus(order)) && !isCancelled(order);
+}
+
+function isCod(order){
+  return /cash|cod|delivery/i.test(paymentMethod(order) + " " + paymentStatus(order)) && !isCancelled(order);
+}
+
+function isPending(order){
+  return !isPaid(order) && !isCod(order) && !isCancelled(order);
+}
+
 function statusClass(value){
   return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
@@ -93,26 +127,75 @@ function readLocalOrders(){
 }
 
 function renderSummary(orders){
-  const paidCount = orders.filter(order => /paid|confirmed/i.test(paymentStatus(order))).length;
-  const codCount = orders.filter(order => /cash|cod/i.test(paymentMethod(order) + " " + paymentStatus(order))).length;
+  const paidCount = orders.filter(isPaid).length;
+  const codCount = orders.filter(isCod).length;
+  const pendingCount = orders.filter(isPending).length;
+  const cancelledCount = orders.filter(isCancelled).length;
+  const revenue = orders
+    .filter(order => !isCancelled(order))
+    .reduce((sum, order) => sum + moneyNumber(orderTotal(order)), 0);
 
   adminTotalOrders.innerText = orders.length;
   adminPaidOrders.innerText = paidCount;
   adminCodOrders.innerText = codCount;
-  adminUpdatedAt.innerText = new Date().toLocaleTimeString("en-IN", {
+  if(adminRevenue) adminRevenue.innerText = formatMoney(revenue);
+  if(adminPendingOrders) adminPendingOrders.innerText = pendingCount;
+  if(adminCancelledOrders) adminCancelledOrders.innerText = cancelledCount;
+  if(adminFilterAll) adminFilterAll.innerText = orders.length;
+  if(adminFilterPaid) adminFilterPaid.innerText = paidCount;
+  if(adminFilterCod) adminFilterCod.innerText = codCount;
+  if(adminFilterPending) adminFilterPending.innerText = pendingCount;
+  if(adminFilterCancelled) adminFilterCancelled.innerText = cancelledCount;
+  if(adminUpdatedAt) adminUpdatedAt.innerText = new Date().toLocaleTimeString("en-IN", {
     hour:"2-digit",
     minute:"2-digit"
   });
 }
 
+function setFilterBadgeCounts(orders){
+  if(adminFilterAll) adminFilterAll.innerText = orders.length;
+  if(adminFilterPaid) adminFilterPaid.innerText = orders.filter(isPaid).length;
+  if(adminFilterCod) adminFilterCod.innerText = orders.filter(isCod).length;
+  if(adminFilterPending) adminFilterPending.innerText = orders.filter(isPending).length;
+  if(adminFilterCancelled) adminFilterCancelled.innerText = orders.filter(isCancelled).length;
+}
+
+function currentFilteredOrders(){
+  const query = (adminSearch?.value || "").trim().toLowerCase();
+
+  return allOrders.filter(order => {
+    const filterMatch =
+      activeFilter === "all" ||
+      (activeFilter === "paid" && isPaid(order)) ||
+      (activeFilter === "cod" && isCod(order)) ||
+      (activeFilter === "pending" && isPending(order)) ||
+      (activeFilter === "cancelled" && isCancelled(order));
+
+    if(!filterMatch) return false;
+    if(!query) return true;
+
+    return [
+      orderId(order),
+      customerName(order),
+      customerPhone(order),
+      customerAddress(order),
+      paymentMethod(order),
+      paymentStatus(order),
+      orderStatus(order)
+    ].join(" ").toLowerCase().includes(query);
+  });
+}
+
 function renderOrders(orders){
-  renderSummary(orders);
+  renderSummary(allOrders.length ? allOrders : orders);
+  setFilterBadgeCounts(allOrders.length ? allOrders : orders);
 
   if(!orders.length){
     adminOrders.innerHTML = `
       <div class="admin-empty-state">
-        <h3>No orders yet</h3>
-        <p>Customer checkout ke baad orders yahan appear honge.</p>
+        <i class="fas fa-inbox"></i>
+        <h3>No matching orders</h3>
+        <p>Customer checkout ke baad orders yahan appear honge. Search/filter clear karke dobara dekho.</p>
       </div>
     `;
     return;
@@ -123,6 +206,11 @@ function renderOrders(orders){
     const address = customerAddress(order);
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
     const phone = customerPhone(order);
+    const cleanPhone = String(phone || "").replace(/[^\d]/g, "");
+    const whatsappText = encodeURIComponent(`Hello ${customerName(order) || "Customer"}, your Pooja Fashion order ${orderId(order)} is received. We will contact you shortly.`);
+    const whatsappUrl = cleanPhone ? `https://wa.me/91${cleanPhone.slice(-10)}?text=${whatsappText}` : "";
+    const status = paymentStatus(order);
+    const lifecycle = orderStatus(order);
 
     return `
       <article class="admin-order-card">
@@ -134,32 +222,37 @@ function renderOrders(orders){
           </div>
           <div class="admin-order-total">
             <strong>${formatMoney(orderTotal(order))}</strong>
-            <span class="admin-status-pill ${statusClass(paymentStatus(order))}">${escapeHtml(paymentStatus(order))}</span>
+            <span class="admin-status-pill ${statusClass(status)}">${escapeHtml(status)}</span>
           </div>
         </div>
 
         <div class="admin-order-info-grid">
           <div>
-            <small>Mobile</small>
+            <small><i class="fas fa-phone"></i> Mobile</small>
             <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone || "-")}</a>
           </div>
           <div>
-            <small>Payment</small>
+            <small><i class="fas fa-wallet"></i> Payment</small>
             <strong>${escapeHtml(paymentMethod(order) || "-")}</strong>
           </div>
           <div>
-            <small>Order Status</small>
-            <strong>${escapeHtml(order.status || "Placed")}</strong>
+            <small><i class="fas fa-clipboard-check"></i> Order Status</small>
+            <strong>${escapeHtml(lifecycle)}</strong>
           </div>
         </div>
 
         <div class="admin-address-box">
-          <small>Customer Location / Address</small>
+          <small><i class="fas fa-location-dot"></i> Customer Location / Address</small>
           <p>${escapeHtml(address || "Address not added")}</p>
-          ${address ? `<a href="${mapsUrl}" target="_blank" rel="noopener">Open Location in Maps</a>` : ""}
+          <div class="admin-action-row">
+            ${phone ? `<a href="tel:${escapeHtml(phone)}"><i class="fas fa-phone"></i> Call</a>` : ""}
+            ${whatsappUrl ? `<a href="${whatsappUrl}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>` : ""}
+            ${address ? `<a href="${mapsUrl}" target="_blank" rel="noopener"><i class="fas fa-map-location-dot"></i> Maps</a>` : ""}
+          </div>
         </div>
 
         <div class="admin-products-list">
+          <h4>Items in this order</h4>
           ${products.map(product => `
             <div class="admin-product-row">
               <img src="${escapeHtml(product.image || "images/banner.png")}" alt="${escapeHtml(product.name || "Product")}">
@@ -177,25 +270,7 @@ function renderOrders(orders){
 }
 
 function filterOrders(){
-  const query = adminSearch.value.trim().toLowerCase();
-
-  if(!query){
-    renderOrders(allOrders);
-    return;
-  }
-
-  const filtered = allOrders.filter(order => {
-    return [
-      orderId(order),
-      customerName(order),
-      customerPhone(order),
-      customerAddress(order),
-      paymentMethod(order),
-      paymentStatus(order)
-    ].join(" ").toLowerCase().includes(query);
-  });
-
-  renderOrders(filtered);
+  renderOrders(currentFilteredOrders());
 }
 
 async function loadAdminOrders(){
@@ -225,7 +300,7 @@ async function loadAdminOrders(){
       allOrders = response.orders || [];
       setPinPanelVisible(false);
       adminStatus.innerText = "Showing latest backend orders. Auto refresh is on.";
-      renderOrders(allOrders);
+      filterOrders();
       return;
     }
   }catch(error){
@@ -252,11 +327,18 @@ async function loadAdminOrders(){
     return new Date(b.created_at || b.createdAt || b.date || 0) -
       new Date(a.created_at || a.createdAt || a.date || 0);
   });
-  renderOrders(allOrders);
+  filterOrders();
 }
 
 refreshOrdersBtn?.addEventListener("click", loadAdminOrders);
 adminSearch?.addEventListener("input", filterOrders);
+adminFilterTabs.forEach(button => {
+  button.addEventListener("click", () => {
+    activeFilter = button.dataset.adminFilter || "all";
+    adminFilterTabs.forEach(item => item.classList.toggle("active", item === button));
+    filterOrders();
+  });
+});
 adminPinForm?.addEventListener("submit", event => {
   event.preventDefault();
   adminPin = adminPinInput.value.trim();

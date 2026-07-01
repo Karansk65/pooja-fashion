@@ -16,53 +16,99 @@
 </script>
 
 <header class="admin-dashboard-header">
-  <div>
-    <p>Store Dashboard</p>
-    <h1>Pooja Fashion Orders</h1>
+  <div class="admin-brand-lockup">
+    <span>P</span>
+    <div>
+      <p>Business Command Center</p>
+      <h1>Pooja Fashion Admin</h1>
+    </div>
   </div>
   <nav>
-    <a href="index.html">Website</a>
-    <a href="orders.html">Customer Orders</a>
+    <a href="index.html"><i class="fas fa-store"></i> Website</a>
+    <a href="orders.html"><i class="fas fa-receipt"></i> Customer View</a>
     <button type="button" id="refreshOrdersBtn"><i class="fas fa-rotate"></i> Refresh</button>
   </nav>
 </header>
 
 <main class="admin-dashboard-shell">
+  <section class="admin-hero-panel">
+    <div>
+      <p>Live Operations</p>
+      <h2>Orders, customers and payment status in one place.</h2>
+      <span id="adminStatus">Loading orders...</span>
+    </div>
+    <div class="admin-hero-actions">
+      <a href="tel:+919865659865"><i class="fas fa-phone"></i> Call Store</a>
+      <a href="https://wa.me/919865659865" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
+  </section>
+
   <section class="admin-summary-grid">
     <div>
+      <i class="fas fa-bag-shopping"></i>
       <span>Total Orders</span>
       <strong id="adminTotalOrders">0</strong>
+      <small>All customer checkouts</small>
     </div>
     <div>
+      <i class="fas fa-indian-rupee-sign"></i>
+      <span>Revenue</span>
+      <strong id="adminRevenue">Rs. 0</strong>
+      <small>Paid + COD value</small>
+    </div>
+    <div>
+      <i class="fas fa-credit-card"></i>
       <span>Paid Orders</span>
       <strong id="adminPaidOrders">0</strong>
+      <small>Online confirmed</small>
     </div>
     <div>
+      <i class="fas fa-truck-fast"></i>
       <span>COD Orders</span>
       <strong id="adminCodOrders">0</strong>
+      <small>Cash collection</small>
     </div>
     <div>
-      <span>Latest Update</span>
-      <strong id="adminUpdatedAt">-</strong>
+      <i class="fas fa-hourglass-half"></i>
+      <span>Pending</span>
+      <strong id="adminPendingOrders">0</strong>
+      <small>Need follow-up</small>
+    </div>
+    <div>
+      <i class="fas fa-ban"></i>
+      <span>Cancelled</span>
+      <strong id="adminCancelledOrders">0</strong>
+      <small>Customer cancelled</small>
     </div>
   </section>
 
   <section class="admin-toolbar">
     <div>
-      <h2>Incoming Orders</h2>
-      <p id="adminStatus">Loading orders...</p>
+      <h2>Order Management</h2>
+      <p>Search, filter and contact customers quickly.</p>
     </div>
-    <input type="search" id="adminSearch" placeholder="Search name, phone, order id, address">
+    <label class="admin-search-box">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="search" id="adminSearch" placeholder="Search name, phone, order id, address">
+    </label>
+  </section>
+
+  <section class="admin-filter-tabs" aria-label="Order filters">
+    <button type="button" class="active" data-admin-filter="all">All <span id="adminFilterAll">0</span></button>
+    <button type="button" data-admin-filter="paid">Paid <span id="adminFilterPaid">0</span></button>
+    <button type="button" data-admin-filter="cod">COD <span id="adminFilterCod">0</span></button>
+    <button type="button" data-admin-filter="pending">Pending <span id="adminFilterPending">0</span></button>
+    <button type="button" data-admin-filter="cancelled">Cancelled <span id="adminFilterCancelled">0</span></button>
   </section>
 
   <section class="admin-pin-panel" id="adminPinPanel">
     <div>
-      <h3>Admin PIN</h3>
+      <h3><i class="fas fa-lock"></i> Secure Admin Access</h3>
       <p>Enter your admin PIN to view customer name, phone number and address.</p>
     </div>
     <form id="adminPinForm">
       <input type="password" id="adminPinInput" placeholder="Enter admin PIN" autocomplete="current-password">
-      <button type="submit">Show Orders</button>
+      <button type="submit"><i class="fas fa-unlock"></i> Show Orders</button>
       <button type="button" id="clearAdminPinBtn">Change PIN</button>
     </form>
   </section>
@@ -70,8 +116,8 @@
   <section id="adminOrders" class="admin-orders-list"></section>
 </main>
 
-<script src="config.js?v=phone-api-1"></script>
-<script src="backend-client.js?v=phone-api-1"></script>
-<script src="admin.js?v=phone-api-1"></script>
+<script src="config.js?v=admin-business-1"></script>
+<script src="backend-client.js?v=admin-business-1"></script>
+<script src="admin.js?v=admin-business-1"></script>
 </body>
 </html>
