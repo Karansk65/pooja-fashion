@@ -380,8 +380,7 @@ productVerifyOtpBtn?.addEventListener("click", async () => {
     if(productAuthMessage) productAuthMessage.innerText = "Verifying OTP...";
     await window.PoojaApi.verifyOtp({
       phone: document.getElementById("productOtpPhone").value.trim(),
-      otp: document.getElementById("productOtpCode").value.trim(),
-      name: document.getElementById("productOtpName").value.trim()
+      otp: document.getElementById("productOtpCode").value.trim()
     });
     if(productAuthMessage) productAuthMessage.innerText = "OTP verified. Opening checkout...";
     continuePendingCheckout();

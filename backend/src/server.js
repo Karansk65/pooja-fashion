@@ -598,8 +598,8 @@ app.get("/api/account/me", authRequired, (req, res) => {
 app.put("/api/account/profile", authRequired, (req, res) => {
   const { name, phone, email, address } = req.body;
 
-  if(!name || !phone){
-    return res.status(400).json({ message:"Name and phone are required" });
+  if(!phone){
+    return res.status(400).json({ message:"Phone is required" });
   }
 
   if(!/^[6-9]\d{9}$/.test(String(phone).trim())){
@@ -609,7 +609,9 @@ app.put("/api/account/profile", authRequired, (req, res) => {
   const db = readDb();
   const user = db.users.find(item => item.id === req.user.id);
 
-  user.name = String(name).trim();
+  if(String(name || "").trim()){
+    user.name = String(name).trim();
+  }
   user.phone = String(phone).trim();
   user.email = email ? String(email).trim().toLowerCase() : "";
   user.address = address || "";

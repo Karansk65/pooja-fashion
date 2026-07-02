@@ -1,4 +1,3 @@
-const profileName = document.getElementById("profileName");
 const profilePhone = document.getElementById("profilePhone");
 const profileAddress = document.getElementById("profileAddress");
 const profileMessage = document.getElementById("profileMessage");
@@ -29,7 +28,6 @@ function goToRedirect(){
 
 function readProfile(){
   return JSON.parse(localStorage.getItem("customerProfile")) || {
-    name:"",
     phone:"",
     address:""
   };
@@ -45,13 +43,13 @@ function readCart(){
 
 async function saveProfile(){
   const profile = {
-    name: profileName.value.trim(),
+    name:"",
     phone: profilePhone.value.trim(),
     address: profileAddress.value.trim()
   };
 
-  if(!profile.name || !profile.phone){
-    profileMessage.innerText = "Please add name and mobile number.";
+  if(!profile.phone){
+    profileMessage.innerText = "Please add mobile number.";
     return;
   }
 
@@ -142,8 +140,7 @@ async function verifyAccountOtp(){
   try{
     await window.PoojaApi.verifyOtp({
       phone: document.getElementById("otpPhone").value.trim(),
-      otp: document.getElementById("otpCode").value.trim(),
-      name: document.getElementById("otpName").value.trim()
+      otp: document.getElementById("otpCode").value.trim()
     });
     authMessage.innerText = "OTP verified. Login successful.";
     await renderAccount();
@@ -249,13 +246,12 @@ async function renderAccount(){
 
   const currentProfile = readProfile();
 
-  if(profileName) profileName.value = currentProfile.name || "";
   if(profilePhone) profilePhone.value = currentProfile.phone || "";
   if(profileAddress) profileAddress.value = currentProfile.address || "";
 
-  accountName.innerText = loggedIn
-    ? currentProfile.name || "Customer"
-    : "Guest";
+  if(accountName){
+    accountName.innerText = loggedIn ? "Customer" : "Guest";
+  }
   accountPhone.innerText = loggedIn
     ? currentProfile.phone
       ? "Mobile: " + currentProfile.phone

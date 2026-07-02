@@ -27,7 +27,7 @@
   <section class="account-hero">
     <div>
       <p>My Account</p>
-      <h1>Welcome back, <span id="accountName">Customer</span></h1>
+      <h1>Welcome back</h1>
       <span id="accountPhone">Add your details to personalize your account.</span>
     </div>
     <div class="account-hero-actions">
@@ -50,7 +50,6 @@
         <h3>Enter mobile number</h3>
         <p>We will send a 6 digit OTP. New customers are registered automatically after verification.</p>
         <input type="tel" id="otpPhone" placeholder="Mobile number">
-        <input type="text" id="otpName" placeholder="Full name optional">
         <div class="otp-row">
           <input type="text" id="otpCode" placeholder="6 digit OTP" maxlength="6">
           <button type="button" onclick="sendAccountOtp()">Send OTP</button>
@@ -76,9 +75,6 @@
   <section class="account-grid" id="accountDashboard">
     <aside class="account-panel profile-panel">
       <h2>Profile Details</h2>
-      <label for="profileName">Full Name</label>
-      <input type="text" id="profileName" placeholder="Enter your name">
-
       <label for="profilePhone">Mobile Number</label>
       <input type="tel" id="profilePhone" placeholder="Enter mobile number">
 
@@ -141,8 +137,8 @@
   <a href="account.html"><i class="fas fa-user"></i><span>Account</span></a>
 </div>
 
-<script src="config.js?v=otp-only-auth-1"></script>
-<script src="backend-client.js?v=otp-only-auth-1"></script>
-<script src="account.js?v=otp-only-auth-1"></script>
+<script src="config.js?v=phone-otp-only-2"></script>
+<script src="backend-client.js?v=phone-otp-only-2"></script>
+<script src="account.js?v=phone-otp-only-2"></script>
 </body>
 </html>
