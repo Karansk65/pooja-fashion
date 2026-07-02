@@ -19,6 +19,7 @@ const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET || "";
 const adminPin = process.env.ADMIN_PIN || "";
 const smsProvider = String(process.env.SMS_PROVIDER || "").trim().toLowerCase();
 const fast2SmsApiKey = process.env.FAST2SMS_API_KEY || "";
+const fast2SmsOtpId = process.env.FAST2SMS_OTP_ID || "";
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID || "";
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN || "";
 const twilioFromNumber = process.env.TWILIO_FROM_NUMBER || "";
@@ -203,13 +204,24 @@ async function sendOtpSms(phone, otp){
   }
 
   if(smsProvider === "fast2sms"){
-    const query = new URLSearchParams({
-      authorization:fast2SmsApiKey,
-      route:"otp",
-      variables_values:String(otp),
-      numbers:cleanPhone
+    if(!fast2SmsOtpId){
+      throw new Error("Set FAST2SMS_OTP_ID for OTP SMS.");
+    }
+
+    const response = await fetch("https://www.fast2sms.com/dev/otp/send", {
+      method:"POST",
+      headers:{
+        authorization:fast2SmsApiKey,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        mobile:cleanPhone,
+        otp_id:fast2SmsOtpId,
+        otp:String(otp),
+        otp_expiry:5,
+        otp_length:6
+      })
     });
-    const response = await fetch("https://www.fast2sms.com/dev/bulkV2?" + query.toString());
 
     if(!response.ok){
       throw new Error("OTP SMS provider failed");
