@@ -257,11 +257,6 @@ function buyNow(){
     "&price=" +
     encodeURIComponent(parseMoney(price));
 
-  if(window.PoojaApi?.isEnabled() && !window.PoojaApi.isLoggedIn()){
-    openProductAuthModal(checkoutUrl);
-    return;
-  }
-
   window.location.href = checkoutUrl;
 }
 

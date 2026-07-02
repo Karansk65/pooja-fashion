@@ -344,10 +344,6 @@ function cartItemsForApi(){
 async function placeOrder(event){
   event.preventDefault();
 
-  if(window.PoojaApi && !window.PoojaApi.requireAuth("cart.html", "checkout")){
-    return;
-  }
-
   if(!cart.length){
     alert("Your cart is empty.");
     return;

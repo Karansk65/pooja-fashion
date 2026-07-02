@@ -366,10 +366,6 @@ if(copyUpiBtn){
 async function placeOrder(event) {
   if(event) event.preventDefault();
 
-  if(window.PoojaApi && !window.PoojaApi.requireAuth(window.location.href, "checkout")){
-    return;
-  }
-
   const deliveryInfo = collectDeliveryInfo();
   const customerName = deliveryInfo.customerName;
   const customerPhone = deliveryInfo.customerPhone;
