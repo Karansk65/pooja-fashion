@@ -154,6 +154,35 @@ function setButtonLabel(text){
   if(label) label.innerText = text;
 }
 
+function isOnlineMethod(paymentMethod){
+  return paymentMethod !== "Cash On Delivery";
+}
+
+function selectPaymentMethod(paymentMethod){
+  document.querySelectorAll(".cart-payment-options .payment-option").forEach(item => {
+    item.classList.toggle("active", item.dataset.payment === paymentMethod);
+  });
+
+  if(paymentMethodEl) paymentMethodEl.value = paymentMethod;
+  setPaymentUi(paymentMethod);
+}
+
+function applyGatewayAvailability(){
+  document.querySelectorAll(".cart-payment-options .payment-option").forEach(option => {
+    const isOnlineOption = isOnlineMethod(option.dataset.payment);
+    const shouldDisable = isOnlineOption && !isGatewayReady;
+    option.disabled = shouldDisable;
+    option.classList.toggle("disabled", shouldDisable);
+    option.title = shouldDisable
+      ? "Online payment will be enabled after Razorpay live setup."
+      : "";
+  });
+
+  if(!isGatewayReady && isOnlineMethod(paymentMethodEl?.value || "")){
+    selectPaymentMethod("Cash On Delivery");
+  }
+}
+
 function updateSummary(){
   subtotal = calculateSubtotal();
   couponDiscount = calculateDiscount();
@@ -256,13 +285,13 @@ function setPaymentUi(paymentMethod){
 
   if(cartPaymentNote){
     cartPaymentNote.innerText = isCod
-      ? "You can pay in cash when the order is delivered."
+      ? "Pay at delivery. We confirm every order by call or WhatsApp before dispatch."
       : isGatewayReady
       ? "Secure Razorpay checkout will open after order creation."
-      : "Online payment needs Razorpay keys. You can choose Cash On Delivery.";
+      : "Online payment will be enabled after Razorpay live setup. Please choose Cash On Delivery for now.";
   }
 
-  setButtonLabel(isCod ? "Place COD Order" : "Pay & Place Order");
+  setButtonLabel(isOnlineMethod(paymentMethod) ? "Pay & Place Order" : "Place COD Order");
 }
 
 async function refreshGatewayStatus(){
@@ -270,22 +299,26 @@ async function refreshGatewayStatus(){
     if(window.PoojaApi?.isEnabled()){
       const config = await window.PoojaApi.request("/api/config");
       isGatewayReady = Boolean(config.gatewayReady);
+      applyGatewayAvailability();
 
       if(cartPaymentStatus){
-        cartPaymentStatus.innerText = isGatewayReady ? "Gateway ready" : "Gateway setup needed";
+        cartPaymentStatus.innerText = isGatewayReady ? "Gateway ready" : "COD available";
         cartPaymentStatus.classList.toggle("ready", isGatewayReady);
       }
 
-      setPaymentUi(paymentMethodEl?.value || "UPI");
+      setPaymentUi(paymentMethodEl?.value || "Cash On Delivery");
       return;
     }
   }catch(error){
+    isGatewayReady = false;
+    applyGatewayAvailability();
+
     if(cartPaymentStatus){
-      cartPaymentStatus.innerText = "Backend offline";
+      cartPaymentStatus.innerText = "COD available";
       cartPaymentStatus.classList.remove("ready");
     }
 
-    if(cartPaymentNote) cartPaymentNote.innerText = error.message;
+    if(cartPaymentNote) cartPaymentNote.innerText = "Online payment is not available right now. Please place a COD order.";
   }
 }
 
@@ -522,19 +555,23 @@ cartCheckoutForm?.addEventListener("submit", placeOrder);
 
 document.querySelectorAll(".cart-payment-options .payment-option").forEach(option => {
   option.addEventListener("click", () => {
-    document.querySelectorAll(".cart-payment-options .payment-option").forEach(item => {
-      item.classList.remove("active");
-    });
+    if(option.disabled || (isOnlineMethod(option.dataset.payment) && !isGatewayReady)){
+      selectPaymentMethod("Cash On Delivery");
+      return;
+    }
 
-    option.classList.add("active");
-    paymentMethodEl.value = option.dataset.payment;
-    setPaymentUi(option.dataset.payment);
+    selectPaymentMethod(option.dataset.payment);
   });
 });
 
 document.querySelectorAll(".cart-payment-options [data-upi-app]").forEach(appChip => {
   appChip.addEventListener("click", event => {
     event.stopPropagation();
+
+    if(!isGatewayReady){
+      selectPaymentMethod("Cash On Delivery");
+      return;
+    }
 
     document.querySelectorAll(".cart-payment-options .payment-option").forEach(item => {
       item.classList.remove("active");
@@ -553,4 +590,5 @@ document.querySelectorAll(".cart-payment-options [data-upi-app]").forEach(appChi
 
 fillDeliveryForm();
 renderCart();
+applyGatewayAvailability();
 refreshGatewayStatus();

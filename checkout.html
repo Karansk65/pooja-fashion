@@ -119,10 +119,10 @@
           <span class="payment-status-pill" id="paymentStatusPill">Checking gateway</span>
         </div>
 
-        <input type="hidden" id="paymentMethod" value="UPI">
+        <input type="hidden" id="paymentMethod" value="Cash On Delivery">
 
         <div class="payment-options premium-payment-options" id="paymentOptions">
-          <button type="button" class="payment-option active" data-payment="UPI">
+          <button type="button" class="payment-option" data-payment="UPI">
             <span class="payment-icon upi">UPI</span>
             <span>
               <strong>UPI</strong>
@@ -189,7 +189,7 @@
             </span>
             <i class="fas fa-check"></i>
           </button>
-          <button type="button" class="payment-option cod-option" data-payment="Cash On Delivery">
+          <button type="button" class="payment-option cod-option active" data-payment="Cash On Delivery">
             <span class="payment-icon cod">COD</span>
             <span>
               <strong>Cash On Delivery</strong>
@@ -204,8 +204,8 @@
             <i class="fas fa-lock"></i>
           </div>
           <div>
-            <strong id="selectedPaymentTitle">PhonePe selected</strong>
-            <p class="payment-note" id="paymentNote">You will be redirected to secure Razorpay checkout.</p>
+            <strong id="selectedPaymentTitle">Cash On Delivery selected</strong>
+            <p class="payment-note" id="paymentNote">Pay at delivery. We confirm every order by call or WhatsApp before dispatch.</p>
           </div>
         </div>
 

@@ -30,6 +30,8 @@ const hasRazorpayKeys =
   razorpayKeyId &&
   razorpayKeySecret &&
   !/your|xxxxx|change/i.test(razorpayKeyId + " " + razorpayKeySecret);
+const hasLiveRazorpayKeys = /^rzp_live_/i.test(razorpayKeyId);
+const isRazorpayReady = Boolean(hasRazorpayKeys && hasLiveRazorpayKeys);
 const hasSmsProvider =
   (smsProvider === "fast2sms" && fast2SmsApiKey) ||
   (smsProvider === "twilio" && twilioAccountSid && twilioAuthToken && twilioFromNumber);
@@ -44,7 +46,7 @@ if(isProduction){
   }
 }
 
-const razorpay = hasRazorpayKeys
+const razorpay = isRazorpayReady
   ? new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret })
   : null;
 
@@ -445,8 +447,9 @@ app.get("/api/health", (_req, res) => {
 
 app.get("/api/config", (_req, res) => {
   res.json({
-    razorpayKeyId,
+    razorpayKeyId: isRazorpayReady ? razorpayKeyId : "",
     gatewayReady: Boolean(razorpay),
+    paymentMode: isRazorpayReady ? (hasLiveRazorpayKeys ? "live" : "test") : "cod",
     smsReady: Boolean(hasSmsProvider)
   });
 });
