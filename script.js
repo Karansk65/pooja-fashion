@@ -107,6 +107,7 @@ function renderProducts(){
             <span class="old-price">Rs. ${product.oldPrice}</span>
             <span class="discount">${discountPercent(product)}% off</span>
           </div>
+          <p class="delivery-timeline"><i class="fas fa-truck-fast"></i> Delivery in 10 days</p>
           <button type="button" class="card-buy-btn" data-index="${allProducts.indexOf(product)}">View Details</button>
         </div>
       </article>
@@ -149,6 +150,7 @@ function renderTrending(){
         <div class="price-box">
           <span class="new-price">Rs. ${product.price}</span>
         </div>
+        <p class="delivery-timeline compact"><i class="fas fa-truck-fast"></i> 10 days delivery</p>
       </div>
     `;
   });

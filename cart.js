@@ -228,7 +228,7 @@ function renderCart(){
         <div class="cart-item-info">
           <span>Premium Designer Collection</span>
           <h3>${escapeHtml(item.name)}</h3>
-          <p>${item.size ? "Size: " + escapeHtml(item.size) + " | " : ""}Ready for dispatch after confirmation</p>
+          <p>${item.size ? "Size: " + escapeHtml(item.size) + " | " : ""}Delivery in 10 days after confirmation</p>
           <div class="cart-item-price-line">
             <strong>${formatMoney(unitPrice)}</strong>
             ${item.oldPrice ? `<del>${escapeHtml(item.oldPrice)}</del>` : ""}

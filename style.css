@@ -2181,6 +2181,26 @@ footer{
   font-size:13px;
 }
 
+.delivery-timeline{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  color:#5f4638;
+  font-size:13px;
+  font-weight:700;
+}
+
+.delivery-timeline i{
+  color:#126b37;
+}
+
+.delivery-timeline.compact{
+  justify-content:center;
+  margin-top:6px;
+  font-size:12px;
+}
+
 .card-buy-btn{
   width:100%;
   margin-top:12px;

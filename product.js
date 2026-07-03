@@ -114,7 +114,7 @@ const defaultReviews = [
   {
     customerName:"Sneha K.",
     rating:5,
-    comment:"Exactly same as shown in photos. Delivery was fast and packing was neat."
+    comment:"Exactly same as shown in photos. Delivery timeline was clear and packing was neat."
   },
   {
     customerName:"Aarti P.",
@@ -492,6 +492,7 @@ if(relatedProducts){
               <span class="new-price">Rs. ${product.price}</span>
               <span class="old-price">Rs. ${product.oldPrice || 11999}</span>
             </div>
+            <p class="delivery-timeline"><i class="fas fa-truck-fast"></i> Delivery in 10 days</p>
             <button type="button" class="card-buy-btn">View Details</button>
           </div>
         </article>

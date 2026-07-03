@@ -114,7 +114,7 @@ if(checkoutProductMeta){
   checkoutProductMeta.innerText = [
     productSize ? "Size: " + productSize : "",
     "Qty: " + productQuantity,
-    "Quality checked before dispatch"
+    "Delivery in 10 days after confirmation"
   ].filter(Boolean).join(" | ");
 }
 
