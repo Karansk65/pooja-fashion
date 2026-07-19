@@ -207,7 +207,7 @@ function renderOrders(orders){
             <span>${orderId}</span>
             <strong>${paymentStatus}</strong>
           </div>
-          <h3>${firstProduct.name || "Pooja Fashion Order"}</h3>
+          <h3>${firstProduct.name || "Dipali Fashion Order"}</h3>
           <p>${products.length} item(s) - Rs. ${order.total || orderTotal(order)}</p>
           <small>${formatDate(createdAt)} - ${paymentMethod}</small>
         </div>

@@ -212,7 +212,7 @@ function renderOrders(orders){
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
     const phone = customerPhone(order);
     const cleanPhone = String(phone || "").replace(/[^\d]/g, "");
-    const whatsappText = encodeURIComponent(`Hello ${customerName(order) || "Customer"}, your Pooja Fashion order ${orderId(order)} is received. We will contact you shortly.`);
+    const whatsappText = encodeURIComponent(`Hello ${customerName(order) || "Customer"}, your Dipali Fashion order ${orderId(order)} is received. We will contact you shortly.`);
     const whatsappUrl = cleanPhone ? `https://wa.me/91${cleanPhone.slice(-10)}?text=${whatsappText}` : "";
     const status = paymentStatus(order);
     const lifecycle = orderStatus(order);

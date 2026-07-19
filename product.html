@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details | Pooja Fashion</title>
+  <title>Product Details | Dipali Fashion</title>
+  <meta property="og:title" id="ogTitle" content="Dipali Fashion">
+  <meta property="og:description" id="ogDescription" content="Premium designer gowns for every celebration.">
+  <meta property="og:image" id="ogImage" content="">
+  <meta property="og:url" id="ogUrl" content="">
   <link rel="stylesheet" href="style.css?v=otp-only-auth-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -22,7 +26,7 @@
 </div>
 
 <header class="premium-product-header">
-  <a class="product-logo" href="index.html">Pooja Fashion</a>
+  <a class="product-logo" href="index.html">Dipali Fashion</a>
   <button class="product-menu-toggle" type="button" id="productMenuToggle" aria-label="Open menu" aria-controls="productHeaderNav" aria-expanded="false">
     <i class="fas fa-bars"></i>
   </button>
@@ -94,6 +98,7 @@
           <button type="button">XXL</button>
           <button type="button">XXXL</button>
         </div>
+        <p class="size-required-note" id="sizeRequiredNote">Select a size to enable Buy Now.</p>
       </div>
 
       <div class="product-choice-panel quantity-choice-panel">
@@ -108,13 +113,14 @@
         </div>
       </div>
 
-      <div class="wishlist-box premium-wishlist">
+      <div class="wishlist-box premium-wishlist product-secondary-actions">
         <button id="wishlistBtn" type="button"><i class="far fa-heart"></i> Add to Wishlist</button>
+        <button id="shareProductBtn" type="button"><i class="fas fa-share-nodes"></i> Share Product</button>
       </div>
 
       <div class="product-actions premium-product-actions">
         <button id="addToCartBtn" type="button"><i class="fas fa-bag-shopping"></i> Add To Cart</button>
-        <button type="button" class="buy-now-btn"><i class="fas fa-lock"></i> Buy Now</button>
+        <button type="button" class="buy-now-btn" disabled aria-disabled="true" title="Please select a size first"><i class="fas fa-lock"></i> Buy Now</button>
       </div>
 
       <div class="product-payment-note">
@@ -329,7 +335,7 @@
 
   <section class="related-products premium-related-products">
     <div class="section-heading">
-      <p>More From Pooja Fashion</p>
+      <p>More From Dipali Fashion</p>
       <h2>You May Also Like</h2>
     </div>
     <div class="products premium-product-grid" id="relatedProducts"></div>
@@ -419,11 +425,13 @@
 
 <div class="mobile-sticky-buy premium-mobile-sticky-buy">
   <button class="mobile-add-cart" type="button">Add To Cart</button>
-  <button class="mobile-buy-now" type="button">Buy Now</button>
+  <button class="mobile-buy-now" type="button" disabled aria-disabled="true" title="Please select a size first">Buy Now</button>
 </div>
 
 <script src="config.js?v=phone-otp-only-2"></script>
+<script src="products-data.js?v=share-size-1"></script>
+<script src="product-utils.js?v=share-size-1"></script>
 <script src="backend-client.js?v=phone-otp-only-2"></script>
-<script src="product.js?v=phone-confirm-1"></script>
+<script src="product.js?v=share-size-1"></script>
 </body>
 </html>

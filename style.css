@@ -981,6 +981,12 @@ footer{
   color:white;
   border:2px solid #111;
 }
+
+.buy-now-btn:disabled,
+.mobile-buy-now:disabled{
+  opacity:0.45;
+  cursor:not-allowed;
+}
 .cart-page{
   padding:60px 8%;
 }
@@ -2203,13 +2209,69 @@ footer{
 
 .card-buy-btn{
   width:100%;
-  margin-top:12px;
   padding:11px;
   border:1px solid #111;
   background:white;
   border-radius:8px;
   font-weight:bold;
   cursor:pointer;
+}
+
+.product-card-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+
+.product-card-actions .card-buy-btn,
+.product-card-actions .card-share-btn{
+  margin-top:0;
+  width:100%;
+}
+
+.card-share-btn{
+  padding:11px;
+  border:1px solid #ddd;
+  background:#faf8f6;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.card-share-btn:hover{
+  border-color:#111;
+}
+
+.quick-view-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+
+.quick-view-actions button{
+  min-height:44px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#quickViewShare{
+  border:1px solid #ddd;
+  background:#faf8f6;
+  color:#111;
+}
+
+#quickViewOpen{
+  border:1px solid #111;
+  background:#111;
+  color:white;
 }
 
 .empty-products{
@@ -4209,6 +4271,184 @@ footer{
   font-weight:900;
 }
 
+.premium-checkout-page .checkout-offer-bar{
+  min-height:30px;
+  gap:26px;
+  padding:6px 18px;
+}
+
+.premium-checkout-page .premium-checkout-header{
+  padding:12px 6%;
+}
+
+.premium-checkout-page .checkout-logo{
+  font-size:28px;
+}
+
+.premium-checkout-page .checkout-header-actions a{
+  min-height:34px;
+  padding:8px 12px;
+}
+
+.premium-checkout-page .premium-checkout-shell{
+  padding:24px 6% 48px;
+}
+
+.premium-checkout-page .premium-checkout-title,
+.premium-checkout-page .premium-checkout-layout{
+  max-width:1080px;
+}
+
+.premium-checkout-page .premium-checkout-title{
+  margin-bottom:16px;
+}
+
+.premium-checkout-page .premium-checkout-title h1{
+  font-size:clamp(28px, 3vw, 40px);
+  margin-bottom:14px;
+}
+
+.premium-checkout-page .checkout-progress span{
+  min-height:32px;
+  padding:6px 11px;
+}
+
+.premium-checkout-page .premium-checkout-layout{
+  grid-template-columns:minmax(0, 1.1fr) minmax(320px, 0.78fr);
+  gap:18px;
+}
+
+.premium-checkout-page .premium-checkout-card,
+.premium-checkout-page .premium-summary-card{
+  padding:18px;
+  box-shadow:0 14px 32px rgba(30,24,22,0.07);
+}
+
+.premium-checkout-page .premium-section-heading{
+  margin-bottom:16px;
+}
+
+.premium-checkout-page .premium-section-heading h2{
+  font-size:19px;
+}
+
+.premium-checkout-page .delivery-form-grid{
+  gap:10px;
+}
+
+.premium-checkout-page .delivery-field label{
+  top:8px;
+  left:12px;
+}
+
+.premium-checkout-page .delivery-field input,
+.premium-checkout-page .delivery-field select{
+  min-height:52px;
+  padding:21px 34px 7px 12px !important;
+  border-radius:10px !important;
+}
+
+.premium-checkout-page .address-search-field i,
+.premium-checkout-page .phone-help-field i{
+  top:34px;
+}
+
+.premium-checkout-page .phone-help-field small{
+  margin-top:5px;
+}
+
+.premium-checkout-page .save-info-row{
+  margin-top:11px !important;
+}
+
+.premium-checkout-page .premium-payment-box{
+  margin-top:16px;
+  padding:15px;
+}
+
+.premium-checkout-page .premium-payment-title h3{
+  font-size:20px;
+}
+
+.premium-checkout-page .payment-status-pill{
+  min-height:28px;
+  padding:6px 9px;
+}
+
+.premium-checkout-page .premium-payment-options{
+  gap:9px;
+  margin-top:12px;
+}
+
+.premium-checkout-page .payment-option{
+  min-height:62px;
+  padding:11px 36px 11px 11px;
+}
+
+.premium-checkout-page .payment-icon{
+  width:34px;
+  height:34px;
+  font-size:13px;
+}
+
+.premium-checkout-page .selected-payment-preview{
+  margin-top:12px;
+  padding:12px;
+}
+
+.premium-checkout-page .selected-payment-icon{
+  width:32px;
+  height:32px;
+}
+
+.premium-checkout-page .payment-secure-line{
+  margin-top:10px;
+}
+
+.premium-checkout-page .payment-secure-line span{
+  min-height:32px;
+  padding:7px;
+}
+
+.premium-checkout-page .premium-place-order{
+  min-height:46px;
+}
+
+.premium-checkout-page .premium-summary-card{
+  top:80px;
+}
+
+.premium-checkout-page .premium-summary-product img{
+  width:86px;
+  height:116px;
+}
+
+.premium-checkout-page .premium-summary-product small{
+  margin-bottom:5px;
+}
+
+.premium-checkout-page .summary-coupon-box{
+  padding:10px;
+  margin:12px 0 4px;
+}
+
+.premium-checkout-page .checkout-total-row{
+  font-size:19px;
+}
+
+.premium-checkout-page .checkout-help-card{
+  margin-top:12px;
+  padding:13px;
+}
+
+.premium-checkout-page .checkout-help-card p{
+  margin-bottom:9px;
+}
+
+.premium-checkout-page .checkout-help-card a{
+  padding:8px 11px;
+}
+
 @media(max-width:900px){
   .checkout-offer-bar{
     gap:16px;
@@ -5486,6 +5726,27 @@ footer{
   margin:16px 0 0;
 }
 
+.product-secondary-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.product-secondary-actions button{
+  width:100%;
+}
+
+.size-required-note{
+  margin:10px 0 0;
+  color:#8a5a44;
+  font-size:13px;
+  font-weight:700;
+}
+
+.size-required-note[hidden]{
+  display:none;
+}
+
 .premium-wishlist button{
   width:100%;
   min-height:46px;
@@ -5524,6 +5785,11 @@ footer{
   border:1px solid var(--ink);
   background:var(--ink);
   color:white;
+}
+
+.premium-product-actions .buy-now-btn:disabled{
+  background:#777;
+  border-color:#777;
 }
 
 .product-payment-note{

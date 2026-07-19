@@ -1,0 +1,14 @@
+Dipali Fashion presentation run steps
+===================================
+
+1. Double-click START_PRESENTATION.bat.
+2. A server window will open. Keep it open during the presentation.
+3. Chrome will open http://localhost:5000 automatically.
+4. If Chrome opens too early and shows "This site can't be reached", wait 5 seconds and press Reload.
+5. After the presentation, close the server window.
+
+Important:
+- You do not need to open ChatGPT.
+- You do not need VS Code, as long as Node.js is installed.
+- Do one full test before the presentation.
+- If backend packages are already installed, internet is not needed for the local demo.

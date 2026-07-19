@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pooja Fashion | Premium Designer Gowns</title>
+  <title>Dipali Fashion | Premium Designer Gowns</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -30,7 +30,7 @@
       <i class="fas fa-bars"></i>
     </button>
 
-    <a class="logo boutique-logo" href="index.html">Pooja Fashion</a>
+    <a class="logo boutique-logo" href="index.html">Dipali Fashion</a>
 
     <div class="search-box boutique-search">
       <i class="fas fa-search"></i>
@@ -60,7 +60,7 @@
   <section class="boutique-hero" id="home">
     <picture>
       <source media="(max-width: 768px)" srcset="./images/banner.png">
-      <img src="./images/banner.png" alt="Pooja Fashion premium gown collection">
+      <img src="./images/banner.png" alt="Dipali Fashion premium gown collection">
     </picture>
     <div class="boutique-hero-copy">
       <p>Premium Designer Collection</p>
@@ -247,7 +247,7 @@
 
   <section class="newsletter-band">
     <div>
-      <p>Join The Pooja Fashion List</p>
+      <p>Join The Dipali Fashion List</p>
       <h2>Get new collection updates and offers.</h2>
     </div>
     <form>
@@ -259,7 +259,7 @@
 
 <footer class="store-footer boutique-footer" id="contact">
   <div>
-    <h3>Pooja Fashion</h3>
+    <h3>Dipali Fashion</h3>
     <p>Premium designer gown collection for parties, weddings, maternity shoots and special moments.</p>
   </div>
   <div>
@@ -292,11 +292,16 @@
       <p class="product-label">Quick View</p>
       <h2 id="quickViewName"></h2>
       <p id="quickViewPrice"></p>
-      <button type="button" id="quickViewOpen">View Product</button>
+      <div class="quick-view-actions">
+        <button type="button" id="quickViewShare"><i class="fas fa-share-nodes"></i> Share</button>
+        <button type="button" id="quickViewOpen">View Product</button>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="script.js?v=mobile-marquee-2"></script>
+<script src="products-data.js?v=share-size-1"></script>
+<script src="product-utils.js?v=share-size-1"></script>
+<script src="script.js?v=share-size-1"></script>
 </body>
 </html>

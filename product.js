@@ -32,13 +32,15 @@ const productForgotBtn = document.getElementById("productForgotBtn");
 const productForgotPanel = document.getElementById("productForgotPanel");
 const productSendOtpBtn = document.getElementById("productSendOtpBtn");
 const productVerifyOtpBtn = document.getElementById("productVerifyOtpBtn");
+const shareProductBtn = document.getElementById("shareProductBtn");
+const sizeRequiredNote = document.getElementById("sizeRequiredNote");
 let pendingCheckoutUrl = "";
 
-const name = localStorage.getItem("productName") || "Premium Designer Gown";
-const image = localStorage.getItem("productImage") || "images/banner.png";
-const price = normalizePriceText(localStorage.getItem("productPrice") || "Rs. 5500");
-const old = normalizePriceText(localStorage.getItem("productOldPrice") || "Rs. 11999");
-const images = JSON.parse(localStorage.getItem("productImages") || "[]");
+let name = localStorage.getItem("productName") || "Premium Designer Gown";
+let image = localStorage.getItem("productImage") || "images/banner.png";
+let price = normalizePriceText(localStorage.getItem("productPrice") || "Rs. 5500");
+let old = normalizePriceText(localStorage.getItem("productOldPrice") || "Rs. 11999");
+let images = JSON.parse(localStorage.getItem("productImages") || "[]");
 let selectedSize = localStorage.getItem("productSize") || "";
 let selectedQuantity = Number(localStorage.getItem("productQuantity") || 1);
 
@@ -49,6 +51,78 @@ function parseMoney(value){
 
 function normalizePriceText(value){
   return "Rs. " + parseMoney(value);
+}
+
+function applyProductData(product){
+  name = product.name;
+  image = product.image;
+  price = normalizePriceText(product.price);
+  old = normalizePriceText(product.oldPrice || 11999);
+  images = product.images || [product.image];
+
+  localStorage.setItem("productName", name);
+  localStorage.setItem("productImage", image);
+  localStorage.setItem("productPrice", price);
+  localStorage.setItem("productOldPrice", old);
+  localStorage.setItem("productImages", JSON.stringify(images));
+  localStorage.setItem("allProducts", JSON.stringify(POOJA_CATALOG.allProducts));
+}
+
+function initProductFromUrl(){
+  const slug = new URLSearchParams(window.location.search).get("p");
+  if(!slug || !window.PoojaProductUtils) return false;
+
+  const product = PoojaProductUtils.findProductBySlug(slug);
+  if(!product) return false;
+
+  applyProductData(product);
+  selectedSize = "";
+  selectedQuantity = 1;
+  localStorage.removeItem("productSize");
+  localStorage.setItem("productQuantity", "1");
+  return true;
+}
+
+function currentProductRecord(){
+  return {
+    name,
+    image: productImage?.src || image,
+    price: parseMoney(price),
+    oldPrice: parseMoney(old),
+    images
+  };
+}
+
+function updatePageMeta(){
+  const product = currentProductRecord();
+  document.title = product.name + " | Dipali Fashion";
+
+  const ogTitle = document.getElementById("ogTitle");
+  const ogDescription = document.getElementById("ogDescription");
+  const ogImage = document.getElementById("ogImage");
+  const ogUrl = document.getElementById("ogUrl");
+
+  if(ogTitle) ogTitle.content = product.name + " | Dipali Fashion";
+  if(ogDescription){
+    ogDescription.content = PoojaProductUtils.productShareText({
+      name: product.name,
+      price: product.price
+    });
+  }
+  if(ogImage) ogImage.content = new URL(product.image, window.location.href).href;
+  if(ogUrl) ogUrl.content = PoojaProductUtils.productShareUrl(product);
+}
+
+function updateBuyNowState(){
+  const hasSize = Boolean(selectedSize);
+
+  document.querySelectorAll(".buy-now-btn, .mobile-buy-now").forEach(button => {
+    button.disabled = !hasSize;
+    button.setAttribute("aria-disabled", String(!hasSize));
+    button.title = hasSize ? "" : "Please select a size first";
+  });
+
+  if(sizeRequiredNote) sizeRequiredNote.hidden = hasSize;
 }
 
 function escapeHtml(value){
@@ -173,6 +247,9 @@ async function loadReviews(){
   renderReviews(localReviews);
 }
 
+initProductFromUrl();
+updatePageMeta();
+
 if(productImage){
   productImage.src = image;
   productImage.alt = name;
@@ -183,6 +260,7 @@ if(breadcrumbProductName) breadcrumbProductName.innerText = name;
 if(productPrice) productPrice.innerText = price;
 if(oldPrice) oldPrice.innerText = old;
 setQuantity(selectedQuantity);
+updateBuyNowState();
 
 if(thumbGallery && productImage){
   thumbGallery.innerHTML = "";
@@ -225,6 +303,7 @@ document.querySelectorAll(".size-box button").forEach(button => {
     button.classList.add("active-size");
     selectedSize = button.innerText.trim();
     localStorage.setItem("productSize", selectedSize);
+    updateBuyNowState();
   });
 });
 
@@ -245,6 +324,12 @@ if(addToCartBtn){
 }
 
 function buyNow(){
+  if(!selectedSize){
+    document.getElementById("sizeBox")?.scrollIntoView({ behavior:"smooth", block:"center" });
+    updateBuyNowState();
+    return;
+  }
+
   localStorage.setItem("productName", name);
   localStorage.setItem("productImage", productImage?.src || image);
   localStorage.setItem("productPrice", price);
@@ -263,6 +348,20 @@ function buyNow(){
 document.querySelectorAll(".buy-now-btn, .mobile-buy-now").forEach(button => {
   button.addEventListener("click", buyNow);
 });
+
+shareProductBtn?.addEventListener("click", async () => {
+  const result = await PoojaProductUtils.shareProduct(currentProductRecord());
+  if(result.ok && result.method === "clipboard"){
+    PoojaProductUtils.showShareFeedback(shareProductBtn, '<i class="fas fa-check"></i> Link copied');
+  }
+});
+
+async function handleRelatedShare(product, button){
+  const result = await PoojaProductUtils.shareProduct(product);
+  if(result.ok && result.method === "clipboard"){
+    PoojaProductUtils.showShareFeedback(button, '<i class="fas fa-check"></i> Link copied');
+  }
+}
 
 document.querySelectorAll(".mobile-add-cart").forEach(button => {
   button.addEventListener("click", () => {
@@ -468,7 +567,9 @@ if(reviewForm){
 
 loadReviews();
 
-const allProducts = JSON.parse(localStorage.getItem("allProducts") || "[]");
+const allProducts = JSON.parse(localStorage.getItem("allProducts") || "[]").length
+  ? JSON.parse(localStorage.getItem("allProducts") || "[]")
+  : (POOJA_CATALOG?.allProducts || []);
 
 if(relatedProducts){
   relatedProducts.innerHTML = "";
@@ -493,16 +594,30 @@ if(relatedProducts){
               <span class="old-price">Rs. ${product.oldPrice || 11999}</span>
             </div>
             <p class="delivery-timeline"><i class="fas fa-truck-fast"></i> Delivery in 10 days</p>
-            <button type="button" class="card-buy-btn">View Details</button>
+            <div class="product-card-actions">
+              <button type="button" class="card-share-btn related-share-btn" data-related-index="${index}" aria-label="Share ${product.name}">
+                <i class="fas fa-share-nodes"></i> Share
+              </button>
+              <button type="button" class="card-buy-btn">View Details</button>
+            </div>
           </div>
         </article>
       `;
     });
 
   relatedProducts.querySelectorAll("[data-related-index]").forEach((card, index) => {
-    card.addEventListener("click", () => {
+    card.addEventListener("click", event => {
+      if(event.target.closest(".related-share-btn")) return;
       const product = allProducts.filter(item => item.name !== name).slice(0, 8)[index];
       openRelatedProduct(product);
+    });
+  });
+
+  relatedProducts.querySelectorAll(".related-share-btn").forEach((button, index) => {
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      const product = allProducts.filter(item => item.name !== name).slice(0, 8)[index];
+      handleRelatedShare(product, button);
     });
   });
 }
@@ -518,5 +633,5 @@ function openRelatedProduct(product){
   localStorage.removeItem("productSize");
   localStorage.setItem("productQuantity", "1");
 
-  window.location.href = "product.html";
+  window.location.href = "product.html?p=" + encodeURIComponent(product.slug || PoojaProductUtils.productSlugFromName(product.name));
 }

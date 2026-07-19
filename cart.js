@@ -112,7 +112,7 @@ function escapeHtml(value){
 
 function normalizeCart(items){
   return items.map(item => ({
-    name:item.name || "Pooja Fashion Product",
+    name:item.name || "Dipali Fashion Product",
     image:item.image || "images/banner.png",
     price:String(item.price || item.amount || "Rs. 0").includes("Rs.")
       ? String(item.price || item.amount || "Rs. 0")
@@ -138,7 +138,7 @@ function calculateSubtotal(){
 }
 
 function calculateDiscount(){
-  if(activeCoupon === "POOJA500" && subtotal >= 6500){
+  if(activeCoupon === "DIPALI500" && subtotal >= 6500){
     return 500;
   }
 
@@ -269,7 +269,7 @@ function applyCoupon(){
   updateSummary();
 
   if(!activeCoupon){
-    if(couponMessage) couponMessage.innerText = "Use POOJA500 on orders above Rs. 6500.";
+    if(couponMessage) couponMessage.innerText = "Use DIPALI500 on orders above Rs. 6500.";
     return;
   }
 
@@ -463,7 +463,7 @@ async function placeOrder(event){
         key:paymentResponse.keyId,
         amount:paymentResponse.razorpayOrder.amount,
         currency:paymentResponse.razorpayOrder.currency,
-        name:"Pooja Fashion",
+        name:"Dipali Fashion",
         description:"Cart Order",
         order_id:paymentResponse.razorpayOrder.id,
         prefill:{

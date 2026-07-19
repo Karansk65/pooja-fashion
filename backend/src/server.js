@@ -237,11 +237,11 @@ async function sendOtpSms(phone, otp){
     return { sent:true, provider:"fast2sms-otp" };
   }
 
-  return sendSms(phone, "Pooja Fashion OTP is " + otp + ". It is valid for 5 minutes.");
+  return sendSms(phone, "Dipali Fashion OTP is " + otp + ". It is valid for 5 minutes.");
 }
 
 async function notifyOrderConfirmed(order){
-  const message = "Pooja Fashion: Your order " + order.order_id +
+  const message = "Dipali Fashion: Your order " + order.order_id +
     " is confirmed. Amount Rs. " + order.total +
     ". We will contact you before dispatch. Thank you.";
 
@@ -385,7 +385,7 @@ function calculateDiscount(products, couponCode){
   const subtotal = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const normalizedCoupon = String(couponCode || "").trim().toUpperCase();
 
-  if(normalizedCoupon === "POOJA500" && subtotal >= 6500){
+  if(normalizedCoupon === "DIPALI500" && subtotal >= 6500){
     return {
       coupon_code: normalizedCoupon,
       discount: 500,
@@ -442,7 +442,7 @@ function publicReview(review){
 }
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok:true, service:"Pooja Fashion API" });
+  res.json({ ok:true, service:"Dipali Fashion API" });
 });
 
 app.get("/api/config", (_req, res) => {
@@ -524,7 +524,7 @@ app.post("/api/auth/verify-otp", authLimiter, (req, res) => {
   if(!user){
     user = {
       id:newId("user"),
-      name:name || "Pooja Fashion Customer",
+      name:name || "Dipali Fashion Customer",
       phone,
       email:"",
       password_hash:"",
@@ -533,7 +533,7 @@ app.post("/api/auth/verify-otp", authLimiter, (req, res) => {
       created_with:"otp"
     };
     db.users.push(user);
-  }else if(name && (!user.name || user.name === "Pooja Fashion Customer")){
+  }else if(name && (!user.name || user.name === "Dipali Fashion Customer")){
     user.name = name;
   }
 
@@ -877,5 +877,5 @@ app.use((error, _req, res, _next) => {
 ensureDatabase();
 
 app.listen(port, () => {
-  console.log("Pooja Fashion API running on port " + port);
+  console.log("Dipali Fashion API running on port " + port);
 });

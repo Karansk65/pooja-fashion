@@ -46,7 +46,7 @@ function normalizeOrder(order){
     customerAddress: order.customerAddress || order.customer_address || "-",
     total: orderTotal({ ...order, products }),
     products: products.length ? products : [{
-      name:"Pooja Fashion Order",
+      name:"Dipali Fashion Order",
       image:"images/banner.png",
       price:"Rs. 0",
       quantity:1,
@@ -129,13 +129,13 @@ function renderOrders(){
 
     return `
       <article class="orders-history-card">
-        <img src="${product.image || "images/banner.png"}" alt="${product.name || "Pooja Fashion order"}">
+        <img src="${product.image || "images/banner.png"}" alt="${product.name || "Dipali Fashion order"}">
         <div class="orders-history-info">
           <div class="orders-card-top">
             <span>${order.orderId}</span>
             <strong class="${badgeClass}">${statusText}</strong>
           </div>
-          <h3>${product.name || "Pooja Fashion Order"}</h3>
+          <h3>${product.name || "Dipali Fashion Order"}</h3>
           <p>${itemsCount} item(s)${product.size ? " - Size " + product.size : ""} - ${formatDate(order.createdAt)}</p>
           <div class="orders-card-meta">
             <span><i class="fas fa-credit-card"></i> ${order.paymentMethod}</span>
@@ -145,7 +145,7 @@ function renderOrders(){
         <div class="orders-card-actions">
           <button type="button" data-order-id="${order.orderId}">View Details</button>
           ${canCancelOrder(order) ? `<button type="button" class="cancel-order-btn" data-cancel-order-id="${order.orderId}">Cancel Order</button>` : ""}
-          <a href="https://wa.me/917620986732?text=${encodeURIComponent("Hello Pooja Fashion, I need help with order " + order.orderId)}" target="_blank" rel="noreferrer">Support</a>
+          <a href="https://wa.me/917620986732?text=${encodeURIComponent("Hello Dipali Fashion, I need help with order " + order.orderId)}" target="_blank" rel="noreferrer">Support</a>
         </div>
       </article>
     `;

@@ -13,7 +13,7 @@ const productQuantity = Math.max(1, Number(localStorage.getItem("productQuantity
 const productTotal = String(Number(productPrice || 0) * productQuantity);
 const productImage = localStorage.getItem("productImage") || "";
 const merchantUpiId = "YOUR_UPI_ID@BANK";
-const merchantName = "Pooja Fashion";
+const merchantName = "Dipali Fashion";
 const hasUpiId = merchantUpiId !== "YOUR_UPI_ID@BANK";
 let isGatewayReady = false;
 let razorpayScriptPromise = null;
@@ -505,7 +505,7 @@ async function placeOrder(event) {
         key: paymentResponse.keyId,
         amount: paymentResponse.razorpayOrder.amount,
         currency: paymentResponse.razorpayOrder.currency,
-        name: "Pooja Fashion",
+        name: "Dipali Fashion",
         description: productName,
         order_id: paymentResponse.razorpayOrder.id,
         prefill: {

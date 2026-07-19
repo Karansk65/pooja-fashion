@@ -1,30 +1,6 @@
-const galleryImages = image => [image, image, image];
-
-const products = [
-  { name:"Black Princess Gown", oldPrice:11999, price:5500, image:"images/orange-black-.png.png", images:galleryImages("images/orange-black-.png.png"), category:"princess", color:"black", badges:["Sale", "Bestseller"] },
-  { name:"Sky Blue Princess Gown", oldPrice:11999, price:5500, image:"images/orange-blue.png.png", images:galleryImages("images/orange-blue.png.png"), category:"princess", color:"blue", badges:["Sale", "Ready to Ship"] },
-  { name:"Chocolate Brown Princess Gown", oldPrice:11999, price:5500, image:"images/orange-brown.png.png", images:galleryImages("images/orange-brown.png.png"), category:"princess", color:"brown", badges:["Sale"] },
-  { name:"Orange Princess Gown", oldPrice:11999, price:5500, image:"images/orange-dress.png.png", images:galleryImages("images/orange-dress.png.png"), category:"princess", color:"orange", badges:["Sale", "New"] },
-  { name:"Emerald Green Princess Gown", oldPrice:11999, price:5500, image:"images/orange-green.png.png", images:galleryImages("images/orange-green.png.png"), category:"princess", color:"green", badges:["Sale"] },
-  { name:"Wine Red Princess Gown", oldPrice:11999, price:5500, image:"images/orange-red.png.png", images:galleryImages("images/orange-red.png.png"), category:"princess", color:"red", badges:["Sale", "Ready to Ship"] },
-  { name:"White Princess Gown", oldPrice:11999, price:5500, image:"images/orange-white.png.png", images:galleryImages("images/orange-white.png.png"), category:"princess", color:"white", badges:["Sale", "New"] },
-  { name:"Yellow Princess Gown", oldPrice:11999, price:5500, image:"images/yellow-1.png", images:["images/yellow-1.png","images/yellow-2.png","images/yellow-3.png"], category:"princess", color:"yellow", badges:["Sale", "Bestseller"] }
-];
-
-const maternityProducts = [
-  { name:"Royal Blue Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-blue.png", images:galleryImages("images/maternity-blue.png"), category:"maternity", color:"blue", badges:["New"] },
-  { name:"Orange Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-orange.png", images:galleryImages("images/maternity-orange.png"), category:"maternity", color:"orange", badges:["Ready to Ship"] },
-  { name:"White Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-white.png", images:galleryImages("images/maternity-white.png"), category:"maternity", color:"white", badges:["Bestseller"] },
-  { name:"Black Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-black.png", images:galleryImages("images/maternity-black.png"), category:"maternity", color:"black", badges:["New"] },
-  { name:"Mint Green Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-green.png", images:galleryImages("images/maternity-green.png"), category:"maternity", color:"green", badges:["Sale"] },
-  { name:"Parrot Green Maternity Gown", oldPrice:11999, price:6500, image:"images/parrot.png", images:galleryImages("images/parrot.png"), category:"maternity", color:"green", badges:["Ready to Ship"] },
-  { name:"Dark Red Maternity Gown", oldPrice:11999, price:6500, image:"images/darkred.png", images:galleryImages("images/darkred.png"), category:"maternity", color:"red", badges:["Sale"] },
-  { name:"Faint Green Maternity Gown", oldPrice:11999, price:6500, image:"images/faintgreen.png", images:galleryImages("images/faintgreen.png"), category:"maternity", color:"green", badges:["New"] },
-  { name:"Yellow Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-yellow.png", images:galleryImages("images/maternity-yellow.png"), category:"maternity", color:"yellow", badges:["Bestseller"] },
-  { name:"Red Maternity Gown", oldPrice:11999, price:6500, image:"images/maternity-red.png", images:galleryImages("images/maternity-red.png"), category:"maternity", color:"red", badges:["Sale"] }
-];
-
-const allProducts = [...products, ...maternityProducts];
+const products = POOJA_CATALOG.products;
+const maternityProducts = POOJA_CATALOG.maternityProducts;
+const allProducts = POOJA_CATALOG.allProducts;
 let activeFilter = "all";
 let activeSort = "featured";
 let searchTerm = "";
@@ -38,7 +14,16 @@ function openProductFromData(product){
   localStorage.setItem("productPrice", "Rs. " + product.price);
   localStorage.setItem("productOldPrice", "Rs. " + product.oldPrice);
   localStorage.setItem("productImages", JSON.stringify(product.images));
-  window.location.href = "product.html";
+  localStorage.removeItem("productSize");
+  localStorage.setItem("productQuantity", "1");
+  window.location.href = "product.html?p=" + encodeURIComponent(product.slug);
+}
+
+async function handleProductShare(product, button){
+  const result = await PoojaProductUtils.shareProduct(product);
+  if(result.ok && result.method === "clipboard"){
+    PoojaProductUtils.showShareFeedback(button, '<i class="fas fa-check"></i> Link copied');
+  }
 }
 
 function discountPercent(product){
@@ -108,7 +93,12 @@ function renderProducts(){
             <span class="discount">${discountPercent(product)}% off</span>
           </div>
           <p class="delivery-timeline"><i class="fas fa-truck-fast"></i> Delivery in 10 days</p>
-          <button type="button" class="card-buy-btn" data-index="${allProducts.indexOf(product)}">View Details</button>
+          <div class="product-card-actions">
+            <button type="button" class="card-share-btn" data-index="${allProducts.indexOf(product)}" aria-label="Share ${product.name}">
+              <i class="fas fa-share-nodes"></i> Share
+            </button>
+            <button type="button" class="card-buy-btn" data-index="${allProducts.indexOf(product)}">View Details</button>
+          </div>
         </div>
       </article>
     `;
@@ -124,6 +114,13 @@ function renderProducts(){
   container.querySelectorAll(".card-buy-btn").forEach(button => {
     button.addEventListener("click", () => {
       openProductFromData(allProducts[Number(button.dataset.index)]);
+    });
+  });
+
+  container.querySelectorAll(".card-share-btn").forEach(button => {
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      handleProductShare(allProducts[Number(button.dataset.index)], button);
     });
   });
 
@@ -219,6 +216,12 @@ document.getElementById("quickViewOpen")?.addEventListener("click", () => {
   if(quickViewProduct) openProductFromData(quickViewProduct);
 });
 
+document.getElementById("quickViewShare")?.addEventListener("click", async () => {
+  if(!quickViewProduct) return;
+  const button = document.getElementById("quickViewShare");
+  await handleProductShare(quickViewProduct, button);
+});
+
 document.getElementById("quickViewModal")?.addEventListener("click", event => {
   if(event.target.id === "quickViewModal") closeQuickView();
 });
@@ -231,7 +234,7 @@ document.querySelector(".newsletter-band form")?.addEventListener("submit", even
   event.preventDefault();
   const input = event.currentTarget.querySelector("input");
   if(input) input.value = "";
-  alert("Thank you for subscribing to Pooja Fashion updates.");
+  alert("Thank you for subscribing to Dipali Fashion updates.");
 });
 
 function updateCartCount(){

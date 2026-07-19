@@ -1,4 +1,4 @@
-# Pooja Fashion Backend Setup
+# Dipali Fashion Backend Setup
 
 GitHub Pages only hosts static files. This project now runs best as one Node app where the backend serves the website plus login, orders, reviews, admin dashboard and Razorpay APIs.
 
