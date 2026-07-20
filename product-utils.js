@@ -63,6 +63,7 @@
   global.PoojaProductUtils = {
     productSlugFromName,
     productShareUrl,
+    productShareText,
     findProductBySlug,
     shareProduct,
     showShareFeedback

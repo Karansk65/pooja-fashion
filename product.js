@@ -113,6 +113,18 @@ function updatePageMeta(){
   if(ogUrl) ogUrl.content = PoojaProductUtils.productShareUrl(product);
 }
 
+function showProductImage(source){
+  if(!productImage) return;
+
+  const fallbackImage = "images/banner.png";
+  productImage.onerror = () => {
+    if(productImage.getAttribute("src") !== fallbackImage){
+      productImage.src = fallbackImage;
+    }
+  };
+  productImage.src = source || fallbackImage;
+}
+
 function updateBuyNowState(){
   const hasSize = Boolean(selectedSize);
 
@@ -251,7 +263,7 @@ initProductFromUrl();
 updatePageMeta();
 
 if(productImage){
-  productImage.src = image;
+  showProductImage(image);
   productImage.alt = name;
 }
 
@@ -277,7 +289,7 @@ if(thumbGallery && productImage){
     }
 
     thumb.addEventListener("click", () => {
-      productImage.src = img;
+      showProductImage(img);
 
       document.querySelectorAll(".thumb-gallery img").forEach(item => {
         item.classList.remove("active-thumb");
