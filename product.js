@@ -129,12 +129,15 @@ function updateBuyNowState(){
   const hasSize = Boolean(selectedSize);
 
   document.querySelectorAll(".buy-now-btn, .mobile-buy-now").forEach(button => {
-    button.disabled = !hasSize;
-    button.setAttribute("aria-disabled", String(!hasSize));
+    button.disabled = false;
+    button.setAttribute("aria-disabled", "false");
     button.title = hasSize ? "" : "Please select a size first";
   });
 
-  if(sizeRequiredNote) sizeRequiredNote.hidden = hasSize;
+  if(sizeRequiredNote){
+    sizeRequiredNote.hidden = hasSize;
+    if(!hasSize) sizeRequiredNote.innerText = "Please select a size before Buy Now.";
+  }
 }
 
 function escapeHtml(value){
@@ -337,8 +340,11 @@ if(addToCartBtn){
 
 function buyNow(){
   if(!selectedSize){
+    if(sizeRequiredNote){
+      sizeRequiredNote.hidden = false;
+      sizeRequiredNote.innerText = "Please select a size before Buy Now.";
+    }
     document.getElementById("sizeBox")?.scrollIntoView({ behavior:"smooth", block:"center" });
-    updateBuyNowState();
     return;
   }
 
