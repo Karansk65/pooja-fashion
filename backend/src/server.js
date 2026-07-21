@@ -742,9 +742,9 @@ app.post("/api/analytics/event", analyticsLimiter, (req, res) => {
 
   const db = readDb();
   const now = new Date();
-  const thirtyDaysAgo = now.getTime() - (30 * 24 * 60 * 60 * 1000);
+  const oneYearAgo = now.getTime() - (365 * 24 * 60 * 60 * 1000);
   db.visitor_events = db.visitor_events
-    .filter(item => new Date(item.created_at).getTime() >= thirtyDaysAgo)
+    .filter(item => new Date(item.created_at).getTime() >= oneYearAgo)
     .slice(-9999);
   db.visitor_events.push({
     id:newId("evt"),
@@ -760,12 +760,20 @@ app.post("/api/analytics/event", analyticsLimiter, (req, res) => {
   res.status(201).json({ ok:true });
 });
 
-app.get("/api/admin/analytics", adminLimiter, adminRequired, (_req, res) => {
+app.get("/api/admin/analytics", adminLimiter, adminRequired, (req, res) => {
   const db = readDb();
   const now = Date.now();
-  const dayAgo = now - (24 * 60 * 60 * 1000);
+  const range = String(req.query.range || "day").toLowerCase();
+  const ranges = {
+    day:{ milliseconds:24 * 60 * 60 * 1000, label:"Last 24 hours" },
+    week:{ milliseconds:7 * 24 * 60 * 60 * 1000, label:"Last 7 days" },
+    month:{ milliseconds:30 * 24 * 60 * 60 * 1000, label:"Last 30 days" },
+    year:{ milliseconds:365 * 24 * 60 * 60 * 1000, label:"Last 1 year" }
+  };
+  const selectedRange = ranges[range] || ranges.day;
+  const periodAgo = now - selectedRange.milliseconds;
   const liveAgo = now - (5 * 60 * 1000);
-  const events = db.visitor_events.filter(item => new Date(item.created_at).getTime() >= dayAgo);
+  const events = db.visitor_events.filter(item => new Date(item.created_at).getTime() >= periodAgo);
   const uniqueVisitors = new Set(events.map(item => item.visitor_id)).size;
   const liveVisitors = new Set(
     db.visitor_events
@@ -789,7 +797,7 @@ app.get("/api/admin/analytics", adminLimiter, adminRequired, (_req, res) => {
   const recentEvents = events.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 12);
 
   res.json({
-    period:"Last 24 hours",
+    period:selectedRange.label,
     live_visitors:liveVisitors,
     unique_visitors:uniqueVisitors,
     page_views:count("page_view"),

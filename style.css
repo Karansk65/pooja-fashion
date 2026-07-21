@@ -7391,6 +7391,24 @@ footer{
   font-weight:800;
 }
 
+.analytics-range-label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#81746b;
+  font-size:12px;
+  font-weight:900;
+}
+
+.analytics-range-label select{
+  padding:7px 9px;
+  border:1px solid #d8cfc6;
+  border-radius:6px;
+  background:#fff;
+  color:#211d1a;
+  font:inherit;
+}
+
 .live-visitor-chip{
   display:inline-flex;
   align-items:center;

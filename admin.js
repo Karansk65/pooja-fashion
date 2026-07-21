@@ -29,6 +29,7 @@ const adminCheckoutAttempts = document.getElementById("adminCheckoutAttempts");
 const analyticsPeriod = document.getElementById("analyticsPeriod");
 const adminTopProducts = document.getElementById("adminTopProducts");
 const adminRecentActivity = document.getElementById("adminRecentActivity");
+const analyticsRange = document.getElementById("analyticsRange");
 
 let allOrders = [];
 let adminPin = localStorage.getItem("poojaAdminPin") || "";
@@ -120,7 +121,8 @@ async function loadAdminAnalytics(){
   }
 
   try{
-    const data = await window.PoojaApi.request("/api/admin/analytics", {
+    const range = analyticsRange?.value || "day";
+    const data = await window.PoojaApi.request("/api/admin/analytics?range=" + encodeURIComponent(range), {
       headers:{ "x-admin-pin": adminPin }
     });
     renderAnalytics(data);
@@ -419,6 +421,7 @@ async function loadAdminOrders(){
 
 refreshOrdersBtn?.addEventListener("click", loadAdminOrders);
 adminSearch?.addEventListener("input", filterOrders);
+analyticsRange?.addEventListener("change", loadAdminAnalytics);
 adminFilterTabs.forEach(button => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.adminFilter || "all";

@@ -87,7 +87,14 @@
     <div>
       <p>Visitor Analytics</p>
       <h2>What customers are viewing and buying</h2>
-      <span id="analyticsPeriod">Last 24 hours</span>
+      <label class="analytics-range-label">Period
+        <select id="analyticsRange" aria-label="Visitor analytics period">
+          <option value="day">Today (24 hours)</option>
+          <option value="week">Last 7 days</option>
+          <option value="month">Last 30 days</option>
+          <option value="year">Last 1 year</option>
+        </select>
+      </label>
     </div>
     <span class="live-visitor-chip"><i class="fas fa-circle"></i> <b id="adminLiveVisitors">0</b> live now</span>
   </section>
