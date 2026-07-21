@@ -75,6 +75,10 @@ app.use(cors({ origin: frontendOrigin === "*" ? true : frontendOrigin }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.static(frontendDir));
 
+app.get("/admin", (_req, res) => {
+  res.redirect(302, "/admin.html");
+});
+
 function ensureDatabase(){
   fs.mkdirSync(path.dirname(databasePath), { recursive:true });
 
