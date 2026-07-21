@@ -7483,6 +7483,31 @@ footer{
 .analytics-product-counts span{padding:4px 7px;border-radius:999px;background:#f5eee8;color:#6d4a38;font-size:11px;font-weight:900;white-space:nowrap}
 .analytics-empty{margin:8px 0;color:#81746b;font-weight:700}
 
+.whatsapp-order-float{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:1000;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:13px 16px;
+  border-radius:999px;
+  background:#1da851;
+  box-shadow:0 10px 26px rgba(9,94,40,.32);
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.whatsapp-order-float i{font-size:23px}
+.whatsapp-order-float:hover{background:#128c42;color:#fff;transform:translateY(-2px)}
+
+@media (max-width:620px){
+  .whatsapp-order-float{right:14px;bottom:14px;padding:12px 14px;font-size:13px}
+}
+
 @media (max-width:980px){
   .admin-analytics-grid{grid-template-columns:repeat(3, minmax(0, 1fr))}
   .admin-analytics-panels{grid-template-columns:1fr}
