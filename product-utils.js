@@ -22,13 +22,13 @@
     const price = typeof product.price === "number"
       ? product.price
       : String(product.price || "").replace(/\D/g, "");
-    return "Check out " + product.name + " at Dipali Fashion - Rs. " + price;
+    return "Check out " + product.name + " at Pooja Fashion - Rs. " + price;
   }
 
   async function shareProduct(product){
     const url = productShareUrl(product);
     const shareData = {
-      title: product.name + " | Dipali Fashion",
+      title: product.name + " | Pooja Fashion",
       text: productShareText(product),
       url
     };

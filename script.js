@@ -234,7 +234,7 @@ document.querySelector(".newsletter-band form")?.addEventListener("submit", even
   event.preventDefault();
   const input = event.currentTarget.querySelector("input");
   if(input) input.value = "";
-  alert("Thank you for subscribing to Dipali Fashion updates.");
+  alert("Thank you for subscribing to Pooja Fashion updates.");
 });
 
 function updateCartCount(){

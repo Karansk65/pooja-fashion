@@ -40,7 +40,7 @@ function normalizeOrder(order){
       return sum + parseMoney(item.price) * Number(item.quantity || 1);
     }, 0),
     products: products.length ? products : [{
-      name: firstProduct.name || "Dipali Fashion Order",
+      name: firstProduct.name || "Pooja Fashion Order",
       image: firstProduct.image || "images/banner.png",
       price: firstProduct.price || "Rs. 0",
       quantity: firstProduct.quantity || 1
@@ -79,10 +79,10 @@ function renderProducts(order){
 
     return `
       <article class="success-product-row">
-        <img src="${product.image || "images/banner.png"}" alt="${product.name || "Dipali Fashion product"}">
+        <img src="${product.image || "images/banner.png"}" alt="${product.name || "Pooja Fashion product"}">
         <div>
           <span>Premium Designer Collection</span>
-          <h3>${product.name || "Dipali Fashion Product"}</h3>
+          <h3>${product.name || "Pooja Fashion Product"}</h3>
           <p>${product.size ? "Size: " + product.size + " | " : ""}Qty: ${product.quantity || 1}</p>
         </div>
         <strong>${price}</strong>
@@ -111,7 +111,7 @@ function renderOrder(){
 
   const supportLink = document.getElementById("successWhatsappLink");
   if(supportLink){
-    const text = encodeURIComponent("Hello Dipali Fashion, I need help with order " + order.orderId);
+    const text = encodeURIComponent("Hello Pooja Fashion, I need help with order " + order.orderId);
     supportLink.href = "https://wa.me/917620986732?text=" + text;
   }
 

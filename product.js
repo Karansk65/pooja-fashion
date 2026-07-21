@@ -96,14 +96,14 @@ function currentProductRecord(){
 function updatePageMeta(){
   const product = currentProductRecord();
   const canonicalUrl = "https://poojafashionstore.com/product.html?p=" + encodeURIComponent(product.slug || PoojaProductUtils.productSlugFromName(product.name));
-  document.title = product.name + " | Pooja Fashion Store";
+  document.title = product.name + " | Pooja Fashion";
 
   const ogTitle = document.getElementById("ogTitle");
   const ogDescription = document.getElementById("ogDescription");
   const ogImage = document.getElementById("ogImage");
   const ogUrl = document.getElementById("ogUrl");
 
-  if(ogTitle) ogTitle.content = product.name + " | Pooja Fashion Store";
+  if(ogTitle) ogTitle.content = product.name + " | Pooja Fashion";
   if(ogDescription){
     ogDescription.content = PoojaProductUtils.productShareText({
       name: product.name,
@@ -115,7 +115,7 @@ function updatePageMeta(){
   const canonical = document.getElementById("canonicalUrl");
   if(canonical) canonical.href = canonicalUrl;
   const metaDescription = document.getElementById("metaDescription");
-  if(metaDescription) metaDescription.content = product.name + " - premium designer gown at Pooja Fashion Store. Price Rs. " + product.price + ".";
+  if(metaDescription) metaDescription.content = product.name + " - premium designer gown at Pooja Fashion. Price Rs. " + product.price + ".";
 }
 
 function showProductImage(source){
