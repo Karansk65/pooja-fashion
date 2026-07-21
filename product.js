@@ -95,14 +95,15 @@ function currentProductRecord(){
 
 function updatePageMeta(){
   const product = currentProductRecord();
-  document.title = product.name + " | Dipali Fashion";
+  const canonicalUrl = "https://poojafashionstore.com/product.html?p=" + encodeURIComponent(product.slug || PoojaProductUtils.productSlugFromName(product.name));
+  document.title = product.name + " | Pooja Fashion Store";
 
   const ogTitle = document.getElementById("ogTitle");
   const ogDescription = document.getElementById("ogDescription");
   const ogImage = document.getElementById("ogImage");
   const ogUrl = document.getElementById("ogUrl");
 
-  if(ogTitle) ogTitle.content = product.name + " | Dipali Fashion";
+  if(ogTitle) ogTitle.content = product.name + " | Pooja Fashion Store";
   if(ogDescription){
     ogDescription.content = PoojaProductUtils.productShareText({
       name: product.name,
@@ -111,6 +112,10 @@ function updatePageMeta(){
   }
   if(ogImage) ogImage.content = new URL(product.image, window.location.href).href;
   if(ogUrl) ogUrl.content = PoojaProductUtils.productShareUrl(product);
+  const canonical = document.getElementById("canonicalUrl");
+  if(canonical) canonical.href = canonicalUrl;
+  const metaDescription = document.getElementById("metaDescription");
+  if(metaDescription) metaDescription.content = product.name + " - premium designer gown at Pooja Fashion Store. Price Rs. " + product.price + ".";
 }
 
 function showProductImage(source){
