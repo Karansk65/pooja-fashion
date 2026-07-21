@@ -84,7 +84,8 @@ function ensureDatabase(){
       orders:[],
       payments:[],
       reviews:[],
-      otps:[]
+      otps:[],
+      visitor_events:[]
     }, null, 2));
   }
 }
@@ -97,6 +98,7 @@ function readDb(){
   db.payments = Array.isArray(db.payments) ? db.payments : [];
   db.reviews = Array.isArray(db.reviews) ? db.reviews : [];
   db.otps = Array.isArray(db.otps) ? db.otps : [];
+  db.visitor_events = Array.isArray(db.visitor_events) ? db.visitor_events : [];
   return db;
 }
 
@@ -343,6 +345,7 @@ const adminLimiter = rateLimit({ prefix:"admin", max:30, windowMs:15 * 60 * 1000
 const orderLimiter = rateLimit({ prefix:"order", max:40, windowMs:15 * 60 * 1000 });
 const reviewLimiter = rateLimit({ prefix:"review", max:25, windowMs:15 * 60 * 1000 });
 const paymentLimiter = rateLimit({ prefix:"payment", max:40, windowMs:15 * 60 * 1000 });
+const analyticsLimiter = rateLimit({ prefix:"analytics", max:120, windowMs:15 * 60 * 1000 });
 
 function adminRequired(req, res, next){
   if(!adminPin){
@@ -725,6 +728,79 @@ app.get("/api/admin/orders", adminLimiter, adminRequired, (_req, res) => {
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   res.json({ orders });
+});
+
+app.post("/api/analytics/event", analyticsLimiter, (req, res) => {
+  const allowedEvents = new Set(["page_view", "product_view", "add_to_cart", "buy_now", "checkout_started", "checkout_submitted", "heartbeat"]);
+  const eventType = String(req.body?.event_type || "").trim();
+  const visitorId = String(req.body?.visitor_id || "").trim().slice(0, 80);
+  const sessionId = String(req.body?.session_id || "").trim().slice(0, 80);
+
+  if(!allowedEvents.has(eventType) || !visitorId || !sessionId){
+    return res.status(400).json({ message:"Invalid analytics event" });
+  }
+
+  const db = readDb();
+  const now = new Date();
+  const thirtyDaysAgo = now.getTime() - (30 * 24 * 60 * 60 * 1000);
+  db.visitor_events = db.visitor_events
+    .filter(item => new Date(item.created_at).getTime() >= thirtyDaysAgo)
+    .slice(-9999);
+  db.visitor_events.push({
+    id:newId("evt"),
+    event_type:eventType,
+    visitor_id:visitorId,
+    session_id:sessionId,
+    page:String(req.body?.page || "").trim().slice(0, 120),
+    product_name:String(req.body?.product_name || "").trim().slice(0, 120),
+    product_slug:String(req.body?.product_slug || "").trim().slice(0, 120),
+    created_at:now.toISOString()
+  });
+  writeDb(db);
+  res.status(201).json({ ok:true });
+});
+
+app.get("/api/admin/analytics", adminLimiter, adminRequired, (_req, res) => {
+  const db = readDb();
+  const now = Date.now();
+  const dayAgo = now - (24 * 60 * 60 * 1000);
+  const liveAgo = now - (5 * 60 * 1000);
+  const events = db.visitor_events.filter(item => new Date(item.created_at).getTime() >= dayAgo);
+  const uniqueVisitors = new Set(events.map(item => item.visitor_id)).size;
+  const liveVisitors = new Set(
+    db.visitor_events
+      .filter(item => new Date(item.created_at).getTime() >= liveAgo)
+      .map(item => item.visitor_id)
+  ).size;
+  const count = type => events.filter(item => item.event_type === type).length;
+  const productMap = new Map();
+
+  events.filter(item => item.product_name).forEach(item => {
+    const current = productMap.get(item.product_name) || { name:item.product_name, views:0, carts:0, buy_attempts:0 };
+    if(item.event_type === "product_view") current.views += 1;
+    if(item.event_type === "add_to_cart") current.carts += 1;
+    if(item.event_type === "buy_now") current.buy_attempts += 1;
+    productMap.set(item.product_name, current);
+  });
+
+  const topProducts = [...productMap.values()]
+    .sort((a, b) => (b.views + b.carts + b.buy_attempts) - (a.views + a.carts + a.buy_attempts))
+    .slice(0, 8);
+  const recentEvents = events.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 12);
+
+  res.json({
+    period:"Last 24 hours",
+    live_visitors:liveVisitors,
+    unique_visitors:uniqueVisitors,
+    page_views:count("page_view"),
+    product_views:count("product_view"),
+    add_to_cart:count("add_to_cart"),
+    buy_attempts:count("buy_now"),
+    checkout_started:count("checkout_started"),
+    checkout_submitted:count("checkout_submitted"),
+    top_products:topProducts,
+    recent_events:recentEvents
+  });
 });
 
 app.get("/api/reviews", (req, res) => {

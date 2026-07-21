@@ -393,6 +393,10 @@ async function placeOrder(event){
     return;
   }
 
+  window.PoojaAnalytics?.track("checkout_submitted", {
+    productName:cart.map(item => item.name).slice(0, 3).join(", ")
+  });
+
   if(!deliveryInfo.addressLine1 || !deliveryInfo.city || !deliveryInfo.state || !/^\d{6}$/.test(deliveryInfo.pinCode)){
     alert("Please enter address, city, state and a valid 6 digit PIN code.");
     return;

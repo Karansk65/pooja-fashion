@@ -83,6 +83,35 @@
     </div>
   </section>
 
+  <section class="admin-analytics-heading">
+    <div>
+      <p>Visitor Analytics</p>
+      <h2>What customers are viewing and buying</h2>
+      <span id="analyticsPeriod">Last 24 hours</span>
+    </div>
+    <span class="live-visitor-chip"><i class="fas fa-circle"></i> <b id="adminLiveVisitors">0</b> live now</span>
+  </section>
+
+  <section class="admin-analytics-grid">
+    <div><i class="fas fa-users"></i><span>Unique Visitors</span><strong id="adminUniqueVisitors">0</strong><small>People who visited</small></div>
+    <div><i class="fas fa-eye"></i><span>Page Views</span><strong id="adminPageViews">0</strong><small>All page opens</small></div>
+    <div><i class="fas fa-shirt"></i><span>Product Views</span><strong id="adminProductViews">0</strong><small>Product detail opens</small></div>
+    <div><i class="fas fa-bag-shopping"></i><span>Added to Cart</span><strong id="adminAddToCart">0</strong><small>Shopping intent</small></div>
+    <div><i class="fas fa-bolt"></i><span>Buy Now Clicks</span><strong id="adminBuyAttempts">0</strong><small>Strong buying intent</small></div>
+    <div><i class="fas fa-credit-card"></i><span>Checkout Attempts</span><strong id="adminCheckoutAttempts">0</strong><small>Checkout form opened</small></div>
+  </section>
+
+  <section class="admin-analytics-panels">
+    <article>
+      <div class="analytics-panel-title"><h2>Most Viewed Products</h2><span>Last 24 hours</span></div>
+      <div id="adminTopProducts" class="analytics-product-list"><p class="analytics-empty">Visitor data will appear here after customers use the website.</p></div>
+    </article>
+    <article>
+      <div class="analytics-panel-title"><h2>Recent Visitor Activity</h2><span>Auto refresh: 30 sec</span></div>
+      <div id="adminRecentActivity" class="analytics-activity-list"><p class="analytics-empty">No visitor activity yet.</p></div>
+    </article>
+  </section>
+
   <section class="admin-toolbar">
     <div>
       <h2>Order Management</h2>

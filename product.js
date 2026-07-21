@@ -269,6 +269,10 @@ async function loadReviews(){
 
 initProductFromUrl();
 updatePageMeta();
+window.PoojaAnalytics?.track("product_view", {
+  productName:name,
+  productSlug:PoojaProductUtils?.productSlugFromName(name)
+});
 
 if(productImage){
   showProductImage(image);
@@ -332,6 +336,10 @@ qtyPlus?.addEventListener("click", () => setQuantity(selectedQuantity + 1));
 
 if(addToCartBtn){
   addToCartBtn.addEventListener("click", () => {
+    window.PoojaAnalytics?.track("add_to_cart", {
+      productName:name,
+      productSlug:PoojaProductUtils?.productSlugFromName(name)
+    });
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.push(currentProductPayload());
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -352,6 +360,11 @@ function buyNow(){
     document.getElementById("sizeBox")?.scrollIntoView({ behavior:"smooth", block:"center" });
     return;
   }
+
+  window.PoojaAnalytics?.track("buy_now", {
+    productName:name,
+    productSlug:PoojaProductUtils?.productSlugFromName(name)
+  });
 
   localStorage.setItem("productName", name);
   localStorage.setItem("productImage", productImage?.src || image);

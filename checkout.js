@@ -118,6 +118,8 @@ if(checkoutProductMeta){
   ].filter(Boolean).join(" | ");
 }
 
+window.PoojaAnalytics?.track("checkout_started", { productName });
+
 if(productImageEl){
   if(productImage){
     productImageEl.src = productImage;
@@ -420,6 +422,8 @@ async function placeOrder(event) {
     alert("Please fill delivery details.");
     return;
   }
+
+  window.PoojaAnalytics?.track("checkout_submitted", { productName });
 
   if(!deliveryInfo.addressLine1 || !deliveryInfo.city || !deliveryInfo.state || !/^\d{6}$/.test(deliveryInfo.pinCode)){
     alert("Please enter address, city, state and a valid 6 digit PIN code.");

@@ -19,6 +19,16 @@ const adminPinPanel = document.getElementById("adminPinPanel");
 const adminPinForm = document.getElementById("adminPinForm");
 const adminPinInput = document.getElementById("adminPinInput");
 const clearAdminPinBtn = document.getElementById("clearAdminPinBtn");
+const adminLiveVisitors = document.getElementById("adminLiveVisitors");
+const adminUniqueVisitors = document.getElementById("adminUniqueVisitors");
+const adminPageViews = document.getElementById("adminPageViews");
+const adminProductViews = document.getElementById("adminProductViews");
+const adminAddToCart = document.getElementById("adminAddToCart");
+const adminBuyAttempts = document.getElementById("adminBuyAttempts");
+const adminCheckoutAttempts = document.getElementById("adminCheckoutAttempts");
+const analyticsPeriod = document.getElementById("analyticsPeriod");
+const adminTopProducts = document.getElementById("adminTopProducts");
+const adminRecentActivity = document.getElementById("adminRecentActivity");
 
 let allOrders = [];
 let adminPin = localStorage.getItem("poojaAdminPin") || "";
@@ -48,6 +58,75 @@ function formatDate(value){
     hour:"2-digit",
     minute:"2-digit"
   });
+}
+
+function setAnalyticsEmpty(message = "Visitor data will appear here after customers use the website."){
+  [adminLiveVisitors, adminUniqueVisitors, adminPageViews, adminProductViews, adminAddToCart, adminBuyAttempts, adminCheckoutAttempts]
+    .forEach(element => { if(element) element.innerText = "0"; });
+  if(adminTopProducts) adminTopProducts.innerHTML = `<p class="analytics-empty">${escapeHtml(message)}</p>`;
+  if(adminRecentActivity) adminRecentActivity.innerHTML = `<p class="analytics-empty">${escapeHtml(message)}</p>`;
+}
+
+function analyticsEventLabel(eventType){
+  return ({
+    page_view:"Opened a page",
+    product_view:"Viewed product",
+    add_to_cart:"Added to cart",
+    buy_now:"Clicked Buy Now",
+    checkout_started:"Started checkout",
+    checkout_submitted:"Submitted checkout"
+  })[eventType] || "Active on website";
+}
+
+function renderAnalytics(data){
+  if(adminLiveVisitors) adminLiveVisitors.innerText = data.live_visitors || 0;
+  if(adminUniqueVisitors) adminUniqueVisitors.innerText = data.unique_visitors || 0;
+  if(adminPageViews) adminPageViews.innerText = data.page_views || 0;
+  if(adminProductViews) adminProductViews.innerText = data.product_views || 0;
+  if(adminAddToCart) adminAddToCart.innerText = data.add_to_cart || 0;
+  if(adminBuyAttempts) adminBuyAttempts.innerText = data.buy_attempts || 0;
+  if(adminCheckoutAttempts) adminCheckoutAttempts.innerText = data.checkout_started || 0;
+  if(analyticsPeriod) analyticsPeriod.innerText = data.period || "Last 24 hours";
+
+  const products = data.top_products || [];
+  if(adminTopProducts){
+    adminTopProducts.innerHTML = products.length ? products.map(product => `
+      <div class="analytics-product-row">
+        <div><strong>${escapeHtml(product.name)}</strong><small>Customer interest</small></div>
+        <div class="analytics-product-counts">
+          <span>${product.views || 0} views</span>
+          <span>${product.carts || 0} carts</span>
+          <span>${product.buy_attempts || 0} buy clicks</span>
+        </div>
+      </div>
+    `).join("") : `<p class="analytics-empty">No product views recorded yet.</p>`;
+  }
+
+  const events = (data.recent_events || []).filter(event => event.event_type !== "heartbeat");
+  if(adminRecentActivity){
+    adminRecentActivity.innerHTML = events.length ? events.map(event => `
+      <div class="analytics-activity-row">
+        <div><strong>${escapeHtml(analyticsEventLabel(event.event_type))}</strong><small>${escapeHtml(event.product_name || event.page || "Website")}</small></div>
+        <small>${escapeHtml(formatDate(event.created_at))}</small>
+      </div>
+    `).join("") : `<p class="analytics-empty">No visitor activity yet.</p>`;
+  }
+}
+
+async function loadAdminAnalytics(){
+  if(!window.PoojaApi?.isEnabled() || !adminPin){
+    setAnalyticsEmpty("Enter Admin PIN to view visitor analytics.");
+    return;
+  }
+
+  try{
+    const data = await window.PoojaApi.request("/api/admin/analytics", {
+      headers:{ "x-admin-pin": adminPin }
+    });
+    renderAnalytics(data);
+  }catch(error){
+    setAnalyticsEmpty("Visitor analytics are temporarily unavailable.");
+  }
 }
 
 function parseAdminAmount(value){
@@ -306,6 +385,7 @@ async function loadAdminOrders(){
       setPinPanelVisible(false);
       adminStatus.innerText = "Showing latest backend orders. Auto refresh is on.";
       filterOrders();
+      await loadAdminAnalytics();
       return;
     }
   }catch(error){
@@ -322,6 +402,7 @@ async function loadAdminOrders(){
         </div>
       `;
       renderSummary([]);
+      setAnalyticsEmpty("Enter the correct Admin PIN to view visitor analytics.");
       return;
     }
 
@@ -333,6 +414,7 @@ async function loadAdminOrders(){
       new Date(a.created_at || a.createdAt || a.date || 0);
   });
   filterOrders();
+  setAnalyticsEmpty("Analytics need the live backend connection.");
 }
 
 refreshOrdersBtn?.addEventListener("click", loadAdminOrders);
